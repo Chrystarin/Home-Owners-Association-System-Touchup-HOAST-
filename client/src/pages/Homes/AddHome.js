@@ -53,6 +53,32 @@ function AddHome() {
 
     const [colors, setColor] = React.useState('');
 
+    // Check for Contact Number
+    const contactNoValidator = () => {
+        var check2Num = form.contactNumber.slice(0,2);
+
+        if(check2Num === '09'){
+            if(form.contactNumber.length === 11){
+                return form.contactNumber;
+            }else{
+                // setNumError('Contact Number Should Contain 11 Numbers');
+                alert('Contact Number Should Contain 11 Numbers');
+            }
+        }else{
+            // setNumError('Must start with 09');
+            alert('Must start with 09');
+        }
+    }
+
+    // Check if there is a selected HOA
+    const checkSelectHoa = () => {
+        if(form.hoaId === '') {
+            alert('Please Select HOA');
+        }else{
+            return form.hoaId;
+        }
+    }
+
     const handleChange = (event: SelectChangeEvent) => {
 		setColor(event.target.value);
 	};
@@ -90,13 +116,13 @@ function AddHome() {
             .post(
                 `hoas/join`,
                 JSON.stringify({ 
-                    hoaId: form.hoaId,
+                    hoaId: checkSelectHoa(),
                     name: form.houseName,
                     number: form.houseNumber,
                     street: form.street,
                     phase: form.phase,
                     color: form.color,
-                    contactNo: form.contactNumber
+                    contactNo: contactNoValidator()
                 })
             )
             .then((response) => {
@@ -179,7 +205,7 @@ function AddHome() {
                                     })}
                                 </Select>
 							</FormControl>
-                            <TextField fullWidth label="Contact Number" variant="filled" onChange={(e)=>updateForm({ contactNumber: e.target.value })} defaultValue={form.contactNumber}/>
+                            <TextField fullWidth label="Contact Number" variant="filled" onChange={(e)=>updateForm({ contactNumber: e.target.value })} defaultValue={form.contactNumber} inputProps={{ maxLength: 11 }}/>
                             <div className='Form__Button'>
                                 <Button 
                                     variant='contained' 

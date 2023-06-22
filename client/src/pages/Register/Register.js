@@ -21,6 +21,9 @@ function Register() {
 		password: ''
 	});
 
+	const [emailError, setEmailError] = useState('');
+	const [passwordError, setPasswordError] = useState('');
+
 	// Retrieves data from text input then assigns to form
 	function updateForm(e) {
 		return setRegisterForm((prev) => {
@@ -29,6 +32,26 @@ function Register() {
 			console.log(registerForm);
 			return prev;
 		});
+	}
+
+	const checkEmailField = () => {
+		if (registerForm.email === '') {
+			setEmailError('Please fill out field');
+		}
+		else {
+			setEmailError('');
+			return registerForm.email;
+		}
+	};
+
+	const checkPasswordField = () => {
+		if (registerForm.password === '') {
+			setPasswordError('Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters');
+		}
+		else {
+			setPasswordError('');
+			return registerForm.password;
+		}
 	}
 
 	// Submit function for register
@@ -43,7 +66,7 @@ function Register() {
 					JSON.stringify({
 						firstName: registerForm.firstName,
 						lastName: registerForm.lastName,
-						email: registerForm.email,
+						email: checkEmailField(),
 						password: registerForm.password
 					}),
 					{
@@ -121,6 +144,8 @@ function Register() {
 									onChange={(e) =>
 										updateForm({ email: e.target.value })
 									}
+									error={emailError ? true : false}
+									helperText={emailError}
 								/>
 								<TextField
 									required
@@ -131,7 +156,8 @@ function Register() {
 									variant="filled"
 									onChange={(e) =>updateForm({ password: e.target.value })}
 									inputProps={{ pattern:"(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" }} 
-                                    // Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters
+									error={passwordError ? true : false}
+									helperText={passwordError}
 								/>
 								<div>
 									<Button

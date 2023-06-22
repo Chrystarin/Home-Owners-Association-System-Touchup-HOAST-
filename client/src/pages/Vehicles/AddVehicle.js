@@ -131,6 +131,7 @@ function AddVehicle() {
 								onChange={(e) =>
 									updateForm({ plateNumber: e.target.value })
 								}
+								inputProps={{ maxLength: 8 }}
 							/>
 							<div className="FormWrapper__2">
 								<TextField
@@ -162,6 +163,7 @@ function AddVehicle() {
                             </NativeSelect> */}
 								<FormControl
                                     maxWidth
+									required
 									variant="filled"
 									sx={{ m: 1, minWidth: 120 }}
 								>
