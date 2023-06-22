@@ -1,0 +1,47 @@
+#Card {
+	display: flex;
+	flex-direction: column;
+	background-color: white;
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.069);
+	padding: 55px 15px 15px;
+	border-radius: 6px;
+	width: 250px;
+	#Icon {
+		margin: auto;
+		scale: 3.2;
+		margin-bottom: 55px;
+	}
+}
+#Card:hover {
+	background-color: #e8eaeb;
+}
+.red {
+	svg {
+		color: red;
+	}
+}
+.green {
+	svg {
+		color: green;
+	}
+}
+.yellow {
+	svg {
+		color: yellow;
+	}
+}
+.violet {
+	svg {
+		color: violet;
+	}
+}
+.blue {
+	svg {
+		color: blue;
+	}
+}
+.orange {
+	svg {
+		color: orange;
+	}
+}

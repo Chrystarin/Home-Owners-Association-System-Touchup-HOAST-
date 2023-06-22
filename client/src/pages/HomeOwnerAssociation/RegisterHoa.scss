@@ -1,0 +1,28 @@
+.RegisterHoa{
+    height: 800px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    .RegisterHoa__Form{
+        background-color: white;
+        width: 900px;
+        
+    }
+    .RegisterHoa__Title{
+        color: var(--primary-color);
+        margin-bottom: 25px;
+        position: relative;
+        margin-left: 20px;
+    }
+    .RegisterHoa__Title::before{
+        content: "";
+        position: absolute;
+        display: inline-block;
+        width: 5px;
+        height: 130%;
+        top: 50%;
+        transform: translate(0,-50%);
+        right: calc(100% + 15px);
+        background-color: var(--primary-color);
+    }
+}

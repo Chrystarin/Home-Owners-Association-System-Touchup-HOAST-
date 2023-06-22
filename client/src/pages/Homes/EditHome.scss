@@ -1,0 +1,22 @@
+.EditHome{
+    display: flex;
+    gap: 25px;
+    .EditHome__Name{
+        flex-grow: 1;
+    }
+    .EditHome__ResidentList{
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        width: 400px;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.087);
+        padding: 1em;
+        border-radius: 8px;
+    }
+}
+.ResidentListWrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

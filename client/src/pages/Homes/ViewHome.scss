@@ -1,0 +1,69 @@
+#ViewHome{
+    display: flex;
+    gap: 40px;
+    #ViewHome__Content{
+        flex-grow: 1;
+        .ViewHome__Container{
+            margin-bottom: 25px;
+            .ViewHome__Title{
+                color: var(--primary-color);
+                margin-bottom: 25px;
+            }
+        }
+        #HOA__Div{
+            #HOA__Container{
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.081);
+                background-color: white;
+                height: 150px;
+                padding: 1em;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                gap: 25px;
+                img{
+                    height: 100%;
+                }
+                #HOA__InfoContainer{
+                    flex-grow: 1;
+                    display: flex;
+                    gap: 25px;
+                    div{
+                        flex-grow: 1;
+                    }
+                }
+            }
+        }
+
+
+
+    }
+    #ViewHome__OwnerInfo{
+        width: 400px;
+        
+        div:nth-child(1){
+            position: sticky;
+            top: 100px;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.092);
+            padding: 1.5em 1em;
+            border-radius: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 25px;
+            img{
+                display: block;
+                margin: auto;
+                width: 50%;
+            }
+            div{
+                h6{
+                    margin-bottom: 15px;
+                    color: rgb(37, 37, 37);
+                }
+            }
+        }
+        
+    }
+}

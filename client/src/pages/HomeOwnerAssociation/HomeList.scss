@@ -1,0 +1,39 @@
+.RequestCard{
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 15px  rgba(0, 0, 0, 0.048);
+    width: 300px;
+    overflow: hidden;
+    .RequestCard__Header{
+        padding: 1em;
+        color: white;
+        background-color: var(--secondary-color);
+        .RequestCard__Header__Address__Container{
+            margin-top: 5px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            div{
+                display: flex;
+                flex-direction: column;
+                gap: -13px;
+            }
+        }
+    }
+    .RequestCard__Requestor{
+        display: flex;
+        gap: 10px;
+        padding: 1em;
+        overflow: hidden;
+    }
+    .RequestCard__Buttons{
+        padding: 0 1em 1em;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: .4fr .6fr;
+        .SecondaryBtn{
+            background-color: white;
+            color: black;
+        }
+    }
+}

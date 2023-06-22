@@ -1,0 +1,38 @@
+#AssociatoinDues__Container{
+    #AssociatoinDues__Content{
+    height: 80px;
+    display: flex;
+        #AssociationDues__Card{
+        height: 100%;
+        width: auto;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.069);
+        border-radius: 10px;
+        padding: 1em;
+            img{
+                height: 100%;
+            }
+            h6{
+                color: rgb(65, 65, 65);
+            }
+        }
+    }
+}
+#Guard__Content{
+    display: flex;
+    #Guard__Card{
+        min-width: 300px;
+        height: 100%;
+        width: auto;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background-color: white;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.069);
+        border-radius: 10px;
+        padding: 1em;
+    }
+}

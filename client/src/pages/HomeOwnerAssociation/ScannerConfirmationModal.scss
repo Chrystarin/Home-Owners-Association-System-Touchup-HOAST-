@@ -1,0 +1,95 @@
+.ConfirmationModal__Template{
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 300px;
+    max-height: 70vh;
+    overflow-y: scroll;
+    z-index: 9999;
+    .ConfirmationModal__Header{
+        display: flex;
+        flex-direction: column;
+        background-color: var(--secondary-color);
+        padding: 2em 0 1.5em;
+        .ConfirmationModal__Avatar{
+            align-self: center;
+            width: 80px;
+            height: 80px;
+            border: 2px solid white;
+        }
+        .ConfirmationModal__HeaderInfo{
+            padding: 0 1em;
+            text-align: center;
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .ConfirmationModal__Title{
+                color: white;
+            }
+            .ConfirmationModal__SubTitle{
+                color: white;
+                opacity: .9;
+            }
+        }
+    }
+    .Warning{
+        background-color: #e54b42;
+    }
+    .ConfirmationModal__BodyInfo{
+        padding: 1em 1em 0;
+        ul{
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            li{
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                
+            }
+            .ConfirmationModal__BodyInfo__Title{
+                color: var(--secondary-color);
+                opacity: .9;
+            }
+            .ConfirmationModal__BodyInfo__Value{
+            }
+            .ConfirmationModal__BodyInfo__More{
+                display: none;
+            }
+        }
+        .ConfirmationModal__BodyInfo__Button{
+            width: 100%;
+            margin-top: 10px;
+        }
+    }
+    .ConfirmationModal__Footer{
+        padding: 1em 1em 1em;
+        button{
+            width: 100%;
+        }
+    }
+}
+.ConfirmationModal__Template::-webkit-scrollbar {
+    width: 0;
+}
+
+/* Track */
+.ConfirmationModal__Template::-webkit-scrollbar-track {
+background: #f1f1f1; 
+}
+
+/* Handle */
+.ConfirmationModal__Template::-webkit-scrollbar-thumb {
+background: var(--secondary-color); 
+}
+
+/* Handle on hover */
+.ConfirmationModal__Template::-webkit-scrollbar-thumb:hover {
+background: var(--primary); 
+}

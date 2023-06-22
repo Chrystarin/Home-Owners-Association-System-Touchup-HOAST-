@@ -1,0 +1,18 @@
+#ResidentCard{
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.067);
+    max-width: 399px;
+    display: flex;
+    align-items: center;
+    padding: 1.5em 1em;
+    gap: 15px;
+    border-radius: 10px;
+    a{
+        flex-grow: 1;
+        gap: 15px;  
+        align-items: center;
+        display: flex;
+    }
+    
+    #ResidentCard__Buttons{
+    }
+}

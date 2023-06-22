@@ -1,0 +1,319 @@
+* {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+}
+:root{
+    --primary-color: #3084e4;
+    --secondary-color:#2A5D7A;
+}
+h1{
+    font-size: 56px;
+}
+h2{
+    font-size: 45px;
+}
+h3{
+    font-size: 35px;
+}
+h4{
+    font-size: 27px;
+}
+h5{
+    font-size: 21px;
+}
+h6{
+    font-size: 16px;
+}
+p{
+    line-height: 25px;
+}
+.BodyText1{
+    font-size: 20px;
+}
+.BodyText2{
+    font-size: 17px;
+}
+.BodyText3{
+    font-size: 15px;
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+a:active{
+    color: black;
+}
+.SectionHolder{
+    max-width: 1920px;
+    margin: auto;
+    .Section{
+        padding-left: 1em;
+        padding-right: 1em;
+        .SectionTitleLandingPage{
+            text-align: center;
+            padding-top: 25px;
+            margin-bottom: 75px;
+            h4{
+                margin-bottom: 15px;
+            }
+        }
+        .SectionTitleDashboard{
+            color: rgb(38, 38, 38);
+            position: relative;
+            margin-top: 25px;
+            margin-left: 15px;
+            margin-bottom: 35px;
+        }
+        .SectionTitleDashboard::before{
+            content: "";
+            width: 5px;
+            height: 100%;
+            left: -15px;
+            display: block;
+            position: absolute;
+            background-color: var(--primary-color);
+        }
+        .SectionController{
+            margin: 25px 0;
+            display: flex;
+            gap: 15px;
+            #SearchInput__Container{
+                flex-grow: 1;
+            }
+        }
+        .SectionList{
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .SectionStepper{
+            display: flex;
+            gap: 25px;
+            margin-bottom: 25px;
+            button{
+                color: black;
+            }
+            .active{
+                color: var(--primary-color);
+                position: relative;
+            }
+            .active::before{
+                content: "";
+                display: block;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: var(--primary-color);
+                
+            }
+        }
+    }
+    .SectionManage{
+        padding: 0 1em 0 0;
+        display: grid;
+        gap: 25px;
+        grid-template-columns: 250px 1fr;
+        
+        .SectionManage__SideNav{
+        background-color: var(--secondary-color);
+        height: 100%;
+        min-height: calc(100vh - 80px);
+            ul{
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                list-style: none;
+                margin-top: 40px;
+                position: sticky;
+                top: 100px;
+                li{
+                    a{
+                        display: block;
+                        padding-left: 25px;
+                        color: white;
+                        h6{
+                            font-weight: 500;
+                        }
+                    }
+                    a.active{
+                        padding: 1em 0 1em 35px;
+                        h6{
+                            position: relative;
+                        }
+                    }
+                    a.active h6::after{
+                        content: "";
+                        position: absolute;
+                        width: 4px;
+                        background-color: white;
+                        left: -19px;
+                        top: 50%;
+                        transform: translate(0, -50%);
+                        height: calc(100% + 1em);
+                    }
+                }
+            }
+        }
+    }
+}
+
+.Input__Wrapper2{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+.Form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    margin: auto;
+    input{
+        width: 100%;
+    }
+    .FormWrapper__2{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+    .FormWrapper__2__1{
+        display: grid;
+        grid-template-columns: 1fr .3fr;
+        gap: 15px;
+    }
+    .Form__Button{
+        display: flex;
+        justify-content: end;
+        gap: 25px;
+        .Submit{
+            padding-left: 2em;
+            padding-right: 2em;
+        }
+    }
+}
+.SectionView{
+    padding-bottom: 40px;
+    display: flex;
+    gap:25px;
+    .SectionView__Content{
+        display: flex;
+        flex-grow: 1;
+        flex-direction:column;
+        gap: 25px;
+        .SectionView__Sections{
+            .SectionView__Sections__Title{
+                color: var(--primary-color);
+                margin-bottom: 15px;
+            }
+            
+        }
+    }
+    .SectionView__SidePanel{
+        width: 400px;
+        .SidePanel__Container{
+            position: sticky;
+            top: 130px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.082);
+            padding: 1.5em 1em;
+        }
+        .SidePanelShowInfo{
+            position: sticky;
+            top: 130px;
+            background-color: white;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.092);
+            padding: 1.5em 1em;
+            border-radius: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 30px;
+            img{
+                display: block;
+                margin: auto;
+                width: 50%;
+            }
+            div{
+                h6{
+                    margin-bottom: 10px;
+                    color: rgb(37, 37, 37);
+                }
+            }
+        }
+    }
+}
+.ModalHidden , .hidden{
+    display: none;
+}
+.UploadDocument__Holder{
+    .UploadDocument__Input{
+        position: absolute;
+        width: 300px;
+        opacity: 0;
+    }
+    .UploadDocumentInput__Container{
+        display: inline-block;
+        color: rgba(0, 0, 0, 0.604);
+        cursor: pointer;
+        background-color: white;
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.059);
+        padding: 1em;
+        border-radius: 8px;
+        transition: all .3s ease-in-out;
+    }
+    .UploadDocumentInput__Container:hover{
+        color: rgba(0, 0, 0, 0.833);
+    }
+    img{
+        width: 100%;
+    }
+}
+
+.Filter{
+    width: 400px;
+    .Filter__Title{
+        padding: .5em 1em;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.211);
+    }
+    ul{
+        list-style: none;
+        li{
+            padding: .9em 1em;
+            display: flex;
+            gap: 25px;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.087);
+            // .Filter__Titles{
+            // }
+        }
+    }
+    .Filter__Buttons{
+        display: flex;
+        padding: .5em 1em;
+        gap: 15px;
+        div{
+            button{
+                color: rgb(212, 49, 49);
+            }
+            flex-grow: 1;
+        }
+    }
+}
+.Loading{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    h3{
+        color: var(--primary-color);
+    }
+}

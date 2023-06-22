@@ -1,0 +1,16 @@
+#GeneralInformation__Car{
+    
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.069);
+    border-radius: 10px;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    .GeneralInformation__InfoContainer{
+        flex-grow: 1;
+        h6{
+            color: rgb(82, 82, 82);
+            margin-bottom: 4px;
+        }
+    }
+}

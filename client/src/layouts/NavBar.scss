@@ -1,0 +1,101 @@
+#NavBar{
+    height: 80px;
+    box-shadow: 0 0 15px #0000004d;
+    position: sticky;
+    top: 0;
+    z-index: 9;
+    background-color: white;
+    #NavBar__Container{
+        margin: auto;
+        display: flex;
+        padding: .5em 1em;
+        height: 100%;
+        max-width: 1920px;
+        #Logo{
+            height: 100%;   
+            flex-grow: 1;
+            a{
+            display: flex;
+            align-items: center;
+            height: 100%;
+                img{
+                    height: 70%;
+                }
+            }
+        }
+        ul{
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            a{
+                text-decoration: none;
+                color: black;
+                position: relative;
+            }
+            a:hover{
+                color: var(--primary-color);
+            }
+            a.active{
+                color: var(--secondary-color);
+            }
+            a.active::after{
+                content: "";
+                width: calc(100% + 20px);
+                height: 3px;
+                background-color: var(--secondary-color);
+
+                position: absolute;
+                top: calc(100% + 10px);
+                left: 50%;
+                transform: translate(-50%);
+            }
+        }
+    }
+    
+}
+#Notification{
+    width: 300px;
+    max-height: 700px;
+    overflow-y: scroll;
+    #Notification__Title{
+        padding: .5em 1em;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.237);
+    }
+    ul{
+        
+        list-style: none;
+        li{
+            a.active{
+                background-color: #eef3f8;
+            }
+            a{
+                padding: .5em 1.3em ;
+                display: flex;
+                background-color: white;
+                border-top: 1px solid rgba(0, 0, 0, 0.051);
+            }
+        }
+    }
+}
+
+#Notification:hover::-webkit-scrollbar {
+    width: 8px;
+}
+#Notification::-webkit-scrollbar{
+    width: 3px;
+}
+/* Track */
+#Notification::-webkit-scrollbar-track {
+background: #f1f1f1; 
+}
+
+/* Handle */
+#Notification::-webkit-scrollbar-thumb {
+background: #888; 
+}
+
+/* Handle on hover */
+#Notification::-webkit-scrollbar-thumb:hover {
+background: #555; 
+}

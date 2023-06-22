@@ -1,0 +1,21 @@
+#QRCodeContainer{
+    border-radius: 10px;
+    img{
+        width: 100%;
+    }
+}
+
+#DownloadButton{
+    margin-top: 10px;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #1976D2;
+    color: white;
+    font-weight: bold;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    &:hover{
+        background-color: #bedfff;
+    }
+}
