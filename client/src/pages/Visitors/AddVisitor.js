@@ -10,14 +10,8 @@ import SnackbarComp from '../../components/SnackBar/SnackbarComp';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import { SelectChangeEvent } from '@mui/material/Select';
 import Select from '@mui/material/Select';
 import loading from '../../images/loading.gif';
-
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 
 function AddVisitor() {
@@ -39,12 +33,6 @@ function AddVisitor() {
         departure: '',
         note: '',
     });
-
-    const [purposetype, setPurposeType] = React.useState('');
-
-    const handleChange = (event: SelectChangeEvent) => {
-		setPurposeType(event.target.value);
-	};
 
     // Retrieves All User Homes Data onLoad
     useEffect(() => {
@@ -104,10 +92,6 @@ function AddVisitor() {
         
     }
 
-    const purposeTypes = [
-        "visiting", "sleepover", "overnight", "vacation", "delivery", "service", "other"
-    ]
-
     if(!homes) return <>
     <div className='Loading'>
         <img src={loading} alt="" />
@@ -146,60 +130,11 @@ function AddVisitor() {
                         </FormControl>
                         <TextField required fullWidth  label="Name" variant="filled" onChange={(e)=>updateForm({ name: e.target.value })}/>
                         <div className='FormWrapper__2'>
-                            {/* <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/>
-                            <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} /> */}
-
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DateTimePicker']}>
-                                    <DateTimePicker required fullWidth variant="filled" label="Arrival Date" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValuevalue={form.arrival} />
-                                </DemoContainer>
-                            </LocalizationProvider>
-
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={['DateTimePicker']}>
-                                    <DateTimePicker required fullWidth variant="filled" label="Departure Date" onChange={(e)=>updateForm({ departure: e.target.value })} defaultValuevalue={form.departure} />
-                                </DemoContainer>
-                            </LocalizationProvider>
+                            <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/>
+                            <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} />
                         </div>
                         <div className='FormWrapper__2'>
-                            {/* <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/> */}
-
-                            <FormControl
-                                    maxWidth
-									required
-									variant="filled"
-									sx={{ m: 1, minWidth: 120 }}
-								>
-									<InputLabel id="demo-simple-select-filled-label">
-										Purpose
-									</InputLabel>
-									<Select
-										labelId="demo-simple-select-filled-label"
-										id="demo-simple-select-filled"
-										value={purposetype}
-										onChange={(e) => {
-											setPurposeType(e.target.value);
-											updateForm({
-												purpose: e.target.value
-											});
-										}}
-									>
-										<MenuItem value="">
-											<em>None</em>
-										</MenuItem>
-										{purposeTypes.map((type, index) => {
-											return (
-												<MenuItem
-													key={index}
-													value={type}
-												>
-													{type}
-												</MenuItem>
-											);
-										})}
-									</Select>
-								</FormControl>
-
+                            <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/>
                             <TextField required fullWidth  label="Note" variant="filled" onChange={(e)=>updateForm({ note: e.target.value })}/>
                         </div>
                         <div className='Form__Button'>
