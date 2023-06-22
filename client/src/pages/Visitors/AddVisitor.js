@@ -132,7 +132,24 @@ function AddVisitor() {
                             <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} />
                         </div>
                         <div className='FormWrapper__2'>
-                            <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/>
+                            {/* <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/> */}
+
+                            <FormControl required  variant="filled" fullWidth>
+                            <InputLabel  id="home-select">Purpose</InputLabel>
+                            <Select
+                                labelId="home-select"
+                                value={form.purpose}
+                                label="Purpose"
+                                onChange={(e)=>setForm({...form, purpose: e.target.value})}
+                            >
+                                <MenuItem value={"Visiting"}>Visiting</MenuItem> 
+                                <MenuItem value={"Delivery"}>Delivery</MenuItem> 
+                                <MenuItem value={"Occasion"}>Occasion</MenuItem> 
+                                <MenuItem value={"Service"}>Service</MenuItem> 
+                                <MenuItem value={"Others"}>Others</MenuItem> 
+                            </Select>
+                        </FormControl>
+
                             <TextField required fullWidth  label="Note" variant="filled" onChange={(e)=>updateForm({ note: e.target.value })}/>
                         </div>
                         <div className='Form__Button'>

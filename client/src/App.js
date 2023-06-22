@@ -1,8 +1,10 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './styles/main.scss'
+
 import Error404 from './pages/Error/Error404.js';
 import LandingPage from './pages/LandingPage/LandingPage.js';
+import TermsAndConditions from './pages/LandingPage/TermsAndConditions.js';
 import Login from './pages/Login/Login.js';
 import Register from './pages/Register/Register.js';
 import Homes from './pages/Homes/Homes';
@@ -46,6 +48,7 @@ function App() {
 		<Routes>
 			{/* Public Routes */}
 			<Route path="/" element={<LandingPage />} />
+            <Route path="/terms" element={<TermsAndConditions />} />
 			<Route path="/login"element={<Login />} />
 			<Route path="/register" element={<Register />} />
 
@@ -92,6 +95,7 @@ function App() {
 				<Route element={<ProtectedRoute />} allowedRoles={['admin']} >
 					<Route path="/associationdues" element={<AssociationDues />} />
 					<Route path="/guard" element={<Guard />} />
+                    <Route path="/guard/:id" element={<Guard />} />
 					<Route path="/addguard" element={<AddGuard />} />
 					<Route path="/duesview" element={<DuesView />} />
 				</Route>

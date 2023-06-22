@@ -37,7 +37,7 @@ function LandingPage() {
 							</div>
 						</div>
 					</section>
-					<section
+					{/* <section
 						className="Section"
 						id="Section1"
 					>
@@ -195,7 +195,7 @@ function LandingPage() {
 								</AccordionDetails>
 							</Accordion>
 						</div>
-					</section>
+					</section> */}
 				</div>
 				<Footer />
 			</div>

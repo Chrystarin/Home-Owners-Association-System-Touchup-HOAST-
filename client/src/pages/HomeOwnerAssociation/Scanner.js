@@ -34,7 +34,6 @@ function Scanner() {
     const handleClose = () => {
       setAnchorEl(null);
     };
-    const password = '#WllcDmAgf^SM4qmC%JBG&L95gqU$&MME9X0%XV*g#tKB2psZX';
 
     useEffect(() => {
         // real time clock
@@ -145,27 +144,30 @@ function Scanner() {
 
     // Function upon scanning
     async function handleScan(data){
-        if (data) {
-            // setDecryptedData(JSON.parse(sjcl.decrypt(password, data.text)))
-            // log = JSON.parse(sjcl.decrypt(password, data.text))
-            setDecryptedData(JSON.parse(data.text))
-            log=JSON.parse(data.text)
-            
-            switch(log.logType){
-                case 'visitor':
-                    await fetchVisitor(log.objId);
-                    break;
-                case 'vehicle':
-                    await fetchVehicle(log.objId);
-                    break;
-                case 'user':
-                    await fetchResident(log.objId);
-                    break;
-                default:
-                    break;
+        try{
+            if (data) {
+                setDecryptedData(JSON.parse(data.text))
+                log=JSON.parse(data.text)
+                
+                switch(log.logType){
+                    case 'visitor':
+                        await fetchVisitor(log.objId);
+                        break;
+                    case 'vehicle':
+                        await fetchVehicle(log.objId);
+                        break;
+                    case 'user':
+                        await fetchResident(log.objId);
+                        break;
+                    default:
+                        break;
+                }
+                setOpenConfirmation(true); 
             }
-            setOpenConfirmation(true); 
+        } catch(error) {
+            alert("Invalid QR Code")
         }
+        
     };
 
     async function manualEntry(){
@@ -197,11 +199,12 @@ function Scanner() {
             <section className='Section SectionManage'>
                 <SideBar active="Scanner"/>
                 <div id='HOA__Content'>
-                    <h3 className='SectionTitleDashboard'><span><a >Scanner</a></span></h3>
+                    <h3 className='SectionTitleDashboard'><span><a>Scanner</a></span></h3>
                     <div className='SectionList' id='QRScanner'>
                         <div id="QRScanner__Holder" >
                             <div id={openFullScreen?"ScannerModal":""}>
                                 <div id='ScannerModal__Container'>
+
                                     <QrReader
                                         delay={10000}
                                         onError={handleError}
@@ -209,6 +212,7 @@ function Scanner() {
                                         style={{ width: '100%' }}
                                         facingmode='front'
                                     />
+
                                     <div id='ScannerModal__Buttons'>
                                         <Fab  aria-label="add" onClick={()=>{setOpenFullScreen(!openFullScreen)}}>
                                             {!openFullScreen? <FullscreenIcon />:<FullscreenExitIcon/>}

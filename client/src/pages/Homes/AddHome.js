@@ -84,13 +84,13 @@ function AddHome() {
     // Submit Function for Adding Home Request
     async function Submit(e){
         e.preventDefault();
-        console.log(form)
+        console.log(process.env.REACT_APP_HOA_ID)
         try{
             await axios
             .post(
                 `hoas/join`,
                 JSON.stringify({ 
-                    hoaId: form.hoaId,
+                    hoaId: process.env.REACT_APP_HOA_ID,
                     name: form.houseName,
                     number: form.houseNumber,
                     street: form.street,
@@ -124,6 +124,7 @@ function AddHome() {
             <h3>Loading...</h3>
         </div>
     </>
+
     return<>
         <Navbar type="home"/>
         <div className='SectionHolder'>
@@ -132,77 +133,91 @@ function AddHome() {
 
                 <div className='SectionStepper'> 
                     <Button variant='text' className={(stepper === 1)?"active":""}>General Information</Button>
-                    <Button variant='text' className={(stepper === 2)?"active":""}>Join Homeowners Association</Button>
+                    {/* <Button variant='text' className={(stepper === 2)?"active":""}>Join Homeowners Association</Button> */}
                 </div>
                 <div className='SectionContent'>
                     {/* <Stepper hoas={hoas}/> */}
                     {stepper==1?<>
-                        <div className='Form' id='GeneralInformation'>
-                            <TextField fullWidth label="Home Name" variant="filled" onChange={(e)=>updateForm({ houseName: e.target.value })} defaultValue={form.houseName}/>
-                            <TextField fullWidth label="Home Number" variant="filled" onChange={(e)=>updateForm({ houseNumber: e.target.value })} defaultValue={form.houseNumber}/>
-                            <div className='FormWrapper__2'>
-                                <TextField fullWidth  label="Street" variant="filled" onChange={(e)=>updateForm({ street: e.target.value })} defaultValue={form.street}/>
-                                <TextField fullWidth  label="Phase" variant="filled" onChange={(e)=>updateForm({ phase: e.target.value })} defaultValue={form.phase}/>
-                            </div>
-                            {/* <TextField fullWidth label="Color" variant="filled" onChange={(e)=>updateForm({ color: e.target.value })} defaultValue={form.color}/> */}
-                            <FormControl
-                                maxWidth
-                                variant="filled"
-                                sx={{ m: 1, minWidth: 120 }}
-                            >
-                                <InputLabel id="demo-simple-select-filled-label">
-                                    Color
-                                </InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-filled-label"
-                                    id="demo-simple-select-filled"
-                                    value={colors}
-                                    onChange={(e) => {
-                                        setColor(e.target.value);
-                                        updateForm({
-                                            color: e.target.value
-                                        });
-                                    }}
+                        <form onSubmit={Submit}>
+                            <div className='Form' id='GeneralInformation'>
+                                <TextField 
+                                    fullWidth 
+                                    label="Home Name" 
+                                    variant="filled" 
+                                    required
+                                    onChange={(e)=>updateForm({ houseName: e.target.value })} 
+                                    defaultValue={form.houseName}/>
+                                <TextField 
+                                    fullWidth 
+                                    label="Home Number" 
+                                    variant="filled" 
+                                    required
+                                    onChange={(e)=>updateForm({ houseNumber: e.target.value })} 
+                                    defaultValue={form.houseNumber}
+                                />
+                                <div className='FormWrapper__2'>
+                                    <TextField 
+                                        fullWidth  
+                                        label="Street" 
+                                        variant="filled" 
+                                        required
+                                        onChange={(e)=>updateForm({ street: e.target.value })} 
+                                        defaultValue={form.street}
+                                    />
+                                    <TextField 
+                                        fullWidth  
+                                        label="Phase" 
+                                        variant="filled" 
+                                        required
+                                        onChange={(e)=>updateForm({ phase: e.target.value })} 
+                                        defaultValue={form.phase}
+                                    />
+                                </div>
+                                <FormControl
+                                    maxWidth
+                                    variant="filled"
+                                    sx={{ m: 1, minWidth: 120 }}
                                 >
-                                    <MenuItem value="">
-                                        <em>None</em>
-                                    </MenuItem>
-                                    {houseColor.map((houseColor, index) => {
-                                        return (
-                                            <MenuItem
-                                                key={index}
-                                                value={houseColor}
-                                            >
-                                                {houseColor}
-                                            </MenuItem>
-                                        );
-                                    })}
-                                </Select>
-							</FormControl>
-                            <TextField fullWidth label="Contact Number" variant="filled" onChange={(e)=>updateForm({ contactNumber: e.target.value })} defaultValue={form.contactNumber}/>
-                            <div className='Form__Button'>
-                                <Button 
-                                    variant='contained' 
-                                    type='submit' 
-                                    className='Submit' 
-                                    onClick={()=> {
-                                        
-                                        if(form.houseName !== "" && form.houseNumber !== "" && form.houseNumber !== "" && form.street !== "" && form.phase !=="" && form.color !== "" && form.contactNumber !== ""){
-                                            setStepper(2);
-                                        }else{
-                                            setOpenSnackBar(openSnackBar => ({
-                                                ...openSnackBar,
-                                                open:true,
-                                                type:'error',
-                                                note:"Check your inputs!",
-                                            }));
-                                        }
-                                        console.log(form)
-                                    }}>Next</Button>
+                                    <InputLabel id="demo-simple-select-filled-label">
+                                        Color
+                                    </InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-filled-label"
+                                        id="demo-simple-select-filled"
+                                        value={colors}
+                                        onChange={(e) => {
+                                            setColor(e.target.value);
+                                            updateForm({
+                                                color: e.target.value
+                                            });
+                                        }}
+                                    >
+                                        {houseColor.map((houseColor, index) => {
+                                            return (
+                                                <MenuItem
+                                                    key={index}
+                                                    value={houseColor}
+                                                >
+                                                    {houseColor}
+                                                </MenuItem>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+                                <TextField fullWidth label="Contact Number" variant="filled" onChange={(e)=>updateForm({ contactNumber: e.target.value })} defaultValue={form.contactNumber}/>
+                                <div className='Form__Button'>
+                                    <Button 
+                                        variant='contained' 
+                                        type='submit' 
+                                        className='Submit' 
+                                    >
+                                        Next
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </>:<></>}
-                    {stepper==2?<>
+                    {/* {stepper==2?<>
                         <form onSubmit={Submit} className='Form' id='GeneralInformation'>
                             <div>
                                 <SearchInput setData={setData} data={hoas} keys={["name"]} filterValue={filterValue}/>
@@ -216,12 +231,6 @@ function AddHome() {
                                             data.length > 0 && data.map((hoa) => {
                                                 return (
                                                     <div className={hoa._id===selectedHoa?'Card__Horizontal Active': 'Card__Horizontal'}  onClick={()=>{setSelectedHoa(hoa._id); updateForm({ hoaId: hoa.hoaId }) }} key={hoa._id} id={hoa._id}>
-                                                    {/* // <div className='Card__Horizontal' 
-                                                    //     onClick={(e)=>{
-                                                    //             e.currentTarget.classList.add('cardactive');
-                                                    //             setSelectedHoa(hoa.name); 
-                                                    //             updateForm({ hoaId: hoa.hoaId }) 
-                                                    //         }} key={hoa._id} id={hoa._id}> */}
                                                         <img src={VillageIcon} alt="" />
                                                     <div>
                                                             <h6>{hoa.name}</h6>
@@ -239,7 +248,7 @@ function AddHome() {
                                 <Button variant='contained' type='submit' className='Submit' >Submit</Button>
                             </div>
                         </form>
-                    </>:<></>}
+                    </>:<></>} */}
                 </div>
             </section>
             <SnackbarComp open={openSnackBar} setter={setOpenSnackBar}/>

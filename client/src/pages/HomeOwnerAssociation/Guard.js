@@ -25,6 +25,7 @@ function Guard() {
 					}
 				})
 				.then((response) => {
+                    console.log(response.data)
 					setGuards(response.data)
 				});
 		};
@@ -55,7 +56,8 @@ function Guard() {
                     <div id='Guard' className='SectionView'>
                         <div className='SectionList'>
                             
-                                {(guards.length === 0 )?
+                                {(guards.length === 0 )
+                                ?
                                     <p>No guards found!</p>
                                 :
                                     <>
@@ -63,7 +65,7 @@ function Guard() {
                                         {guards.length > 0 &&
                                         guards.map((guard) => {
                                             return (
-                                                <ResidentCard key={guard._id} username={guard.user.name.firstName + ' ' + guard.user.name.lastName} type={"Guard"}/>
+                                                <ResidentCard key={guard._id} guardId={guard.user.userId} username={guard.user.name.firstName + ' ' + guard.user.name.lastName} type={"Guard"}/>
                                             );
                                         })}
                                     </>

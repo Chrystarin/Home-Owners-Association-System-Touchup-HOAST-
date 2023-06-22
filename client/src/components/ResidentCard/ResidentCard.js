@@ -50,7 +50,7 @@ function ResidentCard(props) {
         }
         {(props.type == "Guard")?<>
             <div id='ResidentCard'>
-                <a href="">
+                <a href={`/guard/${props.guardId}`}>
                     <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
                     <h6 id='ResidentCard__Name'>{props.username}</h6>
                 </a>
