@@ -85,17 +85,7 @@ function HomeOwnerAssociation() {
 									<h5 className="SectionView__Sections__Title">
 										Guard/s
 									</h5>
-									<div id="Guard__Content">
-										<div id="Guard__Card">
-											<Avatar
-												alt="Remy Sharp"
-												src="/static/images/avatar/1.jpg"
-											/>
-											<div id="">
-												<h6>Juan Dela Cruz</h6>
-											</div>
-										</div>
-									</div>
+									
 								</div>
 							</div>
 							<div

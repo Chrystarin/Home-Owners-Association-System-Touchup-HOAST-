@@ -13,6 +13,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import loading from '../../images/loading.gif';
 
+
 function AddVisitor() {
     const navigate = useNavigate();
 
@@ -28,8 +29,8 @@ function AddVisitor() {
         homeId: '',
         name: '',
         purpose: '',
-        arrival: "(3-34-45)",
-        departure: null,
+        arrival: '',
+        departure: '',
         note: '',
     });
 
@@ -50,6 +51,7 @@ function AddVisitor() {
         return setForm((prev) => {
             const [key, value] = Object.entries(e)[0];
             prev[key] = value;
+            console.log(form)
             return prev;
     });}
 
@@ -92,10 +94,10 @@ function AddVisitor() {
 
     if(!homes) return <>
     <div className='Loading'>
-      <img src={loading} alt="" />
-      <h3>Loading...</h3>
+        <img src={loading} alt="" />
+        <h3>Loading...</h3>
     </div>
-  </>
+    </>
 
     return<>
         <Navbar type="vehicle"/>

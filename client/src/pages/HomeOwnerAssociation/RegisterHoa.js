@@ -7,19 +7,69 @@ import NavBar from '../../layouts/NavBar';
 import axios from '../../utils/axios';
 import './RegisterHoa.scss'
 import {useAuth} from '../../utils/AuthContext.js';
+import SnackbarComp from '../../components/SnackBar/SnackbarComp';
 
 export default function RegisterHoa() {
     const {isRole} = useAuth();
     const navigate = useNavigate();
     const [nameError, setNameError] = useState('');
+    const [streetError, setStreetError] = useState('');
+    const [barangayError, setBarangayError] = useState('');
+    const [cityError, setCityError] = useState('');
+    const [provinceError, setProvinceError] = useState('');
 
     const role = JSON.parse(localStorage.getItem("role"));
 
     const validateHOAName = () => {
-        if (!registerForm.name.endsWith('HOA')) {
+        if(registerForm.name === '') {
+            setNameError('Please fill out field');
+        }
+        else if (!registerForm.name.endsWith('HOA')) {
             setNameError('HOA at the end is required');
-        } else {
+        }
+        else {
+            setNameError('');
             return registerForm.name;
+        }
+    };
+
+    const checkStreetField = () => {
+        if (registerForm.street === '') {
+            setStreetError('Please fill out field');
+        }
+        else {
+            setStreetError('');
+            return registerForm.street;
+        }
+    };
+
+    const checkBarangayField = () => {
+        if (registerForm.barangay === '') {
+            setBarangayError('Please fill out field');
+        }
+        else {
+            setBarangayError('');
+            return registerForm.barangay;
+        }
+    };
+
+    const checkCityField = () => {
+        if (registerForm.city === '') {
+            setCityError('Please fill out field');
+        }
+        else {
+            setCityError('');
+            return registerForm.city;
+        }
+    };
+
+    const checkProvinceField = () => {
+        if (registerForm.province === '') {
+            setProvinceError('Please fill out field');
+        }
+        else {
+            setProvinceError('');
+            return registerForm.province;
         }
     };
 
@@ -44,8 +94,6 @@ export default function RegisterHoa() {
     async function Submit(e){
         e.preventDefault();
 
-        
-
         try{
             // Login
             await axios
@@ -53,10 +101,10 @@ export default function RegisterHoa() {
                 `hoas/register`,
                 JSON.stringify({ 
                     name: validateHOAName(),
-                    street : registerForm.street,
-                    barangay : registerForm.barangay,
-                    city : registerForm.city,
-                    province : registerForm.province
+                    street : checkStreetField(),
+                    barangay : checkBarangayField(),
+                    city : checkCityField(),
+                    province : checkProvinceField()
                     
                 })
             )
@@ -67,7 +115,7 @@ export default function RegisterHoa() {
             })
         }
         catch(err){
-            alert("Invalid Credentials!");
+            // alert("Check Credentials!");
             console.error(err.message);
         }
     }
@@ -101,6 +149,8 @@ export default function RegisterHoa() {
                             autoComplete="current-password"
                             variant="filled"
                             onChange={(e)=>updateForm({ street: e.target.value })}
+                            error={streetError ? true : false}
+                            helperText={streetError}
                         />
                         <TextField
                             id="filled-password-input"
@@ -109,6 +159,8 @@ export default function RegisterHoa() {
                             autoComplete="current-password"
                             variant="filled"
                             onChange={(e)=>updateForm({ barangay: e.target.value })}
+                            error={barangayError ? true : false}
+                            helperText={barangayError}
                         />
                     </div>
                         
@@ -120,6 +172,8 @@ export default function RegisterHoa() {
                             autoComplete="current-password"
                             variant="filled"
                             onChange={(e)=>updateForm({ city: e.target.value })}
+                            error={cityError ? true : false}
+                            helperText={cityError}
                         />
                         <TextField
                             id="filled-password-input"
@@ -128,6 +182,8 @@ export default function RegisterHoa() {
                             autoComplete="current-password"
                             variant="filled"
                             onChange={(e)=>updateForm({ province: e.target.value })}
+                            error={provinceError ? true : false}
+                            helperText={provinceError}
                         />
                     </div>
                     
