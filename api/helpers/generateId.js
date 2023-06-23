@@ -1,60 +1,14 @@
-const { Buffer } = require('buffer');
-const { randomFillSync } = require('crypto');
+const { randomBytes } = require('crypto');
 
-const _alphabet =
-	'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict';
+const alphabet = 'useandom-26T198340PX75pxJACKVERYMINDBUSHWOLF_GQZbfghjklqvwyzrict';
 
-/**
- * Converts any given number to a buffer with hex values
- *
- * @param {number} n Number to convert to hex
- * @returns {Buffer}
- */
-const toHexBuffer = (n) => {
-	let hexN = n.toString(16);
-	hexN = (hexN.length % 2 == 0 ? '' : '0') + hexN;
-
-	return Buffer.from(hexN.match(/.{2}/g).map((b) => parseInt('0x' + b)));
-};
-
-/**
- * Properly converts nonce into buffer
- *
- * @param {number} n nonce
- * @returns {Buffer}
- */
-const toNonceBuffer = (n) =>
-	Buffer.from(
-		[...toHexBuffer(n)]
-			.map((b) => `${b >> 6}${_alphabet[b & 63]}`)
-			.join(''),
-		'utf-8'
-	);
-
-/**
- * Converts the given buffer to a string
- *
- * @param {Buffer} buffer Buffer to convert to string
- * @returns {string}
- */
-const bufferToString = (buffer) => {
-	let id = '';
-	for (let b of buffer) {
-		id += _alphabet[b & 63];
-	}
-	return id;
-};
-
-/**
- * Generates a buffer with random values
- *
- * @returns {Buffer}
- */
-const randomBuffer = () => {
-	const pool = Buffer.allocUnsafe(8);
-	randomFillSync(pool);
-
-	return pool;
+const dateToString = (date) => {
+    let hex = date.toString(16);
+    hex = '0'.repeat(hex.length % 2) + hex;
+    return hex
+        .match(/.{2}/g)
+        .map((byte) => alphabet[parseInt(byte, 16) & 63])
+        .join('');
 };
 
 /**
@@ -63,15 +17,7 @@ const randomBuffer = () => {
  * @param {number} nonce Nonce
  * @returns {string}
  */
-const generateId = (prefix, nonce) =>
-	bufferToString(
-		Buffer.concat([
-			Buffer.from(prefix, 'utf-8'),
-			toHexBuffer(Date.now()),
-			randomBuffer(),
-			toNonceBuffer(nonce)
-		])
-	);
+const generateId = (prefix, nonce) => `${prefix}${nonce}@${dateToString(Date.now())}`;
 
 let hoaNonce = 0;
 /**
@@ -129,12 +75,16 @@ let homeNonce = 0;
  */
 const genHomeId = () => generateId('HOM', ++homeNonce);
 
+const genPassword = () => [...randomBytes(8)].map((byte) => alphabet[byte & 63]).join('');
+
 module.exports = {
-	genHoaId,
-	genUserId,
-	genVisitorId,
-	genLogId,
-	genDueId,
-	genRequestId,
-	genHomeId
+    genHoaId,
+    genUserId,
+    genVisitorId,
+    genLogId,
+    genDueId,
+    genRequestId,
+    genHomeId,
+    generateId,
+    genPassword
 };
