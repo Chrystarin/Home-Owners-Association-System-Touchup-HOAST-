@@ -1,3 +1,5 @@
+const emailjs = require('@emailjs/browser');
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -73,4 +75,23 @@ const updateUser = async (req, res, next) => {
     res.json({ message: 'User updated' });
 };
 
-module.exports = { signup, login, getUser, updateUser };
+const sendMail = async (req, res, next) => {
+    const { email, otp } = req.body;
+
+    checkEmail(email);
+
+    // Send email with otp
+    var params = {
+        email: email,
+        otp: otp
+    };
+
+    const serviceID = "service_fxcyg6m";    
+    const templateID = "service_fxcyg6m";
+
+    await emailjs.send(serviceID, templateID, params);
+    
+    res.json({ message: 'Email sent' });
+}
+
+module.exports = { signup, login, getUser, updateUser, sendMail };
