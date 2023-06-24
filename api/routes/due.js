@@ -7,9 +7,11 @@ const {
 } = require('../middlewares/authorization');
 const asyncHandler = require('../middlewares/asyncHandler');
 
-const { createDue, getDues } = asyncHandler(
+const { createDue, getDues, sendNotification } = asyncHandler(
 	require('../controllers/dueController')
 );
+
+router.use(allowAdmin)
 
 /**
  * Get dues
@@ -22,7 +24,7 @@ const { createDue, getDues } = asyncHandler(
  * [Homeowner]
  * homeId
  */
-router.get('/', allowAdmin, allowHomeowner, notUser, getDues);
+router.get('/', allowHomeowner, notUser, getDues);
 
 /**
  * Create a due
@@ -32,6 +34,11 @@ router.get('/', allowAdmin, allowHomeowner, notUser, getDues);
  * amount
  * months
  */
-router.post('/', allowAdmin, notUser, createDue);
+router.post('/', notUser, createDue);
+
+/**
+ * hoaId
+ */
+router.post('/notify', notUser, sendNotification);
 
 module.exports = router;
