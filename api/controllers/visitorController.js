@@ -37,14 +37,15 @@ const addVisitor = async (req, res, next) => {
     const hoa = await HOA.findById(home.hoa);
 
     const notifParams = {
-        notificationId: genNotificationId(),
         message: messages[notifType.NewVisitor],
         type: notifType.NewVisitor
     };
 
     const createNotifs = [];
-    createNotifs.push(Notification.create({ ...notifParams, user: hoa.admin }));
-    hoa.guards.filter(({ status }) => status === 'active').forEach((guard) => createNotifs.push(Notification.create({ ...notifParams, user: guard.user })));
+    createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: hoa.admin }));
+    hoa.guards
+        .filter(({ status }) => status === 'active')
+        .forEach((guard) => createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: guard.user })));
 
     await Promise.all(createNotifs);
 
