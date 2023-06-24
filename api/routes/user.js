@@ -27,6 +27,8 @@ router.post('/login', login);
 
 router.post('/verify', sendMail)
 
+router.patch('/updatepassword', updateUser);
+
 router.use(authenticate);
 
 /**

@@ -74,6 +74,21 @@ const updateUser = async (req, res, next) => {
     res.json({ message: 'User updated' });
 };
 
+const forgetPassword = async (req, res, next) => {
+    const { password } = req.body;
+    const { user } = req.user;
+
+    // Update user
+    user = {
+        ...user,
+        name: { firstName, lastName },
+        credentials: { email, password }
+    };
+    await user.save();
+
+    res.json({ message: 'User updated' });
+};
+
 const sendMail = async (req, res, next) => {
     const { email, message } = req.body;
 

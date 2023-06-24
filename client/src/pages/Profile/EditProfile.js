@@ -19,7 +19,7 @@ export default function EditHome() {
 		password: ''
 	});
 
-	const [otp, setOtp] = useState();
+	let otp = {};
 	const [inputOtp, setInputOtp] = useState();
 
 	const user_id = JSON.parse(localStorage.getItem('user'));
@@ -64,27 +64,26 @@ export default function EditHome() {
 		var charactersLength = characters.length;
 
 		for (var i = 0; i < 6; i++) {
-			OTP += characters.charAt(Math.floor(Math.random() * charactersLength));
+			OTP += characters.charAt(
+				Math.floor(Math.random() * charactersLength)
+			);
 		}
-
-		return OTP
-	}
-
-	(function () {
-		emailjs.init('J01QMSmqj93QY8gmJ');
-	})();
+		otp = OTP;
+	};
 
 	const sendVerification = async () => {
+		generateOTP();
+		console.log(otp);
 		try {
-			setOtp(generateOTP());
-			console.log(otp)
 			await axios
 				.post('users/verify', {
 					email: user.email,
-					message: "Your OTP for your Email verification is " + otp + "."
+					message:
+						'Your OTP for your Email verification is ' + otp + '.'
 				})
 				.then((response) => {
-					alert("Email Sent Successfully!");
+					console.log(otp);
+					alert('Email Sent Successfully!');
 				});
 		} catch (error) {
 			alert(error.response.data);
@@ -92,6 +91,7 @@ export default function EditHome() {
 	};
 
 	const verifyOtp = () => {
+		console.log(inputOtp);
 		if (otp === inputOtp) {
 			alert('OTP verified');
 		} else {
@@ -150,7 +150,9 @@ export default function EditHome() {
 									fullWidth
 									label="Email"
 									defaultValue={user.email}
-									onChange={(e) => setForm({ email: e.target.value })}
+									onChange={(e) =>
+										setForm({ email: e.target.value })
+									}
 									variant="filled"
 								/>
 								<TextField
@@ -176,8 +178,15 @@ export default function EditHome() {
                                 Email: <input type="text" value={user.email}/>
                                 Passwrod: <input type="text"/> */}
 							<div className="Form__Button">
-                                <Button onClick={() => sendVerification()}>Send Code</Button>
-								<Button variant="contained" onClick={() => verifyOtp()}>Verify</Button>
+								<Button onClick={() => sendVerification()}>
+									Send Code
+								</Button>
+								<Button
+									variant="contained"
+									onClick={() => verifyOtp()}
+								>
+									Verify
+								</Button>
 								<Button
 									variant="text"
 									href="/profile"
