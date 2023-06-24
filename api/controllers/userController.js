@@ -8,6 +8,7 @@ const { JWT_SECRET } = process.env;
 const { genUserId, genPassword } = require('../helpers/generateId');
 const { checkString, checkEmail } = require('../helpers/validData');
 const Home = require('../models/Home');
+const sendEmail = require('../helpers/sendEmail');
 
 const createToken = (userId) =>
     jwt.sign({ userId, createdAt: new Date() }, JWT_SECRET, {
@@ -61,7 +62,6 @@ const getUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
-    const { user } = req.user;
 
     // Update user
     user = {
@@ -109,3 +109,28 @@ const addHomeonwer = async (req, res, next) => {
 };
 
 module.exports = { signup, login, getUser, updateUser, addHomeonwer };
+const forgetPassword = async (req, res, next) => {
+    const { email, NewPassword } = req.body;
+    const user = await user.findOne({ email }).exec();
+
+    if(!user) new UnauthorizedError('User not found');
+
+    user.credentials.password = await bcrypt.hash(NewPassword, 10);
+    await user.save();
+
+    res.json({ message: 'Password Reset Successfully' });
+};
+
+const sendMail = async (req, res, next) => {
+    const { email, message } = req.body;
+
+    console.log(email, message);
+
+    checkEmail(email);
+
+    await sendEmail(email, message);
+    
+    res.json({ message: 'Email sent' });
+}
+
+module.exports = { signup, login, getUser, updateUser, forgetPassword, sendMail };
