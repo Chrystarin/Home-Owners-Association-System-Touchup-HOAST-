@@ -2,8 +2,9 @@ const router = require('express').Router();
 
 const asyncHandler = require('../middlewares/asyncHandler');
 const authenticate = require('../middlewares/authentication');
+const { allowAdmin, allowHomeowner } = require('../middlewares/authorization');
 
-const { signup, login, getUser, updateUser } = asyncHandler(
+const { signup, login, getUser, updateUser, addHomeonwer } = asyncHandler(
 	require('../controllers/userController')
 );
 
@@ -41,5 +42,20 @@ router.get('/', getUser);
  * password
  */
 router.patch('/', updateUser);
+
+/**
+ * Add homeowner
+ * 
+ * resident
+ *     firstName
+ *     lastName
+ *     email
+ *     contactNo
+ * home
+ *     homeNo
+ *     street
+ *     phase
+ */
+router.post('/homeowner', allowAdmin, addHomeonwer);
 
 module.exports = router;

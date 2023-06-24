@@ -6,7 +6,6 @@ module.exports = model(
 	new Schema(
 		{
 			homeId: { type: String, unique: true, required: true },
-			name: { type: String, required: true },
 			owner: {
 				type: ObjectId,
 				ref: 'User',
@@ -42,10 +41,12 @@ module.exports = model(
 						'yellow',
 						'green',
 						'blue',
-						'violet'
+						'violet',
+                        'black'
 					],
 					message: "'{VALUE}' is not supported"
-				}
+				},
+                default: 'black'
 			},
 			paidUntil: {
 				type: Date,

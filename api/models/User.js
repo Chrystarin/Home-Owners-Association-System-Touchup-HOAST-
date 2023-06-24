@@ -24,7 +24,11 @@ module.exports = model(
 				password: {
 					type: String,
 					required: [true, 'Password is required']
-				}
+				},
+                isVerified: {
+                    type: Boolean,
+                    default: false
+                }
 			},
 			vehicles: [
 				{
