@@ -17,6 +17,7 @@ export default function AddHomeowner() {
         lastName: '',
         email: '',
         contactNo: '',
+        name: '',
         homeNo: '',
         street: '',
         phase: ''

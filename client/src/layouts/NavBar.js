@@ -46,11 +46,11 @@ function NavBar(props) {
         
     }
 
-    const fetchNotification = async () => {
+    const fetchNotifications = async () => {
         await axios
             .get(`notifications`)
             .then((response) => {
-                // console.log(response.data)
+                console.log(response.data)
                 setNotifications(response.data);
         });
     };
@@ -62,8 +62,10 @@ function NavBar(props) {
     const openNotificationDropDown = Boolean(anchorNotificationDropDown);
 
     useEffect(() => {
-        fetchNotification();
-    }, [notifications]);
+        fetchNotifications();
+    }, []);
+
+    if (!notifications) return <div>Loading...</div>
 
     return (
         <div id='NavBar'>
@@ -125,24 +127,55 @@ function NavBar(props) {
                     <div id='Notification'>
                         <h5 id='Notification__Title'>Notification</h5>
                         <ul>
-                        <li>
-                            <a href="/" className='active'>
-                            <Avatar/>
-                            <p className="BodyText3">Notification daw kuno</p> 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/">
-                            <Avatar/>
-                            <p className="BodyText3">Notification daw kuno</p> 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/">
-                            <Avatar/>
-                            <p className="BodyText3">Notification daw kuno</p> 
-                            </a>
-                        </li>
+                            {(notifications.length === 0 )?
+                                <li>No Notifications</li>
+                            :
+                                <>
+                                    
+                                    {notifications.length > 0 &&
+                                    notifications.map((notification) => {
+                                        switch(notification.type) {
+                                            case 'VISITOR':
+                                                return (
+                                                    <li>
+                                                        <a href="/visitorslist" className='active'>
+                                                        {/* <Avatar/> */}
+                                                        <p className="BodyText3">{notification.message}</p> 
+                                                        </a>
+                                                    </li>
+                                                );
+                                            case 'DUE':
+                                                return (
+                                                    <li>
+                                                        <a href={`/homes/${notification.subjectId}`} className='active'>
+                                                        {/* <Avatar/> */}
+                                                        <p className="BodyText3">{notification.message}</p> 
+                                                        </a>
+                                                    </li>
+                                                )
+                                            case 'HOMESENT':
+                                                return (
+                                                    <li>
+                                                        <a href="/homelist" className='active'>
+                                                        {/* <Avatar/> */}
+                                                        <p className="BodyText3">{notification.message}</p> 
+                                                        </a>
+                                                    </li>
+                                                )
+                                            case 'HOMEAPPROVED':
+                                                return (
+                                                    <li>
+                                                        <a href={`/homes/${notification.subjectId}`} className='active'>
+                                                        {/* <Avatar/> */}
+                                                        <p className="BodyText3">{notification.message}</p> 
+                                                        </a>
+                                                    </li>
+                                                )
+                                        }
+                                       
+                                    })}
+                                </>
+                            }
                         </ul>
                     </div>
                 </Menu>

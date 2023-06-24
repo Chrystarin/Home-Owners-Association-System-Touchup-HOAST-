@@ -94,7 +94,7 @@ const addHomeowner = async (req, res, next) => {
     // Create home
     const home = await Home.create({
         homeId: genHomeId(),
-        name,
+        name: lastName + "'s Residence",
         owner: homeowner._id,
         hoa: hoa._id,
         address: { number: homeNo, street, phase },
