@@ -79,16 +79,17 @@ const processRequest = async (req, res, next) => {
 			contactNo,
 			owner: request.requestor,
 			hoa: hoa._id,
-			address,
+			address,    
 			residents: [{ user: request.requestor }]
 		});
 
         // Update request
         await Notification.create({
             notificationId: genNotificationId(),
-            message: messages[notifType.HomeRequestApproved],
+            message: messages[notifType.HomeRequestApproved](home.name),
             type: notifType.HomeRequestApproved,
-            user: home.owner
+            user: home.owner,
+            subjectId: home.homeId
         })
 
 		resStatus = 201;

@@ -24,6 +24,7 @@ module.exports = model(
             type: ObjectId,
             ref: 'User',
             required: [true, 'User is required']
-        }
+        },
+        subjectId: String
     })
 );
