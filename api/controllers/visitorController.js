@@ -1,80 +1,101 @@
 const {
-	roles: { USER },
-	types: { EMPLOYEE, RESIDENT }
+    roles: { USER },
+    types: { EMPLOYEE, RESIDENT }
 } = require('../helpers/constants');
 const { checkString, checkDate } = require('../helpers/validData');
-const { genVisitorId } = require('../helpers/generateId');
+const { genVisitorId, genNotificationId } = require('../helpers/generateId');
 const { VisitorNotFoundError } = require('../helpers/errors');
 const extractHomes = require('../helpers/extractHomes');
+const Notification = require('../models/Notification');
+const HOA = require('../models/HOA');
+const { notifType, messages } = require('../helpers/notificationUtils');
 
 const addVisitor = async (req, res, next) => {
-	const { name, purpose, arrival, departure, note } = req.body;
-	const { home } = req.user;
+    const { name, purpose, arrival, departure, note } = req.body;
+    const { home } = req.user;
 
-	// Validate input
-	checkString(name, 'Visitor Name');
-	checkString(purpose, 'Purpose');
-	checkString(note, 'Note');
-	checkDate(arrival, 'Arrival');
-	checkDate(departure, 'Departure');
+    // Validate input
+    checkString(name, 'Visitor Name');
+    checkString(purpose, 'Purpose');
+    checkString(note, 'Note');
+    checkDate(arrival, 'Arrival');
+    checkDate(departure, 'Departure');
 
-	// Create visitor
-	const visitor = {
-		visitorId: genVisitorId(),
-		name,
-		purpose,
-		arrival,
-		departure,
-		note
-	};
+    // Create visitor
+    const visitor = {
+        visitorId: genVisitorId(),
+        name,
+        purpose,
+        arrival,
+        departure,
+        note
+    };
 
-	home.visitors.push(visitor);
-	await home.save();
+    home.visitors.push(visitor);
+    await home.save();
 
-	res.status(201).json({
-		message: 'Visitor added',
-		visitorId: visitor.visitorId
-	});
+    await home.populate('owner');
+
+    const hoa = await HOA.findById(home.hoa);
+
+    const notifParams = {
+        message: messages[notifType.NewVisitor](home.owner, visitor.visitorId, home.name, visitor.arrival),
+        type: notifType.NewVisitor,
+        subjectId: visitor.visitorId
+    };
+
+    const createNotifs = [];
+    createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: hoa.admin }));
+    hoa.guards
+        .filter(({ status }) => status === 'active')
+        .forEach((guard) => createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: guard.user })));
+
+    await Promise.all(createNotifs);
+
+    res.status(201).json({
+        message: 'Visitor added',
+        visitorId: visitor.visitorId
+    });
 };
 
 const getVisitors = async (req, res, next) => {
-	const { visitorId } = req.query;
-	const { type } = req.user;
+    const { visitorId } = req.query;
+    const { type } = req.user;
 
-	// Validate input
-	checkString(visitorId, 'Visitor ID', true);
+    // Validate input
+    checkString(visitorId, 'Visitor ID', true);
 
-	let visitors;
+    let visitors;
 
-	if (type == USER) {
-		const { user } = req.user;
+    if (type == USER) {
+        const { user } = req.user;
 
-		// Get visitors from homes
-		({ visitors } = await extractHomes({ 'residents.user': user._id }));
-	}
+        // Get visitors from homes
+        ({ visitors } = await extractHomes({ 'residents.user': user._id }));
+    }
 
-	if (RESIDENT.has(type)) {
-		const { home } = req.user;
+    if (RESIDENT.has(type)) {
+        const { home } = req.user;
 
-		// Get visitors under home
-		visitors = home.visitors;
-	}
+        // Get visitors under home
+        visitors = home.visitors;
+    }
 
-	if (EMPLOYEE.has(type)) {
-		const { hoa } = req.user;
+    if (EMPLOYEE.has(type)) {
+        const { hoa } = req.user;
 
-		// Get vistiors of each home under hoa
-		({ visitors } = await extractHomes({ hoa: hoa._id }));
-	}
+        // Get vistiors of each home under hoa
+        ({ visitors } = await extractHomes({ hoa: hoa._id }));
+    }
 
-	//Get specific visitor
-	if (visitorId) {
-		visitors = visitors.find(({ visitorId: vi }) => visitorId == vi);
+    //Get specific visitor
+    if (visitorId) {
+        visitors = visitors.find(({ visitorId: vi }) => visitorId == vi);
 
-		if (!visitors) throw new VisitorNotFoundError();
-	}
+        if (!visitors) throw new VisitorNotFoundError();
+    }
 
-	res.json(visitors);
+    res.json(visitors);
 };
 
 module.exports = { addVisitor, getVisitors };

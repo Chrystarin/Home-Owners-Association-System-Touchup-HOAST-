@@ -5,9 +5,10 @@ const User = require('../models/User');
 
 const { UnauthorizedError } = require('../helpers/errors');
 const { JWT_SECRET } = process.env;
-const { genUserId } = require('../helpers/generateId');
+const { genUserId, genPassword } = require('../helpers/generateId');
 const { checkString, checkEmail } = require('../helpers/validData');
 const sendEmail = require('../helpers/sendEmail');
+const Home = require('../models/Home');
 
 const createToken = (userId) =>
     jwt.sign({ userId, createdAt: new Date() }, JWT_SECRET, {
@@ -97,4 +98,39 @@ const sendMail = async (req, res, next) => {
     res.json({ message: 'Email sent' });
 }
 
-module.exports = { signup, login, getUser, updateUser, forgetPassword, sendMail };
+
+const addHomeowner = async (req, res, next) => {
+    const {
+        resident: { firstName, lastName, email, contactNo },
+        home: { homeNo, name, street, phase }
+    } = req.body;
+    const { hoa } = req.user;
+
+    const genPass = genPassword();
+
+    // Create user
+    const homeowner = await User.create({
+        userId: genUserId(),
+        name: { firstName, lastName },
+        credentials: { email, password: await bcrypt.hash(genPass, 10) }
+    });
+
+    // Create home
+    const home = await Home.create({
+        homeId: genHomeId(),
+        name,
+        owner: homeowner._id,
+        hoa: hoa._id,
+        address: { number: homeNo, street, phase },
+        contactNo,
+        residents: [{ user: homeowner._id }]
+    });
+
+    res.status(201).json({
+        message: 'Homeowner and Home added',
+        homeowner,
+        home,
+        userPassword: genPass
+    });
+};
+module.exports = { signup, login, getUser, updateUser, addHomeowner, forgetPassword, sendMail };
