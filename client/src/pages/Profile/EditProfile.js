@@ -19,7 +19,6 @@ export default function EditHome() {
 		password: ''
 	});
 
-	let otp = {};
 	const [inputOtp, setInputOtp] = useState();
 
 	const user_id = JSON.parse(localStorage.getItem('user'));
@@ -68,7 +67,7 @@ export default function EditHome() {
 				Math.floor(Math.random() * charactersLength)
 			);
 		}
-		otp = OTP;
+		localStorage.setItem('otp', OTP);
 	};
 
 	const sendVerification = async () => {
@@ -79,10 +78,9 @@ export default function EditHome() {
 				.post('users/verify', {
 					email: user.email,
 					message:
-						'Your OTP for your Email verification is ' + otp + '.'
+						'Your OTP for your Email verification is ' + localStorage.getItem('otp') + '.'
 				})
 				.then((response) => {
-					console.log(otp);
 					alert('Email Sent Successfully!');
 				});
 		} catch (error) {
@@ -91,8 +89,7 @@ export default function EditHome() {
 	};
 
 	const verifyOtp = () => {
-		console.log(inputOtp);
-		if (otp === inputOtp) {
+		if (localStorage.getItem('otp') === inputOtp) {
 			alert('OTP verified');
 		} else {
 			alert('OTP not verified');

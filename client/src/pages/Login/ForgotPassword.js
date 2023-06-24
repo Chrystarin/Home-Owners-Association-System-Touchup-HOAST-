@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-
-import './Login.scss'
+import axios from '../../utils/axios';
 
 import HouseImg from '../../images/House.png'
 import Header from '../../layouts/Header';
@@ -9,19 +8,19 @@ import Button from '@mui/material/Button';
 
 import {useAuth} from '../../utils/AuthContext.js';
 
-function Login() {
+export default function UpadtePassword() {
 
     // Contains login input
     const [form, setForm] = useState({
+        email: '',
         password: ''
     });
 
-    const [btnState, setBtnState] = useState();
-    SetBtnState(true);
+    // const [btnState, setBtnState] = useState();
+    
+    // setBtnState(true);
     
     const [emailError, setEmailError] = useState('');
-
-    let otp = {};
 	const [inputOtp, setInputOtp] = useState();
 
     // Retrieves data from text input then assigns to form
@@ -38,13 +37,12 @@ function Login() {
 		try {
 			await axios
 				.patch(
-					`updatepassword`,
+					`forgot`,
 					JSON.stringify({
 						password: form.password
 					})
 				)
 				.then((response) => {
-					console.log(response.data);
 				});
 		} catch (err) {}
 	}
@@ -59,21 +57,20 @@ function Login() {
 				Math.floor(Math.random() * charactersLength)
 			);
 		}
-		otp = OTP;
+		
+        localStorage.setItem('otp', OTP);
 	};
 
     const sendVerification = async () => {
 		generateOTP();
-		console.log(otp);
 		try {
 			await axios
 				.post('users/verify', {
-					email: user.email,
+					email: form.email,
 					message:
-						'Your OTP for your Email verification is ' + otp + '.'
+						'Your OTP for your Email verification is ' + localStorage.getItem('otp') + '.'
 				})
 				.then((response) => {
-					console.log(otp);
 					alert('Email Sent Successfully!');
 				});
 		} catch (error) {
@@ -82,10 +79,11 @@ function Login() {
 	};
 
 	const verifyOtp = () => {
-		console.log(inputOtp);
-		if (otp === inputOtp) {
-            setBtnState(false);
+		if (localStorage.getItem('otp') === inputOtp) {
+            // setBtnState(false);
 			alert('OTP verified');
+
+            localStorage.removeItem('otp');
 		} else {
 			alert('OTP not verified');
 		}
@@ -116,13 +114,16 @@ function Login() {
                             id="filled-password-input"
                             label="Code"
                             type="text"
-                            InputProps={ maxLength = 6}
+                            InputProps={{maxLength: 6}} 
                             autoComplete="current-password"
                             variant="filled"
+                            onChange={(e) =>
+                                setInputOtp(e.target.value)
+                            }
                         />
 
                         <TextField
-                            disabled={btnState}
+                            // disabled={btnState}
                             id="filled-password-input"
                             label="New Password"
                             type="password"
@@ -136,7 +137,7 @@ function Login() {
                             </Button>
                             <Button variant="contained" size="large" onClick={()=> verifyOtp()}>Verify</Button>
                             
-                            <Button disabled={btnState} variant="contained" size="large" onClick={()=> Submit()}>Enter</Button>
+                            <Button  variant="contained" size="large" onClick={()=> Submit()}>Enter</Button>
                         </div> 
                     </div>
                 </div>
@@ -146,5 +147,3 @@ function Login() {
     </div>
     )
 }
-
-export default Login;

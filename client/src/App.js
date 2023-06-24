@@ -41,6 +41,7 @@ import Guard from './pages/HomeOwnerAssociation/Guard.js';
 
 import Profile from './pages/Profile/Profile.js'
 import EditProfile from './pages/Profile/EditProfile.js'
+import ForgotPassword from './pages/Login/ForgotPassword.js';
 
 function App() {
 	return (
@@ -49,6 +50,7 @@ function App() {
 			<Route path="/" element={<LandingPage />} />
 			<Route path="/login"element={<Login />} />
 			<Route path="/register" element={<Register />} />
+			<Route path="/forgotpassword" element={<ForgotPassword />} />
 
 			{/* Private Routes for Users */}
 			<Route element={<ProtectedRoute/>}>
