@@ -73,18 +73,22 @@ let homeNonce = 0;
  *
  * @returns {string}
  */
-const genHomeId = () => generateId('HOM', ++homeNonce);
+const genHomeId = () => generateId('HME', ++homeNonce);
+
+let notificationNonce = 0;
+const genNotificationId = () => generateId('NTF', ++notificationNonce);
 
 const genPassword = () => [...randomBytes(8)].map((byte) => alphabet[byte & 63]).join('');
 
 module.exports = {
+    genDueId,
+    generateId,
     genHoaId,
+    genHomeId,
+    genLogId,
+    genNotificationId,
+    genPassword,
+    genRequestId,
     genUserId,
     genVisitorId,
-    genLogId,
-    genDueId,
-    genRequestId,
-    genHomeId,
-    generateId,
-    genPassword
 };

@@ -17,6 +17,7 @@ const dueRoute = require('./routes/due');
 const hoaRoute = require('./routes/hoa');
 const homeRoute = require('./routes/home');
 const logRoute = require('./routes/log');
+const notificationRoute = require('./routes/notification');
 const requestRoute = require('./routes/request');
 const residentRoute = require('./routes/resident');
 const roleRoute = require('./routes/role');
@@ -43,6 +44,7 @@ app.use(
 
 app.use('/users', userRoute);
 app.use(authenticate);
+app.use('/notifications', notificationRoute);
 app.use('/roles', roleRoute);
 
 app.use('/hoas', hoaRoute);
