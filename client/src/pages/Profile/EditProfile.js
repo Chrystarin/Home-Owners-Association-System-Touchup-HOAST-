@@ -58,13 +58,16 @@ export default function EditHome() {
 		} catch (err) {}
 	}
 
-	function generateOTP() {
-		var digits = '0123456789';
-		let OTP = '';
-		for (let i = 0; i < 6; i++) {
-			OTP += digits[Math.floor(Math.random() * 10)];
+	const generateOTP = () => {
+		var OTP = '';
+		var characters = '0123456789';
+		var charactersLength = characters.length;
+
+		for (var i = 0; i < 6; i++) {
+			OTP += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
-		setOtp(OTP);
+
+		return OTP
 	}
 
 	(function () {
@@ -73,13 +76,15 @@ export default function EditHome() {
 
 	const sendVerification = async () => {
 		try {
+			setOtp(generateOTP());
+			console.log(otp)
 			await axios
 				.post('users/verify', {
 					email: user.email,
-					message: "Your OTP for your Email verification is " + generateOTP() + "."
+					message: "Your OTP for your Email verification is " + otp + "."
 				})
 				.then((response) => {
-					alert(response.data);
+					alert("Email Sent Successfully!");
 				});
 		} catch (error) {
 			alert(error.response.data);
