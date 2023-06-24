@@ -4,7 +4,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const authenticate = require('../middlewares/authentication');
 const { allowAdmin, allowHomeowner } = require('../middlewares/authorization');
 
-const { signup, login, getUser, updateUser, addHomeonwer } = asyncHandler(
+const { signup, login, getUser, updateUser, addHomeowner } = asyncHandler(
 	require('../controllers/userController')
 );
 
@@ -56,6 +56,6 @@ router.patch('/', updateUser);
  *     street
  *     phase
  */
-router.post('/homeowner', allowAdmin, addHomeonwer);
+router.post('/homeowner', allowAdmin, addHomeowner);
 
 module.exports = router;

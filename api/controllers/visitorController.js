@@ -8,7 +8,7 @@ const { VisitorNotFoundError } = require('../helpers/errors');
 const extractHomes = require('../helpers/extractHomes');
 const Notification = require('../models/Notification');
 const HOA = require('../models/HOA');
-const { notifType, messages } = require('../helpers/createNotification');
+const { notifType, messages } = require('../helpers/notificationUtils');
 
 const addVisitor = async (req, res, next) => {
     const { name, purpose, arrival, departure, note } = req.body;
@@ -37,8 +37,9 @@ const addVisitor = async (req, res, next) => {
     const hoa = await HOA.findById(home.hoa);
 
     const notifParams = {
-        message: messages[notifType.NewVisitor],
-        type: notifType.NewVisitor
+        message: messages[notifType.NewVisitor](home.owner, visitor.visitorId, home.name, visitor.arrival),
+        type: notifType.NewVisitor,
+        subjectId: visitor.visitorId
     };
 
     const createNotifs = [];

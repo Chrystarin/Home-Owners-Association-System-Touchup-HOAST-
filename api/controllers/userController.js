@@ -74,10 +74,10 @@ const updateUser = async (req, res, next) => {
     res.json({ message: 'User updated' });
 };
 
-const addHomeonwer = async (req, res, next) => {
+const addHomeowner = async (req, res, next) => {
     const {
         resident: { firstName, lastName, email, contactNo },
-        home: { homeNo, street, phase }
+        home: { homeNo, name, street, phase }
     } = req.body;
     const { hoa } = req.user;
 
@@ -93,6 +93,7 @@ const addHomeonwer = async (req, res, next) => {
     // Create home
     const home = await Home.create({
         homeId: genHomeId(),
+        name,
         owner: homeowner._id,
         hoa: hoa._id,
         address: { number: homeNo, street, phase },
@@ -108,4 +109,4 @@ const addHomeonwer = async (req, res, next) => {
     });
 };
 
-module.exports = { signup, login, getUser, updateUser, addHomeonwer };
+module.exports = { signup, login, getUser, updateUser, addHomeowner };

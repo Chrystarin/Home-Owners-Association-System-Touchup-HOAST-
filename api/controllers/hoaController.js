@@ -6,7 +6,7 @@ const Notification = require('../models/Notification');
 const { UserNotFoundError, HOANotFoundError, DuplicateEntryError, NotFoundError } = require('../helpers/errors');
 const { checkString } = require('../helpers/validData');
 const { genHoaId, genRequestId, genNotificationId } = require('../helpers/generateId');
-const { messages, notifType } = require('../helpers/createNotification');
+const { messages, notifType } = require('../helpers/notificationUtils');
 
 const registerHoa = async (req, res, next) => {
     const { name, street, barangay, city, province } = req.body;
@@ -85,7 +85,7 @@ const joinHoa = async (req, res, next) => {
 
     await Notification.create({
         notificationId: genNotificationId(),
-        message: messages[notifType.HomeRequestSent],
+        message: messages[notifType.HomeRequestSent](user),
         type: notifType.HomeRequestSent,
         user: hoa.owner
     });
