@@ -81,12 +81,11 @@ const forgetPassword = async (req, res, next) => {
     // Update user
     user = {
         ...user,
-        name: { firstName, lastName },
-        credentials: { email, password }
+        credentials: { password }
     };
     await user.save();
 
-    res.json({ message: 'User updated' });
+    res.json({ message: 'User password updated' });
 };
 
 const sendMail = async (req, res, next) => {
@@ -101,4 +100,4 @@ const sendMail = async (req, res, next) => {
     res.json({ message: 'Email sent' });
 }
 
-module.exports = { signup, login, getUser, updateUser, sendMail };
+module.exports = { signup, login, getUser, updateUser, forgetPassword, sendMail };
