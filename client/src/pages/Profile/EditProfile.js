@@ -10,7 +10,7 @@ import emailjs from '@emailjs/browser';
 
 export default function EditHome() {
 	const [stepper, setStepper] = useState(1);
-
+    
 	const [user, setUser] = useState();
 	const [form, setForm] = useState({
 		firstName: '',
@@ -19,9 +19,9 @@ export default function EditHome() {
 		password: ''
 	});
 
-	let otp = {};
+	let otp = null;
+    const [otpStatus, setOtpStatus] = useState(false)
 	const [inputOtp, setInputOtp] = useState();
-
 	const user_id = JSON.parse(localStorage.getItem('user'));
 	// console.log(user_id['user'].name.firstName)
 	console.log(user_id);
@@ -110,7 +110,7 @@ export default function EditHome() {
 						<span>
 							<a href="/vehicles">Profile</a>
 						</span>{' '}
-						> <span>Profile Update</span>
+						{">"} <span>Profile Update</span>
 					</h3>
 					<div className="SectionStepper">
 						<Button
@@ -145,48 +145,74 @@ export default function EditHome() {
 								/>
 							</div>
 							<div className="Input__Wrapper2">
-								<TextField
-									required
-									fullWidth
-									label="Email"
-									defaultValue={user.email}
-									onChange={(e) =>
-										setForm({ email: e.target.value })
-									}
-									variant="filled"
-								/>
-								<TextField
-									required
-									fullWidth
-									label="OTP CODE"
-									variant="filled"
-									onChange={(e) =>
-										setInputOtp(e.target.value)
-									}
-								/>
-								<TextField
+                                <div className='FormWrapper__2__1'>
+                                    <TextField
+                                        required
+                                        fullWidth
+                                        label="Email"
+                                        defaultValue={user.email}
+                                        onChange={(e) =>
+                                            setForm({ email: e.target.value })
+                                        }
+                                        variant="filled"
+                                    />
+                                    <Button variant='contained' 
+                                        onClick={() => {
+                                            sendVerification();
+                                            setOtpStatus(true)
+                                        }}>
+                                        Send Code
+                                    </Button>
+                                </div>
+								
+                                <div className='FormWrapper__2__1'>
+                                    {otpStatus?<>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            label="OTP CODE"
+                                            variant="filled"
+                                            onChange={(e) =>
+                                                setInputOtp(e.target.value)
+                                            }
+                                        />
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => verifyOtp()}
+                                        >
+                                            Verify
+                                        </Button>
+                                    </>:""}
+                                </div>
+								
+								
+							</div>
+                            <div className="Input__Wrapper2">
+                                <TextField
 									required
 									fullWidth
 									label="Password"
 									defaultValue={user.password}
 									variant="filled"
 								/>
-							</div>
+                                <TextField
+									required
+									fullWidth
+									label="Confirm Password "
+									defaultValue={user.password}
+									variant="filled"
+								/>
+                            </div>
+                    
+
 
 							{/* First Name: <input type="text" value={user_id['user'].name.firstName}/>
                                 Last Name: <input type="text" value={user_id['user'].name.lastName}/>
                                 Email: <input type="text" value={user.email}/>
                                 Passwrod: <input type="text"/> */}
 							<div className="Form__Button">
-								<Button onClick={() => sendVerification()}>
-									Send Code
-								</Button>
-								<Button
-									variant="contained"
-									onClick={() => verifyOtp()}
-								>
-									Verify
-								</Button>
+								
+								
 								<Button
 									variant="text"
 									href="/profile"

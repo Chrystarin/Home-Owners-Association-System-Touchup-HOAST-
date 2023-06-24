@@ -5,14 +5,17 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 import axios from './../../utils/axios';
-
+import dayjs from 'dayjs';
 import SnackbarComp from '../../components/SnackBar/SnackbarComp';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import loading from '../../images/loading.gif';
-
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 function AddVisitor() {
     const navigate = useNavigate();
@@ -24,7 +27,8 @@ function AddVisitor() {
         type:"",
         note:""
     });
-
+    const [arrivalValue, setArrivalValue] = useState();
+    const [departureValue, setDepartureValue] = useState();
     // Collection of form data
     const [form, setForm] = useState({
         homeId: '',
@@ -111,8 +115,8 @@ function AddVisitor() {
                     <Button variant='text' className={(stepper === 1)?"active":""} onClick={()=> setStepper(1)}>General Information</Button>
                 </div>
                 <div className='SectionContent'>
-                <form onSubmit={Submit} className='Form'>
-                        <FormControl required  variant="filled" fullWidth>
+                    <form onSubmit={Submit} className='Form'>
+                        <FormControl required  variant="outlined" fullWidth>
                             <InputLabel  id="home-select">Home</InputLabel>
                             <Select
                                 labelId="home-select"
@@ -130,15 +134,39 @@ function AddVisitor() {
                                 })}
                             </Select>
                         </FormControl>
-                        <TextField required fullWidth  label="Name" variant="filled" onChange={(e)=>updateForm({ name: e.target.value })}/>
+                        <TextField required fullWidth  label="Name" variant="outlined" onChange={(e)=>updateForm({ name: e.target.value })}/>
                         <div className='FormWrapper__2'>
-                            <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/>
-                            <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} />
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DemoContainer components={['DateTimePicker']} >
+                                    <DateTimePicker 
+                                        label="Arrival Date" 
+                                        value={arrivalValue}
+                                        onChange={(e) =>{ 
+                                            setArrivalValue(e);
+                                            updateForm({ arrival: e.target.value });
+                                        }}
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DemoContainer components={['DateTimePicker']} >
+                                    <DateTimePicker 
+                                        label="Departure Date" 
+                                        value={departureValue}
+                                        onChange={(e) => {
+                                            setDepartureValue(e)
+                                            updateForm({departure: e.target.value})
+                                        }}
+                                    />
+                                </DemoContainer>
+                            </LocalizationProvider>
+                            {/* <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/> */}
+                            {/* <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} /> */}
                         </div>
                         <div className='FormWrapper__2'>
                             {/* <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/> */}
 
-                            <FormControl required  variant="filled" fullWidth>
+                            <FormControl required  variant="outlined" fullWidth>
                             <InputLabel  id="home-select">Purpose</InputLabel>
                             <Select
                                 labelId="home-select"
@@ -154,7 +182,7 @@ function AddVisitor() {
                             </Select>
                         </FormControl>
 
-                            <TextField required fullWidth  label="Note" variant="filled" onChange={(e)=>updateForm({ note: e.target.value })}/>
+                            <TextField required fullWidth  label="Note" variant="outlined" onChange={(e)=>updateForm({ note: e.target.value })}/>
                         </div>
                         <div className='Form__Button'>
                             <Button variant='text'>Cancel</Button>
