@@ -34,6 +34,8 @@ const addVisitor = async (req, res, next) => {
     home.visitors.push(visitor);
     await home.save();
 
+    await home.populate('owner');
+
     const hoa = await HOA.findById(home.hoa);
 
     const notifParams = {
