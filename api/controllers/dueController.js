@@ -91,7 +91,7 @@ const createDue = async (req, res, next) => {
     res.status(201).json({ message: 'Due added', dueId: due.dueId });
 };
 
-const sendDueNotification = async (req, res, next) => {
+const sendNotification = async (req, res, next) => {
     const { hoa } = req.user;
 
     const homes = await Home.find({ hoa: hoa._id, paidUntil: { $lt: current } });
@@ -109,4 +109,4 @@ const sendDueNotification = async (req, res, next) => {
     res.json({ message: 'Notifications sent' });
 };
 
-module.exports = { createDue, getDues, sendDueNotification };
+module.exports = { createDue, getDues, sendNotification };

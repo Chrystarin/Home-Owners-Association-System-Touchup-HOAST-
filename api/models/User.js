@@ -19,7 +19,8 @@ module.exports = model(
 				email: {
 					type: String,
 					required: [true, 'Email is required'],
-					unique: true
+                    index: { unique: true, sparse: true }
+                    
 				},
 				password: {
 					type: String,

@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 const { UnauthorizedError } = require('../helpers/errors');
 const { JWT_SECRET } = process.env;
-const { genUserId, genPassword } = require('../helpers/generateId');
+const { genUserId, genPassword, genHomeId } = require('../helpers/generateId');
 const { checkString, checkEmail } = require('../helpers/validData');
 const Home = require('../models/Home');
 
@@ -77,9 +77,11 @@ const updateUser = async (req, res, next) => {
 const addHomeonwer = async (req, res, next) => {
     const {
         resident: { firstName, lastName, email, contactNo },
-        home: { homeNo, street, phase }
+        home: { homeNo, street, phase },
+        hoaId
     } = req.body;
     const { hoa } = req.user;
+
 
     const genPass = genPassword();
 

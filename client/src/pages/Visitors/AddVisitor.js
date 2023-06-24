@@ -24,6 +24,7 @@ function AddVisitor() {
         type:"",
         note:""
     });
+
     // Collection of form data
     const [form, setForm] = useState({
         homeId: '',
@@ -40,6 +41,7 @@ function AddVisitor() {
             await axios
                 .get(`homes`)
                 .then((response) => {
+                    console.log(response.data)
                     setHomes(response.data);
                 });
         };
@@ -122,7 +124,7 @@ function AddVisitor() {
                                     homes.map((home) => {
                                     return (
                                         <MenuItem key={home.homeId} value={home.homeId}>
-                                            {home.name}
+                                            {home.homeId}
                                         </MenuItem> 
                                     );
                                 })}

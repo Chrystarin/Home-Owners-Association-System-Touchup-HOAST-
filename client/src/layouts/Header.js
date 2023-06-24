@@ -13,18 +13,12 @@ function Header() {
                 </a>
             </div>
             <ul>
-                {/* <li>
-                    <Button variant="" href='#Section1'>About</Button>
-                </li>
                 <li>
-                    <Button variant="" href='#Section2'>FAQ's</Button>
-                </li> */}
+                    <Button variant="" href='/terms'>Terms & Conditions</Button>
+                </li>
                 <li>
                     <Button variant="outlined" href='/login'>Login</Button>
                 </li>
-                {/* <li>
-                    <Button variant="contained" href='/register'>Register</Button>
-                </li> */}
             </ul>
         </div>
     </div>

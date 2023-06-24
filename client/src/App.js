@@ -42,6 +42,7 @@ import Guard from './pages/HomeOwnerAssociation/Guard.js';
 
 import Profile from './pages/Profile/Profile.js'
 import EditProfile from './pages/Profile/EditProfile.js'
+import AddHomeowner from './pages/HomeOwnerAssociation/AddHomeowner';
 
 function App() {
 	return (
@@ -97,6 +98,7 @@ function App() {
 					<Route path="/guard" element={<Guard />} />
                     <Route path="/guard/:id" element={<Guard />} />
 					<Route path="/addguard" element={<AddGuard />} />
+                    <Route path="/addhomeowner" element={<AddHomeowner />}/>
 					<Route path="/duesview" element={<DuesView />} />
 				</Route>
 

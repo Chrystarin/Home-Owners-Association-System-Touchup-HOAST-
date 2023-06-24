@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import './NavBar.scss';
 import Logo from '../images/logo.PNG';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -16,12 +16,16 @@ import { useNavigate } from "react-router-dom";
 
 import {useAuth} from '../utils/AuthContext.js';
 
+import axios from './../utils/axios';
+
 function NavBar(props) {
     const {isRole} = useAuth();
     const navigate = useNavigate();
 
     const user = JSON.parse(localStorage.getItem("user"));
     const role = JSON.parse(localStorage.getItem("role"));
+
+    const [notifications, setNotifications] = useState();
 
     const logout = () => {
         localStorage.clear();
@@ -42,11 +46,25 @@ function NavBar(props) {
         
     }
 
+    const fetchNotification = async () => {
+        await axios
+            .get(`notifications`)
+            .then((response) => {
+                // console.log(response.data)
+                setNotifications(response.data);
+        });
+    };
+
     const [anchorAvatarDropDown, setAnchorAvatarDropDown] = useState(null);
     const openAvatarDropDown = Boolean(anchorAvatarDropDown);
 
     const [anchorNotificationDropDown, setAnchorNotificationDropDown] = useState(null);
     const openNotificationDropDown = Boolean(anchorNotificationDropDown);
+
+    useEffect(() => {
+        fetchNotification();
+    }, [notifications]);
+
     return (
         <div id='NavBar'>
             <div id='NavBar__Container'>

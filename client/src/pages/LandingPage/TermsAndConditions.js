@@ -18,7 +18,6 @@ function TermsAndConditions() {
 					>
 						<div
 							className="SectionTitleLandingPage"
-							style={{ color: 'white' }}
 						>
 							<h4>Terms and Conditions</h4>
 							<p>By accessing or using HOAST, you acknowledge and agree to comply with these terms and conditions. </p>
