@@ -1,5 +1,3 @@
-const emailjs = require('@emailjs/browser');
-
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -9,6 +7,7 @@ const { UnauthorizedError } = require('../helpers/errors');
 const { JWT_SECRET } = process.env;
 const { genUserId } = require('../helpers/generateId');
 const { checkString, checkEmail } = require('../helpers/validData');
+const sendEmail = require('../helpers/sendEmail');
 
 const createToken = (userId) =>
     jwt.sign({ userId, createdAt: new Date() }, JWT_SECRET, {
@@ -76,20 +75,13 @@ const updateUser = async (req, res, next) => {
 };
 
 const sendMail = async (req, res, next) => {
-    const { email, otp } = req.body;
+    const { email, message } = req.body;
+
+    console.log(email, message);
 
     checkEmail(email);
 
-    // Send email with otp
-    var params = {
-        email: email,
-        otp: otp
-    };
-
-    const serviceID = "service_fxcyg6m";    
-    const templateID = "service_fxcyg6m";
-
-    await emailjs.send(serviceID, templateID, params);
+    await sendEmail(email, message);
     
     res.json({ message: 'Email sent' });
 }

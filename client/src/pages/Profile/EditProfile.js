@@ -74,9 +74,9 @@ export default function EditHome() {
 	const sendVerification = async () => {
 		try {
 			await axios
-				.post('verifyEmail', {
-					email: form.email,
-					otp: otp
+				.post('users/verify', {
+					email: user.email,
+					message: "Your OTP for your Email verification is " + generateOTP() + "."
 				})
 				.then((response) => {
 					alert(response.data);
@@ -145,6 +145,7 @@ export default function EditHome() {
 									fullWidth
 									label="Email"
 									defaultValue={user.email}
+									onChange={(e) => setForm({ email: e.target.value })}
 									variant="filled"
 								/>
 								<TextField
@@ -170,8 +171,8 @@ export default function EditHome() {
                                 Email: <input type="text" value={user.email}/>
                                 Passwrod: <input type="text"/> */}
 							<div className="Form__Button">
-                                <Button onClick={() => sendVerification}>Send Code</Button>
-								<Button variant="contained">Verify</Button>
+                                <Button onClick={() => sendVerification()}>Send Code</Button>
+								<Button variant="contained" onClick={() => verifyOtp()}>Verify</Button>
 								<Button
 									variant="text"
 									href="/profile"
