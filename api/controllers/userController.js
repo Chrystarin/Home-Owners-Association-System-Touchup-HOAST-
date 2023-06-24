@@ -5,7 +5,7 @@ const User = require('../models/User');
 
 const { UnauthorizedError } = require('../helpers/errors');
 const { JWT_SECRET } = process.env;
-const { genUserId, genPassword } = require('../helpers/generateId');
+const { genUserId, genPassword, genHomeId } = require('../helpers/generateId');
 const { checkString, checkEmail } = require('../helpers/validData');
 const sendEmail = require('../helpers/sendEmail');
 const Home = require('../models/Home');
@@ -130,7 +130,10 @@ const addHomeowner = async (req, res, next) => {
         message: 'Homeowner and Home added',
         homeowner,
         home,
-        userPassword: genPass
+        credentials: {
+            email,
+            password: genPass
+        }
     });
 };
 module.exports = { signup, login, getUser, updateUser, addHomeowner, forgetPassword, sendMail };

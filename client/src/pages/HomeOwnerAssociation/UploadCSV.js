@@ -1,28 +1,28 @@
-import React, { useEffect } from 'react';
-import Button from '@mui/material/Button';
 import axios from '../../utils/axios';
+import emailjs from '@emailjs/browser';
+
 export default function MassGenerateAccount() {
-	const userCredentials = {
-		firstName: '',
-		lastName: '',
-		email: '',
-		password: ''
-	};
+	const sendUserCredential = async ({ email, password }) => {
+		try {
+			await axios.post('users/verify', {
+				email: email,
+				message:
+					'Your Account has been created for the HOAST Website. Below are your account credentials \n Upon login, please change your password. \n' +
+					'Email: ' +
+					email +
+					'\nPassword: ' +
+					password +
+					"\n P.S Don't share this to anyone"
+			});
 
-	const homeCredentials = {
-		name: '',
-		street: '',
-		phase: '',
-		contact: '',
-		color: ''
+			return 'Email sent successfully to ' + email;
+		} catch (error) {
+			return error;
+		}
 	};
-
-	useEffect(() => {});
 
 	const UploadCSV = (data) => {
-		console.log(data);
-		
-		var reader = new FileReader()
+		var reader = new FileReader();
 
 		reader.readAsText(data);
 		// console.log(reader.readAsText(data));
@@ -34,42 +34,72 @@ export default function MassGenerateAccount() {
 
 			// Split into Rows
 			let [head, ...rows] = csv.split('\n');
-			head = columner(head);
 
-			const data = [];
+			head = [
+				'firstName',
+				'lastName',
+				'email',
+				'contactNo',
+				'name',
+				'homeNo',
+				'street',
+				'phase'
+			];
+			const accounts = [];
+
+			console.log(rows);
 
 			// Objects
 			rows.forEach((row) => {
 				const subData = {};
-				columner(row).forEach((col, i) => {
-					subData[head[i]] = col;
+				columner(row)?.forEach((col, i) => {
+					subData[head[i]] = col.replace('\r', '');
 				});
-				data.push(subData);
+				accounts.push(subData);
 			});
 
-			// await Promise.allSettled([
-			// 	data.map(
-			// 		axios.post('/users/signup', {
-			// 			firstName: userCredentials.firstName,
-			// 			lastName: userCredentials.lastName,
-			// 			email: userCredentials.email
-			// 		})
-			// 	)
-			// ]);
+			Promise.allSettled(
+				accounts.map((account) =>
+					axios.post('users/homeowner', {
+						hoaId: localStorage.getItem('hoaId'),
+						resident: {
+							firstName: account.firstName,
+							lastName: account.lastName,
+							email: account.email,
+							contactNo: account.contactNo
+						},
+						home: {
+							homeNo: account.homeNo,
+							name: account.name,
+							street: account.street,
+							phase: account.phase
+						}
+					})
+				)
+			)
+				.then((responses) => {
+					responses
+						.filter(({ status }) => status === 'rejected')
+						.forEach(console.log);
+						
+					return Promise.allSettled(
+						responses
+							.filter(({ status }) => status === 'fulfilled')
+							.map(({ value }) =>
+								sendUserCredential(value.data.credentials)
+							)
+					);
+				})
+				.then((responses) => {
+					responses.forEach((response) =>
+						console.log(response.value || response.reason)
+					);
+				})
+				.catch(console.error);
 
-			// await Promise.allSettled([
-			// 	data.map(
-			// 		axios.post('/hoa/join', {
-			// 			name: homeCredentials.name,
-			// 			street: homeCredentials.street,
-			// 			phase: homeCredentials.phase,
-			// 			contact: homeCredentials.contact,
-			// 			color: 'black'
-			// 		})
-			// 	)
-			// ]);
-
-			console.log(data);
+			// responses
+			// 	.filter(({ status }) => status === 'fulfilled')
+			// 	.forEach(({ value }) => sendUserCredential(value.data.credentials));
 		};
 
 		function columner(row) {
