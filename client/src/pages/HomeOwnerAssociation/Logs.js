@@ -111,7 +111,7 @@ function Logs() {
 
                 // Get the text data of each cell
                 // of a row and push it to csvrow
-                csvrow.push(cols[j].innerHTML);
+                csvrow.push(cols[j].innerText);
             }
 
             // Combine each column value with comma
