@@ -61,7 +61,6 @@ const getUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
-    const { user } = req.user;
 
     // Update user
     user = {
@@ -75,17 +74,15 @@ const updateUser = async (req, res, next) => {
 };
 
 const forgetPassword = async (req, res, next) => {
-    const { password } = req.body;
-    const { user } = req.user;
+    const { email, NewPassword } = req.body;
+    const user = await user.findOne({ email }).exec();
 
-    // Update user
-    user = {
-        ...user,
-        credentials: { password }
-    };
+    if(!user) new UnauthorizedError('User not found');
+
+    user.credentials.password = await bcrypt.hash(NewPassword, 10);
     await user.save();
 
-    res.json({ message: 'User password updated' });
+    res.json({ message: 'Password Reset Successfully' });
 };
 
 const sendMail = async (req, res, next) => {
