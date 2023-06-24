@@ -4,10 +4,12 @@ const Home = require('../models/Home');
 
 const { checkString } = require('../helpers/validData');
 const { RequestNotFoundError } = require('../helpers/errors');
-const { genHomeId } = require('../helpers/generateId');
+const { genHomeId, genNotificationId } = require('../helpers/generateId');
 const {
 	roles: { USER, ADMIN }
 } = require('../helpers/constants');
+const Notification = require('../models/Notification');
+const { notifType, messages } = require('../helpers/createNotification');
 
 const getRequests = async (req, res, next) => {
 	const { requestId } = req.query;
@@ -66,12 +68,8 @@ const processRequest = async (req, res, next) => {
 
 	// Process request if approved
 	if (status == 'approved') {
-		console.log(request.details);
-
 		const { name, color, ...address } = request.details;
 		const { contactNo } = request.details;
-
-		console.log(contactNo);
 
 		// Create home
 		const home = await Home.create({
@@ -84,6 +82,14 @@ const processRequest = async (req, res, next) => {
 			address,
 			residents: [{ user: request.requestor }]
 		});
+
+        // Update request
+        await Notification.create({
+            notificationId: genNotificationId(),
+            message: messages[notifType.HomeRequestApproved],
+            type: notifType.HomeRequestApproved,
+            user: home.owner
+        })
 
 		resStatus = 201;
 		resMessage = { message: 'Home created', homeId: home.homeId };
