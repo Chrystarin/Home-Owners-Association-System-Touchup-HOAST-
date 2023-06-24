@@ -5,9 +5,10 @@ const {
     roles: { ADMIN, HOMEOWNER }
 } = require('../helpers/constants');
 const { NotFoundError } = require('../helpers/errors');
-const { genDueId } = require('../helpers/generateId');
+const { genDueId, genNotificationId } = require('../helpers/generateId');
 const { checkString, checkNumber } = require('../helpers/validData');
 const { createNotification, notifType } = require('../helpers/createNotification');
+const Notification = require('../models/Notification');
 
 const getDues = async (req, res, next) => {
     const { dueId } = req.body;
@@ -94,7 +95,16 @@ const sendDueNotification = async (req, res, next) => {
     const { hoa } = req.user;
 
     const homes = await Home.find({ hoa: hoa._id, paidUntil: { $lt: current } });
-    await Promise.allSettled(homes.map((home) => createNotification(notifType.DueNotPaid, home, 'owner')));
+    await Promise.allSettled(
+        homes.map((home) => 
+            Notification.create({
+                notificationId: genNotificationId(),
+                message: messages[notifType.DueNotPaid],
+                type: notifType.DueNotPaid,
+                user: home.owner
+            })
+        )
+    );
 
     res.json({ message: 'Notifications sent' });
 };
