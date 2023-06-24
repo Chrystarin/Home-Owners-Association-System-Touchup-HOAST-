@@ -135,4 +135,4 @@ const sendMail = async (req, res, next) => {
     res.json({ message: 'Email sent' });
 }
 
-module.exports = { signup, login, getUser, updateUser, forgetPassword, sendMail };
+module.exports = { signup, login, getUser, updateUser, forgetPassword, sendMail, addHomeowner };

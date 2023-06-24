@@ -9,7 +9,7 @@ const {
 	roles: { USER, ADMIN }
 } = require('../helpers/constants');
 const Notification = require('../models/Notification');
-const { notifType, messages } = require('../helpers/createNotification');
+const { notifType, messages } = require('../helpers/notificationUtils');
 
 const getRequests = async (req, res, next) => {
 	const { requestId } = req.query;
