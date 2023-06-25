@@ -111,75 +111,77 @@ export default function UpadtePassword() {
 					<div id="Login__Container">
 						<h2 className="Title">Forgot Password</h2>
 						<div className="Login__Form">
-							<div className="FormReplacement">
-								<TextField
-									label="Email"
-									type="email"
-									autoComplete="current-password"
-									variant="filled"
-									onChange={(e) =>
-										updateForm({ email: e.target.value })
-									}
-									error={!!emailError}
-									helperText={emailError}
-								/>
-								<TextField
-									id="filled-password-input"
-									label="Code"
-									type="text"
-									InputProps={{ maxLength: 6 }}
-									autoComplete="current-password"
-									variant="filled"
-									onChange={(e) =>
-										setInputOtp(e.target.value)
-									}
-								/>
+                            <form onSubmit={Submit} className='Form RegisterHoa__Form'>
+                                <div className="FormReplacement">
+                                    <TextField
+                                        label="Email"
+                                        type="email"
+                                        autoComplete="current-password"
+                                        variant="filled"
+                                        onChange={(e) =>
+                                            updateForm({ email: e.target.value })
+                                        }
+                                        error={!!emailError}
+                                        helperText={emailError}
+                                    />
+                                    <TextField
+                                        id="filled-password-input"
+                                        label="Code"
+                                        type="text"
+                                        InputProps={{ maxLength: 6 }}
+                                        autoComplete="current-password"
+                                        variant="filled"
+                                        onChange={(e) =>
+                                            setInputOtp(e.target.value)
+                                        }
+                                    />
 
-								<TextField
-									disabled={btnState}
-									id="filled-password-input"
-									label="New Password"
-									type="password"
-									autoComplete="current-password"
-									variant="filled"
-									onChange={(e) =>
-										updateForm({ password: e.target.value })
-									}
-								/>
-								<div>
-									<Button
-										disabled={sendCodeBtn}
-										variant="contained"
-										size="large"
-										onClick={() => {
-											sendVerification();
-											setVeryfyBtn(false);
-										}}
-									>
-										Send Code
-									</Button>
-									<Button
-										disabled={verifyBtn}
-										variant="contained"
-										size="large"
-										onClick={() => {
-											verifyOtp();
-											setEnterBtn(false);
-										}}
-									>
-										Verify
-									</Button>
+                                    <TextField
+                                        disabled={btnState}
+                                        id="filled-password-input"
+                                        label="New Password"
+                                        type="password"
+                                        autoComplete="current-password"
+                                        variant="filled"
+                                        onChange={(e) =>
+                                            updateForm({ password: e.target.value })
+                                        }
+                                    />
+                                    <div>
+                                        <Button
+                                            disabled={sendCodeBtn}
+                                            variant="contained"
+                                            size="large"
+                                            onClick={() => {
+                                                sendVerification();
+                                                setVeryfyBtn(false);
+                                            }}
+                                        >
+                                            Send Code
+                                        </Button>
+                                        <Button
+                                            disabled={verifyBtn}
+                                            variant="contained"
+                                            size="large"
+                                            onClick={() => {
+                                                verifyOtp();
+                                                setEnterBtn(false);
+                                            }}
+                                        >
+                                            Verify
+                                        </Button>
 
-									<Button
-										disabled={enterBtn}
-										variant="contained"
-										size="large"
-										type='submit'
-									>
-										Enter
-									</Button>
-								</div>
-							</div>
+                                        <Button
+                                            disabled={enterBtn}
+                                            variant="contained"
+                                            size="large"
+                                            type='submit'
+                                        >
+                                            Enter
+                                        </Button>
+                                    </div>
+                                </div>
+                            </form>
 						</div>
 					</div>
 				</section>
