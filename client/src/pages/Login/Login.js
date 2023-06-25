@@ -74,7 +74,7 @@ function Login() {
                         <Button>Forgot Password</Button>
                     </div>
                 </div>
-                {/* <p id='Login__Note'>Not a member yet? <a href="/register">Register</a> now!</p> */}
+                <p id='Login__Note'><a href="/forgotpassword">Forget Password</a></p>
               </div>
             </div>
           </section>
