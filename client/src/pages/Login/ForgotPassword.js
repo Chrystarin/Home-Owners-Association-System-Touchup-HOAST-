@@ -44,6 +44,7 @@ export default function UpadtePassword() {
 					})
 				)
 				.then((response) => {
+                    console.log(response.data);
 					alert('Password Updated Successfully!');
 					window.location.href = '/login';
 				});
