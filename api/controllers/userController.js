@@ -117,12 +117,18 @@ const forgetPassword = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email }).exec();
 
-    console.log(email, password);
-
     if(!user) new UnauthorizedError('User not found');
 
-    user.credentials.password = bcrypt.hashSync(password, 10);
+    const newPassword = await bcrypt.hash(password, 10);
+
+    console.log(newPassword);
+
+    user.credentials.password = newPassword
     await user.save();
+
+    console.log(user.credentials);
+    console.log(bcrypt.compareSync(password, newPassword));
+    console.log(bcrypt.compareSync(password, user.credentials.password));
 
     res.json({ message: 'Password Reset Successfully' });
 };
