@@ -152,7 +152,7 @@ export default function UpadtePassword() {
 										size="large"
 										onClick={() => {
 											sendVerification();
-											setVerifyBtn(false);
+											setVeryfyBtn(false);
 										}}
 									>
 										Send Code
