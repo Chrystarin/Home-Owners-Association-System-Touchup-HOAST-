@@ -54,6 +54,7 @@ function AddVisitor() {
 
     // Retrieves data from text input then assigns to form
     function updateForm(e) {
+        console.log(e);
         return setForm((prev) => {
             const [key, value] = Object.entries(e)[0];
             prev[key] = value;
@@ -143,7 +144,7 @@ function AddVisitor() {
                                         value={arrivalValue}
                                         onChange={(e) =>{ 
                                             setArrivalValue(e);
-                                            updateForm({ arrival: e.target.value });
+                                            updateForm({ arrival: e});
                                         }}
                                     />
                                 </DemoContainer>
@@ -155,7 +156,7 @@ function AddVisitor() {
                                         value={departureValue}
                                         onChange={(e) => {
                                             setDepartureValue(e)
-                                            updateForm({departure: e.target.value})
+                                            updateForm({departure: e})
                                         }}
                                     />
                                 </DemoContainer>

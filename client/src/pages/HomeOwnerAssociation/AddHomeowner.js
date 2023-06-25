@@ -69,7 +69,7 @@ export default function AddHomeowner() {
                     type:'success',
                     note:"Added Homeowner Succesfully!",
                 }));
-                alert(`Email: ${form.email} Password: ${response.data.userPassword}`)
+                alert(`Email: ${form.email} Password: ${response.data.credentials.password}`)
                 navigate("/residentslist");
             })
         }

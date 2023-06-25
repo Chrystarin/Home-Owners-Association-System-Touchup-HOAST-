@@ -7,7 +7,7 @@ const {
 const { NotFoundError } = require('../helpers/errors');
 const { genDueId, genNotificationId } = require('../helpers/generateId');
 const { checkString, checkNumber } = require('../helpers/validData');
-const { createNotification, notifType } = require('../helpers/notificationUtils');
+const { messages, notifType } = require('../helpers/notificationUtils');
 const Notification = require('../models/Notification');
 
 const getDues = async (req, res, next) => {
@@ -91,10 +91,10 @@ const createDue = async (req, res, next) => {
     res.status(201).json({ message: 'Due added', dueId: due.dueId });
 };
 
-const sendNotification = async (req, res, next) => {
+const sendDueNotification = async (req, res, next) => {
     const { hoa } = req.user;
 
-    const homes = await Home.find({ hoa: hoa._id, paidUntil: { $lt: current } })
+    const homes = await Home.find({ hoa: hoa._id, paidUntil: { $lt: new Date() } })
         .populate('owner')
         .exec();
 
@@ -102,7 +102,7 @@ const sendNotification = async (req, res, next) => {
         homes.map(({ homeId, owner, name }) =>
             Notification.create({
                 notificationId: genNotificationId(),
-                message: messages[notifType.DueNotPaid](owner, name),
+                message: messages[notifType.DueNotPaid](owner.name, name),
                 type: notifType.DueNotPaid,
                 user: owner._id,
                 subjectId: homeId
@@ -113,4 +113,4 @@ const sendNotification = async (req, res, next) => {
     res.json({ message: 'Notifications sent' });
 };
 
-module.exports = { createDue, getDues, sendNotification };
+module.exports = { createDue, getDues, sendDueNotification };

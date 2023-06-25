@@ -33,13 +33,14 @@ const addVisitor = async (req, res, next) => {
 
     home.visitors.push(visitor);
     await home.save();
-
     await home.populate('owner');
+
+    console.log(home);
 
     const hoa = await HOA.findById(home.hoa);
 
     const notifParams = {
-        message: messages[notifType.NewVisitor](home.owner, visitor.visitorId, home.name, visitor.arrival),
+        message: messages[notifType.NewVisitor](home.owner.name, visitor.visitorId, home.name, visitor.arrival),
         type: notifType.NewVisitor,
         subjectId: visitor.visitorId
     };

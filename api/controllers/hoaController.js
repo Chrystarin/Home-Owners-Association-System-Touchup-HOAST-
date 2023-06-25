@@ -52,8 +52,6 @@ const joinHoa = async (req, res, next) => {
     const { hoaId, name, contactNo, color, number, street, phase } = req.body;
     const { user } = req.user;
 
-    console.log(req.body);
-
     checkString(hoaId, 'HOA ID');
     checkString(name, 'Home Name');
     checkString(color, 'Home Color');
@@ -83,11 +81,12 @@ const joinHoa = async (req, res, next) => {
         details: { name, color, number, street, phase, contactNo }
     });
 
+
     await Notification.create({
         notificationId: genNotificationId(),
-        message: messages[notifType.HomeRequestSent](user),
+        message: messages[notifType.HomeRequestSent](user.name),
         type: notifType.HomeRequestSent,
-        user: user._id
+        user: hoa.admin
     });
 
     res.status(201).json({

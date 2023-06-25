@@ -115,7 +115,9 @@ function AssociationDues() {
     // Retrieves Homes
     const NotifyUnpaid = async () => {
         await axios
-            .post(`/dues/notify`)
+            .post(`/dues/notify`, {
+                hoaId: localStorage.getItem('hoaId')
+            })
             .then((response) => {
                 console.log(response.data);
             });
