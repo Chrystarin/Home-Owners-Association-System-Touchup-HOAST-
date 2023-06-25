@@ -72,7 +72,6 @@ export default function EditHome() {
 
 	const sendVerification = async () => {
 		generateOTP();
-		console.log(otp);
 		try {
 			await axios
 				.post('users/verify', {
