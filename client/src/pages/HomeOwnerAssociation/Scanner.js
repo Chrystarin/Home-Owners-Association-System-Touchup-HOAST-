@@ -206,7 +206,7 @@ function Scanner() {
                                 <div id='ScannerModal__Container'>
 
                                     <QrReader
-                                        delay={10000}
+                                        delay={1000}
                                         onError={handleError}
                                         onScan={handleScan}
                                         style={{ width: '100%' }}
