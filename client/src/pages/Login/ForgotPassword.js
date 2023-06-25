@@ -145,7 +145,7 @@ export default function UpadtePassword() {
                                         autoComplete="current-password"
                                         variant="filled"
                                         onChange={(e) =>
-                                            updateForm({ password: e.target.value })
+                                            updateForm({ password: (console.log(e.target.value), e.target.value) })
                                         }
                                     />
                                     <div>
