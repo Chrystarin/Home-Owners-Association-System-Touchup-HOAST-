@@ -39,6 +39,7 @@ import RegisterHoa from './pages/HomeOwnerAssociation/RegisterHoa.js';
 import AddGuard from './pages/HomeOwnerAssociation/AddGuard.js';
 
 import Guard from './pages/HomeOwnerAssociation/Guard.js';
+import GuardProfile from './pages/HomeOwnerAssociation/GuardProfile.js';
 
 import Profile from './pages/Profile/Profile.js'
 import EditProfile from './pages/Profile/EditProfile.js'
@@ -98,7 +99,7 @@ function App() {
 				<Route element={<ProtectedRoute />} allowedRoles={['admin']} >
 					<Route path="/associationdues" element={<AssociationDues />} />
 					<Route path="/guard" element={<Guard />} />
-                    <Route path="/guard/:id" element={<Guard />} />
+                    <Route path="/guard/:id" element={<GuardProfile />} />
 					<Route path="/addguard" element={<AddGuard />} />
                     <Route path="/addhomeowner" element={<AddHomeowner />}/>
 					<Route path="/duesview" element={<DuesView />} />
