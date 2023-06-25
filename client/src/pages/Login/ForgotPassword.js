@@ -37,7 +37,7 @@ export default function UpadtePassword() {
 		try {
 			await axios
 				.patch(
-					`user/forgot`,
+					`users/forgot`,
 					JSON.stringify({
 						password: form.password
 					})
