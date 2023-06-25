@@ -114,6 +114,7 @@ const addHomeowner = async (req, res, next) => {
 };
 
 module.exports = { signup, login, getUser, updateUser, addHomeowner };
+
 const forgetPassword = async (req, res, next) => {
     const { email, NewPassword } = req.body;
     const user = await user.findOne({ email }).exec();

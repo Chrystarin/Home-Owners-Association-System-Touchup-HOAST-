@@ -7,6 +7,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import {useAuth} from '../../utils/AuthContext.js';
+import { set } from 'mongoose';
 
 export default function UpadtePassword() {
 
@@ -16,9 +17,10 @@ export default function UpadtePassword() {
         password: ''
     });
 
-    // const [btnState, setBtnState] = useState();
-    
-    // setBtnState(true);
+    const [btnState, setBtnState] = useState(true);
+    const [sendCodeBtn, setSendCodeBtn] = useState(false);
+    const [verifyBtn, setVeryfyBtn] = useState(true);
+    const [enterBtn, setEnterBtn] = useState(true);
     
     const [emailError, setEmailError] = useState('');
 	const [inputOtp, setInputOtp] = useState();
@@ -37,12 +39,14 @@ export default function UpadtePassword() {
 		try {
 			await axios
 				.patch(
-					`forgot`,
+					`user/forgot`,
 					JSON.stringify({
 						password: form.password
 					})
 				)
 				.then((response) => {
+                    alert('Password Updated Successfully!');
+                    window.location.href = '/login';
 				});
 		} catch (err) {}
 	}
@@ -80,7 +84,7 @@ export default function UpadtePassword() {
 
 	const verifyOtp = () => {
 		if (localStorage.getItem('otp') === inputOtp) {
-            // setBtnState(false);
+            setBtnState(false);
 			alert('OTP verified');
 
             localStorage.removeItem('otp');
@@ -123,7 +127,7 @@ export default function UpadtePassword() {
                         />
 
                         <TextField
-                            // disabled={btnState}
+                            disabled={btnState}
                             id="filled-password-input"
                             label="New Password"
                             type="password"
@@ -132,12 +136,22 @@ export default function UpadtePassword() {
                             onChange={(e)=>updateForm({ password: e.target.value })}
                         />
                         <div>
-                            <Button variant="contained" size="large" onClick={()=> sendVerification()}>
+                            <Button disabled={sendCodeBtn} variant="contained" size="large" 
+                            
+                            onClick={()=> {
+                                sendVerification();
+                                setVerifyBtn(false);
+                            }}
+                            
+                            >
                                 Send Code
                             </Button>
-                            <Button variant="contained" size="large" onClick={()=> verifyOtp()}>Verify</Button>
+                            <Button disabled={verifyBtn} variant="contained" size="large" onClick={()=>{ 
+                                verifyOtp();
+                                setEnterBtn(false);
+                                }}>Verify</Button>
                             
-                            <Button  variant="contained" size="large" onClick={()=> Submit()}>Enter</Button>
+                            <Button disabled={enterBtn} variant="contained" size="large" onClick={()=> Submit()}>Enter</Button>
                         </div> 
                     </div>
                 </div>
