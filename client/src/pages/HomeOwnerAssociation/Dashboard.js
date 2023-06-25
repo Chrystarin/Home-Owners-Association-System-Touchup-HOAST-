@@ -59,35 +59,6 @@ function HomeOwnerAssociation() {
 							id="Manage__Hoa"
 							className="SectionView"
 						>
-							<div className="SectionView__Content">
-								<div
-									className="SectionView__Sections"
-									id="AssociatoinDues__Container"
-								>
-									<h5 className="SectionView__Sections__Title">
-										Association Dues
-									</h5>
-									<div id="AssociatoinDues__Content">
-										<div id="AssociationDues__Card">
-											<img
-												src={DuesIcon}
-												alt=""
-											/>
-											<div id="">
-												<h6>Payment Date</h6>
-												{/* <p>{hoa.paymentDate.month}{' '}{hoa.paymentDate.day}</p> */}
-											</div>
-										</div>
-										<div></div>
-									</div>
-								</div>
-								<div className="SectionView__Sections">
-									<h5 className="SectionView__Sections__Title">
-										Guard/s
-									</h5>
-									
-								</div>
-							</div>
 							<div
 								className="SectionView__SidePanel"
 								id="SectionView_Sidebar"
