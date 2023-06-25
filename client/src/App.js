@@ -30,6 +30,7 @@ import ResidentsList from './pages/HomeOwnerAssociation/ResidentsList.js';
 import VehicleList from './pages/HomeOwnerAssociation/VehicleList.js';
 import HomeList from './pages/HomeOwnerAssociation/HomeList.js';
 import DuesView from './pages/HomeOwnerAssociation/DuesView.js';
+import UploadCSV from './pages/HomeOwnerAssociation/UploadCSV.js';
 
 import Scanner from './pages/HomeOwnerAssociation/Scanner.js';
 
@@ -44,6 +45,7 @@ import GuardProfile from './pages/HomeOwnerAssociation/GuardProfile.js';
 import Profile from './pages/Profile/Profile.js'
 import EditProfile from './pages/Profile/EditProfile.js'
 import AddHomeowner from './pages/HomeOwnerAssociation/AddHomeowner';
+import ForgotPassword from './pages/Login/ForgotPassword.js';
 
 function App() {
 	return (
@@ -53,6 +55,7 @@ function App() {
             <Route path="/terms" element={<TermsAndConditions />} />
 			<Route path="/login"element={<Login />} />
 			<Route path="/register" element={<Register />} />
+			<Route path="/forgotpassword" element={<ForgotPassword />} />
 
 			{/* Private Routes for Users */}
 			<Route element={<ProtectedRoute/>}>
@@ -101,6 +104,7 @@ function App() {
 					<Route path="/addguard" element={<AddGuard />} />
                     <Route path="/addhomeowner" element={<AddHomeowner />}/>
 					<Route path="/duesview" element={<DuesView />} />
+					<Route path="/uploadcsv" element={<UploadCSV />} />
 				</Route>
 
 				{/* Private Routes for Admin and Guard */}

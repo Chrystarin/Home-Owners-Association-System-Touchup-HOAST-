@@ -7,7 +7,7 @@ const {
 } = require('../middlewares/authorization');
 const asyncHandler = require('../middlewares/asyncHandler');
 
-const { createDue, getDues, sendNotification } = asyncHandler(
+const { createDue, getDues, sendDueNotification } = asyncHandler(
 	require('../controllers/dueController')
 );
 
@@ -39,6 +39,6 @@ router.post('/', notUser, createDue);
 /**
  * hoaId
  */
-router.post('/notify', notUser, sendNotification);
+router.post('/notify', notUser, sendDueNotification);
 
 module.exports = router;
