@@ -76,7 +76,7 @@ export default function EditHome() {
 		try {
 			await axios
 				.post('users/verify', {
-					email: user.email,
+					email: form.email,
 					message:
 						'Your OTP for your Email verification is ' + localStorage.getItem('otp') + '.'
 				})
