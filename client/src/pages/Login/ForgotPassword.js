@@ -32,7 +32,7 @@ export default function UpadtePassword() {
 		});
 	}
 
-	async function Submit(e) {
+	async function Submit() {
 		e.preventDefault();
 		try {
 			await axios
