@@ -39,6 +39,7 @@ export default function UpadtePassword() {
 				.patch(
 					`users/forgot`,
 					JSON.stringify({
+                        email: form.email,
 						password: form.password
 					})
 				)
