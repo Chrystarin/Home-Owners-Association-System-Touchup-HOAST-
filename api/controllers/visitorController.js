@@ -36,6 +36,8 @@ const addVisitor = async (req, res, next) => {
 
     await home.populate('owner');
 
+    console.log(home);
+
     const hoa = await HOA.findById(home.hoa);
 
     const notifParams = {

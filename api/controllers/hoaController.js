@@ -83,11 +83,13 @@ const joinHoa = async (req, res, next) => {
         details: { name, color, number, street, phase, contactNo }
     });
 
+    console.log(req.user);
+
     await Notification.create({
         notificationId: genNotificationId(),
         message: messages[notifType.HomeRequestSent](user),
         type: notifType.HomeRequestSent,
-        user: user._id
+        user: hoa.owner
     });
 
     res.status(201).json({
