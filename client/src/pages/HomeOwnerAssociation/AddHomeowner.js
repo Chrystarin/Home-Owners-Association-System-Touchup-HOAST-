@@ -10,7 +10,10 @@ import SideBar from './SideBar';
 import SnackbarComp from '../../components/SnackBar/SnackbarComp.js';
 export default function AddHomeowner() {
 
+    
     const navigate = useNavigate();
+
+    const [stepper, setStepper] = useState(1);
 
     const [form, setForm] = useState({
         firstName: '',
@@ -22,6 +25,8 @@ export default function AddHomeowner() {
         street: '',
         phase: ''
     });
+
+    const [csvFile, setCsvFile] = useState();
 
     const [openSnackBar, setOpenSnackBar] = React.useState({
         open:false,
@@ -84,79 +89,237 @@ export default function AddHomeowner() {
         }
     }
 
+    async function SubmitMultiple(e){
+        e.preventDefault();
+
+        try{
+            UploadCSV(csvFile);
+            setOpenSnackBar(openSnackBar => ({
+                ...openSnackBar,
+                open:true,
+                type:'success',
+                note:" Homeowners Added Succesfully!",
+            }));
+            navigate("/residentslist");
+        }
+        catch(error){
+            setOpenSnackBar(openSnackBar => ({
+                ...openSnackBar,
+                open:true,
+                type:'error',
+                note: error?.response?.data?.message ?? "Error Occured!",
+            }));
+            console.error(error.response.data.message);
+        }
+    }
+
+    const sendUserCredential = async ({ email, password }) => {
+		try {
+			await axios.post('users/verify', {
+				email: email,
+				message:
+					'Your Account has been created for the HOAST Website. Below are your account credentials \n Upon login, please change your password. \n' +
+					'Email: ' +
+					email +
+					'\nPassword: ' +
+					password +
+					"\n P.S Don't share this to anyone"
+			});
+
+			return 'Email sent successfully to ' + email;
+		} catch (error) {
+			return error;
+		}
+	};
+
+	const UploadCSV = (data) => {
+		var reader = new FileReader();
+
+		reader.readAsText(data);
+		// console.log(reader.readAsText(data));
+
+		// Reads the CSV file and Generate HTML
+		reader.onload = async () => {
+			// Entire CSV file
+			let csv = reader.result;
+
+			// Split into Rows
+			let [head, ...rows] = csv.split('\n');
+
+			head = [
+				'firstName',
+				'lastName',
+				'email',
+				'contactNo',
+				'name',
+				'homeNo',
+				'street',
+				'phase'
+			];
+			const accounts = [];
+
+			console.log(rows);
+
+			// Objects
+			rows.forEach((row) => {
+				const subData = {};
+				columner(row)?.forEach((col, i) => {
+					subData[head[i]] = col.replace('\r', '');
+				});
+				accounts.push(subData);
+			});
+
+			Promise.allSettled(
+				accounts.map((account) =>
+					axios.post('users/homeowner', {
+						hoaId: localStorage.getItem('hoaId'),
+						resident: {
+							firstName: account.firstName,
+							lastName: account.lastName,
+							email: account.email,
+							contactNo: account.contactNo
+						},
+						home: {
+							homeNo: account.homeNo,
+							name: account.name,
+							street: account.street,
+							phase: account.phase
+						}
+					})
+				)
+			)
+				.then((responses) => {
+					responses
+						.filter(({ status }) => status === 'rejected')
+						.forEach(console.log);
+						
+					return Promise.allSettled(
+						responses
+							.filter(({ status }) => status === 'fulfilled')
+							.map(({ value }) =>
+								sendUserCredential(value.data.credentials)
+							)
+					);
+				})
+				.then((responses) => {
+					responses.forEach((response) =>
+						console.log(response.value || response.reason)
+					);
+				})
+				.catch(console.error);
+
+			// responses
+			// 	.filter(({ status }) => status === 'fulfilled')
+			// 	.forEach(({ value }) => sendUserCredential(value.data.credentials));
+		};
+
+		function columner(row) {
+			return row.match(/(?:\"([^\"]*(?:\"\"[^\"]*)*)\")|([^\",]+)/g);
+		}
+		// };
+	};
+
     return <>
         <Navbar type="vehicle"/>
         <div className='SectionHolder'>
             <section className='Section SectionManage'>
-                <SideBar active="Guard"/>
+                <SideBar active="ResidentsList"/>
                 <div>
-                    <h3 className='SectionTitleDashboard'><span>Add Homeowner</span></h3>
-                    <div className='SectionContent'>
-                        <form onSubmit={Submit} className='Form'>
-                            <h3>Homeowner</h3>
-                            <TextField
-                                id="filled-password-input"
-                                label="First Name"
-                                type="text"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ firstName: e.target.value })}
-                            />
-                            <TextField
-                                id="filled-password-input"
-                                label="Last Name"
-                                type="text"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ lastName: e.target.value })}
-                            />
-                            <TextField
-                                id="filled-password-input"
-                                label="Email"
-                                type="email"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ email: e.target.value })}
-                            />
-                            <TextField
-                                id="filled-password-input"
-                                label="Contact No."
-                                type="number"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ contactNo: e.target.value })}
-                            />
-                            <h3>Home</h3>
-                            <TextField
-                                id="filled-password-input"
-                                label="Home No."
-                                type="text"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ homeNo: e.target.value })}
-                            />
-                            <TextField
-                                id="filled-password-input"
-                                label="Street"
-                                type="text"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ street: e.target.value })}
-                            />
-                            <TextField
-                                id="filled-password-input"
-                                label="Phase"
-                                type="text"
-                                variant="filled"
-                                required
-                                onChange={(e)=>updateForm({ phase: e.target.value })}
-                            />
-                            <div className='Form__Button'>
-                                <Button variant='text' onClick={()=> navigate("/residents")}>cancel</Button>
-                                <Button variant='contained' type='submit' className='Submit'>Submit</Button>
-                            </div>
-                        </form>
+                <h3 className='SectionTitleDashboard'><span>Add Homeowner</span></h3>
+                <div > 
+                    <Button variant='text' className={(stepper === 1)?"active":""} onClick={()=> setStepper(1)}>Single Homeowner</Button>
+                    <Button variant='text' className={(stepper === 2)?"active":""} onClick={()=> setStepper(2)}>Multiple Homeowner</Button>
+                </div>
+                {stepper===1?<>
+                    <div>
+                        
+                        <div className='SectionContent'>
+                            <form onSubmit={Submit} className='Form'>
+                                <h5>Homeowner</h5>
+                                <TextField
+                                    id="filled-password-input"
+                                    label="First Name"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ firstName: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Last Name"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ lastName: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Email"
+                                    type="email"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ email: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Contact No."
+                                    type="number"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ contactNo: e.target.value })}
+                                />
+                                <h5>Home</h5>
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Home No."
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ homeNo: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Street"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ street: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Phase"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ phase: e.target.value })}
+                                />
+                                <div className='Form__Button'>
+                                    <Button variant='text' onClick={()=> navigate("/residentslist")}>Cancel</Button>
+                                    <Button variant='contained' type='submit' className='Submit'>Submit</Button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
+                </>:<></>}
+                {stepper===2?<>
+                    <div>
+                        <div className='SectionContent'>
+                            <form onSubmit={SubmitMultiple} className='Form'>
+                                <h5>Upload CSV File for Multiple Homeowners</h5>
+                                <input
+                                    type="file"
+                                    accept=".csv"
+                                    id="picker"
+                                    onChange={(e) => setCsvFile(e.target.files[0])}
+                                />
+                                <div className='Form__Button'>
+                                    <Button variant='text' onClick={()=> navigate("/residentslist")}>Cancel</Button>
+                                    <Button variant='contained' type='submit' className='Submit'>Submit</Button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </>:<></>}
                 </div>
             </section>
             <SnackbarComp open={openSnackBar} setter={setOpenSnackBar}/>
