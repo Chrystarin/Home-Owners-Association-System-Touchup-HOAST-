@@ -115,9 +115,9 @@ const addHomeowner = async (req, res, next) => {
 
 const forgetPassword = async (req, res, next) => {
     const { email, NewPassword } = req.body;
-    const user = await user.findOne({ email }).exec();
+    const user = await user.findOne({ 'credentials.email': email }).exec();
 
-    // if(!user) new UnauthorizedError('User not found');
+    if(!user) new UnauthorizedError('User not found');
 
     user.credentials.password = await bcrypt.hash(NewPassword, 10);
     await user.save();
