@@ -144,11 +144,9 @@ function Scanner() {
 
 	// Function upon scanning
 	async function handleScan(data) {
-		console.log(data);
 		try {
 			if (data) {
 				setScanned(true);
-				console.log('scanned: ' + data.text);
 				setDecryptedData(JSON.parse(data.text));
 				log = JSON.parse(data.text);
 

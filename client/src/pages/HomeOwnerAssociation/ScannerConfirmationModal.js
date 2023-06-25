@@ -11,6 +11,7 @@ function ScannerConfirmationModal(props) {
 
 	console.log(props.info);
 	console.log(props.data);
+	console.log(props);
 
 	async function acceptEntry() {
 		try {
