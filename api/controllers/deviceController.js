@@ -25,7 +25,6 @@ const addDevice = async (req, res, next) => {
 	});
 	if (!hoa) throw new ForbiddenError('User not guard or admin of HOA');
 
-
 	console.log("OLD DATA")
 	console.log(hoa)
 
