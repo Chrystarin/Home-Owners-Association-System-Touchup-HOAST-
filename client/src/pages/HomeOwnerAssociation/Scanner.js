@@ -16,6 +16,7 @@ import TextField from '@mui/material/TextField';
 
 function Scanner() {
 	const [data, setData] = useState(null);
+	const [scanned, setScanned] = useState(false);
 	const [manualType, setManualType] = useState();
 	const [manualId, setManualId] = useState();
 	const [decryptedData, setDecryptedData] = useState();
@@ -146,6 +147,7 @@ function Scanner() {
 		console.log(data);
 		try {
 			if (data) {
+				setScanned(true);
 				console.log('scanned: ' + data.text);
 				setDecryptedData(JSON.parse(data.text));
 				log = JSON.parse(data.text);
@@ -193,6 +195,18 @@ function Scanner() {
 
 	if (!hoa) return <div>Loading...</div>;
 
+	function QRCodeScanner() {
+		return (
+			<QrReader
+				delay={1000}
+				onError={handleError}
+				onScan={handleScan}
+				style={{ width: '100%' }}
+				facingmode="front"
+			/>
+		);
+	}
+
 	return (
 		<>
 			<NavBar />
@@ -212,13 +226,7 @@ function Scanner() {
 							<div id="QRScanner__Holder">
 								<div id={openFullScreen ? 'ScannerModal' : ''}>
 									<div id="ScannerModal__Container">
-										<QrReader
-											delay={1000}
-											onError={handleError}
-											onScan={handleScan}
-											style={{ width: '100%' }}
-											facingmode="front"
-										/>
+										{scanned ? '' : <QRCodeScanner />}
 
 										<div id="ScannerModal__Buttons">
 											<Fab
@@ -325,7 +333,10 @@ function Scanner() {
 							info={information}
 							data={decryptedData}
 							ipAdd={hoa.deviceIP}
-							close={() => setOpenConfirmation(false)}
+							close={() => {
+								setOpenConfirmation(false);
+								setScanned(false);
+							}}
 						/>
 					</>
 				) : (
