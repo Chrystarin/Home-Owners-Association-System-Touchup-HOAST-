@@ -18,7 +18,7 @@ const cookieOptions = { httpOnly: true, sameSite: 'none', secure: true };
 
 const signup = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
-
+    
     checkString(firstName, 'First Name');
     checkString(lastName, 'Last Name');
     checkString(password, 'Password');
@@ -31,7 +31,7 @@ const signup = async (req, res, next) => {
         credentials: { email, password: await bcrypt.hash(password, 10) }
     });
 
-    res.status(201).cookie('access-token', createToken(user.userId), cookieOptions).json({ message: 'Account created', userId: user.userId });
+    res.status(201).json({ message: 'Account created', userId: user.userId });
 };
 
 const login = async (req, res, next) => {

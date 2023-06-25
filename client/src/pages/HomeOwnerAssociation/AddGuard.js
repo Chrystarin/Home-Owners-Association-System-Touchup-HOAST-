@@ -11,11 +11,19 @@ import SnackbarComp from '../../components/SnackBar/SnackbarComp.js';
 export default function AddGuard() {
 
     const navigate = useNavigate();
-    const [searchText, setSearchText] = useState("");
+
     const [form, setForm] = useState({
         userId: '',
         hoaId: localStorage.getItem('hoaId')
     });
+
+    const [accForm, setAccForm] = useState({
+		firstName: '',
+		lastName: '',
+		email: ''
+	});
+
+
     const [openSnackBar, setOpenSnackBar] = React.useState({
         open:false,
         type:"",
@@ -23,6 +31,20 @@ export default function AddGuard() {
     });
 
     const [stepper, setStepper] = useState(1);
+
+
+    const generatePassword = () => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let generatedPassword = '';
+    
+        for (let i = 0; i < 8; i++) {
+          const randomIndex = Math.floor(Math.random() * chars.length);
+          generatedPassword += chars[randomIndex];
+        }
+    
+        return generatedPassword;
+      };
+
     // Retrieves data from text input then assigns to form
     function updateForm(e) {
         return setForm((prev) => {
@@ -68,6 +90,84 @@ export default function AddGuard() {
         }
     }
 
+    async function SubmitAccount(e){
+        e.preventDefault();
+        let password = generatePassword();
+        try{
+            await axios
+				.post(`users/signup`,{
+                    firstName: accForm.firstName,
+                    lastName: accForm.lastName,
+                    email: accForm.email,
+                    password: password
+                }
+				)
+				.then((response) => {
+					console.log(response.data)
+                    console.log(response.data.userId)
+                    const addGuard = async () => {
+                        try{
+                            await axios
+                                .post(
+                                    `/hoas/guards`,
+                                    JSON.stringify({ 
+                                        userId: response.data.userId,
+                                        hoa: form.hoaId,
+                                        hoaId: form.hoaId
+                                    })
+                                )
+                                .then((response) => {
+                                    const sendMail = async () => {
+                                        try {
+                                            await axios.post('users/verify', {
+                                                email: accForm.email,
+                                                message:
+                                                    'Your Account has been created for the HOAST Website. Below are your account credentials \n Upon login, please change your password. \n' +
+                                                    'Email: ' +
+                                                    accForm.email +
+                                                    '\nPassword: ' +
+                                                    password +
+                                                    "\n P.S Don't share this to anyone"
+                                            });
+                                
+                                            return 'Email sent successfully to ' + accForm.email;
+                                        }
+                                        catch(err){
+                                            setOpenSnackBar(openSnackBar => ({
+                                                ...openSnackBar,
+                                                open:true,
+                                                type:'error',
+                                                note:"Error Occured!",
+                                            }));
+                                            console.error(err.message);
+                                        }
+                                    }
+                                    sendMail();
+                                    navigate("/guard");
+                                })
+                        } catch (error) {
+                            setOpenSnackBar(openSnackBar => ({
+                                ...openSnackBar,
+                                open:true,
+                                type:'error',
+                                note:"Error Occured!",
+                            }));
+                        }
+                    }
+                    addGuard();
+				});
+        }
+        catch(err){
+            setOpenSnackBar(openSnackBar => ({
+                ...openSnackBar,
+                open:true,
+                type:'error',
+                note:"Error Occured!",
+            }));
+            console.error(err.message);
+        }
+    }
+
     return <>
         <Navbar type="vehicle"/>
         <div className='SectionHolder'>
@@ -76,59 +176,61 @@ export default function AddGuard() {
                 <div>
                     <h3 className='SectionTitleDashboard'><span>Add Guard</span></h3>
                     <div className='SectionContent'>
-                        <form onSubmit={Submit} className='Form'>
-
-                            {/* <div>
-                                <SearchInput onChange={(e)=>setSearchText(e.target.value)} value={searchText} placeholder="Search User"/>
+                    <div > 
+                        <Button variant='text' className={(stepper === 1)?"active":""} onClick={()=> setStepper(1)}>Add Existing Guard</Button>
+                        <Button variant='text' className={(stepper === 2)?"active":""} onClick={()=> setStepper(2)}>Create Guard Account</Button>
+                    </div>
+                        {stepper===1 ?<>
+                            <form onSubmit={Submit} className='Form'>
+                                <TextField
+                                    id="filled-password-input"
+                                    label="User ID"
+                                    type="text"
+                                    autoComplete="current-password"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>updateForm({ userId: e.target.value })}
+                                />
+                                <div className='Form__Button'>
+                                    <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>
+                                    <Button variant='contained' type='submit' className='Submit'>Submit</Button>
+                                </div>
+                            </form>
+                        </> :<></>}
+                        {stepper===2 ?<>
+                            <form onSubmit={SubmitAccount} className='Form'>
+                                <TextField
+                                    id="filled-password-input"
+                                    label="First Name"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>setAccForm({...accForm, firstName: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Last Name"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>setAccForm({...accForm, lastName: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Email"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
+                                />
                                 
-                            </div> */}
-                            {/* <div className='SectionList'>
-                                {(hoas.length === 0 )?
-                                    <p>No HOAs Available!</p>
-                                    :
-                                    <>
-                                        {(!searchText) ?
-                                            hoas.length > 0 && hoas.map((hoa) => {
-                                                return (
-                                                    <div className='Card__Horizontal' onClick={()=>{setSelectedHoa(hoa.name); updateForm({ hoaId: hoa.hoaId }) }} key={hoa._id} id={hoa._id}>
-                                                        <img src={VillageIcon} alt="" />
-                                                        <div>
-                                                            <h6>{hoa.name}</h6>
-                                                            <p>{hoa.city}</p>
-                                                        </div>
-                                                    </div> 
-                                                );
-                                            })
-                                        :
-                                            filteredHoa.length > 0 && filteredHoa.map((hoa) => {
-                                                return (
-                                                    <div className='Card__Horizontal' onClick={()=>{setSelectedHoa(hoa.name); updateForm({ hoaId: hoa.hoaId }) }} key={hoa._id} id={hoa._id}>
-                                                        <img src={VillageIcon} alt="" />
-                                                        <div>
-                                                            <h6>{hoa.name}</h6>
-                                                            <p>{hoa.city}</p>
-                                                        </div>  
-                                                    </div> 
-                                                );
-                                            })
-                                        }
-                                        
-                                    </>
-                                }
-                            </div> */}
-                            <TextField
-                                id="filled-password-input"
-                                label="User ID"
-                                type="text"
-                                autoComplete="current-password"
-                                variant="filled"
-                                onChange={(e)=>updateForm({ userId: e.target.value })}
-                            />
-                            <div className='Form__Button'>
-                                <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>
-                                <Button variant='contained' type='submit' className='Submit'>Submit</Button>
-                            </div>
-                        </form>
+                                <div className='Form__Button'>
+                                    <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>
+                                    <Button variant='contained' type='submit' className='Submit'>Submit</Button>
+                                </div>
+                            </form>
+                        </> :<></>}
+                        
                     </div>
                 </div>
             </section>
