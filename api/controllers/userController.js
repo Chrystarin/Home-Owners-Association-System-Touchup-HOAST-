@@ -115,7 +115,7 @@ const addHomeowner = async (req, res, next) => {
 
 const forgetPassword = async (req, res, next) => {
     const { email, NewPassword } = req.body;
-    const user = await user.findOne({ 'credentials.email': email }).exec();
+    const user = await User.findOne({ 'credentials.email': email }).exec();
 
     if(!user) new UnauthorizedError('User not found');
 
