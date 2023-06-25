@@ -4,7 +4,7 @@ const asyncHandler = require('../middlewares/asyncHandler');
 const authenticate = require('../middlewares/authentication');
 const { allowAdmin, allowHomeowner } = require('../middlewares/authorization');
 
-const { signup, login, getUser, updateUser, addHomeowner } = asyncHandler(
+const { signup, login, getUser, updateUser, addHomeowner, forgetPassword, sendMail } = asyncHandler(
 	require('../controllers/userController')
 );
 
@@ -25,6 +25,10 @@ router.post('/signup', signup);
  * password
  */
 router.post('/login', login);
+
+router.post('/verify', sendMail)
+
+router.patch('/forgot', forgetPassword);
 
 router.use(authenticate);
 

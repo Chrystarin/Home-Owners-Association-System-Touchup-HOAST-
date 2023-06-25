@@ -7,6 +7,7 @@ const { UnauthorizedError } = require('../helpers/errors');
 const { JWT_SECRET } = process.env;
 const { genUserId, genPassword, genHomeId } = require('../helpers/generateId');
 const { checkString, checkEmail } = require('../helpers/validData');
+const sendEmail = require('../helpers/sendEmail');
 const Home = require('../models/Home');
 
 const createToken = (userId) =>
@@ -61,7 +62,6 @@ const getUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
-    const { user } = req.user;
 
     // Update user
     user = {
@@ -73,6 +73,31 @@ const updateUser = async (req, res, next) => {
 
     res.json({ message: 'User updated' });
 };
+
+const forgetPassword = async (req, res, next) => {
+    const { email, NewPassword } = req.body;
+    const user = await user.findOne({ email }).exec();
+
+    if(!user) new UnauthorizedError('User not found');
+
+    user.credentials.password = await bcrypt.hash(NewPassword, 10);
+    await user.save();
+
+    res.json({ message: 'Password Reset Successfully' });
+};
+
+const sendMail = async (req, res, next) => {
+    const { email, message } = req.body;
+
+    console.log(email, message);
+
+    checkEmail(email);
+
+    await sendEmail(email, message);
+    
+    res.json({ message: 'Email sent' });
+}
+
 
 const addHomeowner = async (req, res, next) => {
     const {
@@ -106,8 +131,10 @@ const addHomeowner = async (req, res, next) => {
         message: 'Homeowner and Home added',
         homeowner,
         home,
-        userPassword: genPass
+        credentials: {
+            email,
+            password: genPass
+        }
     });
 };
-
-module.exports = { signup, login, getUser, updateUser, addHomeowner };
+module.exports = { signup, login, getUser, updateUser, addHomeowner, forgetPassword, sendMail };
