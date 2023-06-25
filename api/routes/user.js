@@ -45,7 +45,7 @@ router.get('/', getUser);
  * email
  * password
  */
-router.patch('/', updateUser);
+router.patch('/', updateUser);``
 
 /**
  * Add homeowner

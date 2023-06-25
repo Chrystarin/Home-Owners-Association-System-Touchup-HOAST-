@@ -68,21 +68,19 @@ export default function EditHome() {
 				Math.floor(Math.random() * charactersLength)
 			);
 		}
-		otp = OTP;
+		localStorage.setItem('otp', OTP);
 	};
 
 	const sendVerification = async () => {
 		generateOTP();
-		console.log(otp);
 		try {
 			await axios
 				.post('users/verify', {
 					email: user.email,
 					message:
-						'Your OTP for your Email verification is ' + otp + '.'
+						'Your OTP for your Email verification is ' + localStorage.getItem('otp') + '.'
 				})
 				.then((response) => {
-					console.log(otp);
 					alert('Email Sent Successfully!');
 				});
 		} catch (error) {
@@ -91,8 +89,7 @@ export default function EditHome() {
 	};
 
 	const verifyOtp = () => {
-		console.log(inputOtp);
-		if (otp === inputOtp) {
+		if (localStorage.getItem('otp') === inputOtp) {
 			alert('OTP verified');
 		} else {
 			alert('OTP not verified');

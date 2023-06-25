@@ -79,18 +79,16 @@ function AssociationDues() {
 
 	async function Submit(e) {
 		e.preventDefault();
-
-		console.log(new Date(form.months).getMonth());
 		try {
 			await axios
 				.post(
 					`dues`,
 					JSON.stringify({
 						hoaId: localStorage.getItem('hoaId'),
-						homeId: form.homeId,
+						homeId: selectedHome,
 						amount: parseInt(form.amount),
-						months: new Date(form.months).getMonth()
-					})
+						months: parseInt(form.months)
+					})  
 				)
 				.then((response) => {
 					console.log(response?.data);
@@ -113,6 +111,15 @@ function AssociationDues() {
 			console.error(err.message);
 		}
 	}
+
+    // Retrieves Homes
+    const NotifyUnpaid = async () => {
+        await axios
+            .post(`/dues/notify`)
+            .then((response) => {
+                console.log(response.data);
+            });
+    };
 
 	if (!homes) return <div>Loading...</div>;
 
@@ -175,7 +182,12 @@ function AssociationDues() {
 									</div>
 								</div>
 							</Menu>
-							{/* <Button variant="contained" onClick={(event) => {setAnchorAddDues(event.currentTarget)}}>New Payment</Button> */}
+							<Button 
+                                variant="contained" 
+                                onClick={() => NotifyUnpaid()}
+                            >
+                                Notify Unpaid
+                            </Button>
 							<Menu
 								id="basic-menu"
 								anchorEl={anchorAddDues}
@@ -221,7 +233,7 @@ function AssociationDues() {
 											})
 										}
 									/>
-									<TextField
+									{/* <TextField
 										id="filled-password-input"
 										label="paidUntil"
 										type="date"
@@ -230,6 +242,20 @@ function AssociationDues() {
                                         defaultValue={
                                             ((new Date(selectedPaidUntil)).getFullYear()) + "-" + String((new Date(selectedPaidUntil)).getMonth() + 1).padStart(2, '0') + "-" + String((new Date(selectedPaidUntil)).getDate()).padStart(2, '0')
                                         }
+										variant="filled"
+										onChange={(e) =>
+											{
+												updateForm({
+													months: e.target.value
+												})
+												console.log(e.target.value);
+											}
+										}
+									/> */}
+                                    <TextField
+										id="filled-password-input"
+										label="Months"
+										type="number"
 										variant="filled"
 										onChange={(e) =>
 											{

@@ -128,7 +128,7 @@ function AddVisitor() {
                                     homes.map((home) => {
                                     return (
                                         <MenuItem key={home.homeId} value={home.homeId}>
-                                            {home.homeId}
+                                            {home.name}
                                         </MenuItem> 
                                     );
                                 })}
