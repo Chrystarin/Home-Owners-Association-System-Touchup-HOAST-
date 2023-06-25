@@ -119,7 +119,7 @@ const forgetPassword = async (req, res, next) => {
 
     if(!user) new UnauthorizedError('User not found');
 
-    user.credentials.password = await bcrypt.hash(password, 10);
+    user.credentials.password = bcrypt.hashSync(password, 10);
     await user.save();
 
     res.json({ message: 'Password Reset Successfully' });
