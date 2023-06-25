@@ -122,7 +122,7 @@ const forgetPassword = async (req, res, next) => {
 	const user = await User.findOne({ email }).exec();
 	if (!user) new UnauthorizedError('User not found');
 
-	await User.findByIdAndUpdate(
+	await User.findOneAndUpdate(
 		{ email },
 		{ $set: { 'credentials.password': bcrypt.hashSync(password, 10) } }
 	);
