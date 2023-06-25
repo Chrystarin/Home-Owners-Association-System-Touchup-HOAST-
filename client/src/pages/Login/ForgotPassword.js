@@ -32,7 +32,7 @@ export default function UpadtePassword() {
 		});
 	}
 
-	async function Submit() {
+	async function Submit(e) {
 		e.preventDefault();
 		try {
 			await axios
@@ -173,7 +173,7 @@ export default function UpadtePassword() {
 										disabled={enterBtn}
 										variant="contained"
 										size="large"
-										onClick={() => Submit()}
+										type='submit'
 									>
 										Enter
 									</Button>
