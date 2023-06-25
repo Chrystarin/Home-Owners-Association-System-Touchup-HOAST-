@@ -114,12 +114,12 @@ const addHomeowner = async (req, res, next) => {
 };
 
 const forgetPassword = async (req, res, next) => {
-    const { email, NewPassword } = req.body;
+    const { email, password } = req.body;
     const user = await User.findOne({ email }).exec();
 
     if(!user) new UnauthorizedError('User not found');
 
-    user.credentials.password = await bcrypt.hash(NewPassword, 10);
+    user.credentials.password = await bcrypt.hash(password, 10);
     await user.save();
 
     res.json({ message: 'Password Reset Successfully' });
