@@ -71,7 +71,6 @@ function Login() {
                         <Button variant="contained" size="large" type='submit' onClick={()=>login(validateEmail(), form.password)}>
                             Login
                         </Button>
-                        <Button>Forgot Password</Button>
                     </div>
                 </div>
                 <p id='Login__Note'><a href="/forgotpassword">Forget Password</a></p>
