@@ -59,21 +59,6 @@ function HomeOwnerAssociation() {
 							id="Manage__Hoa"
 							className="SectionView"
 						>
-							<div className="SectionView__Content">
-								<div
-									className="SectionView__Sections"
-									id="AssociatoinDues__Container"
-								>
-										<div></div>
-									</div>
-								</div>
-								<div className="SectionView__Sections">
-									<h5 className="SectionView__Sections__Title">
-										Guard/s
-									</h5>
-									
-								</div>
-							</div>
 							<div
 								className="SectionView__SidePanel"
 								id="SectionView_Sidebar"
