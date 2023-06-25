@@ -30,7 +30,6 @@ import ResidentsList from './pages/HomeOwnerAssociation/ResidentsList.js';
 import VehicleList from './pages/HomeOwnerAssociation/VehicleList.js';
 import HomeList from './pages/HomeOwnerAssociation/HomeList.js';
 import DuesView from './pages/HomeOwnerAssociation/DuesView.js';
-import UploadCSV from './pages/HomeOwnerAssociation/UploadCSV.js';
 
 import Scanner from './pages/HomeOwnerAssociation/Scanner.js';
 
@@ -103,7 +102,6 @@ function App() {
 					<Route path="/addguard" element={<AddGuard />} />
                     <Route path="/addhomeowner" element={<AddHomeowner />}/>
 					<Route path="/duesview" element={<DuesView />} />
-					<Route path="/uploadcsv" element={<UploadCSV />} />
 				</Route>
 
 				{/* Private Routes for Admin and Guard */}
