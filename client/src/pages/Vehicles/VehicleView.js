@@ -131,7 +131,7 @@ function VehicleView() {
 										</div>
 										<div className="GeneralInformation__InfoContainer">
 											<h6>Registered Since: </h6>
-											<h5>{vehicle.createdAt}</h5>
+											<h5>{ new Date(vehicle.createdAt).toLocaleString('default', { month: 'long' }) + ' ' + new Date(vehicle.createdAt).getDate() + ', ' + new Date(vehicle.createdAt).getFullYear() }</h5>
 										</div>
 									</div>
 									<Button
