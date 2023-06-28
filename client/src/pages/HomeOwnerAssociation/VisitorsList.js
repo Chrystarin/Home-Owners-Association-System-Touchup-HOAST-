@@ -112,15 +112,15 @@ function VisitorsList() {
                                     <p>No Visitors Available!</p>
                                     :
                                     <>{visitors.length > 0 && visitors.map((visitor) => {
-                                        if(new Date(visitor.departure).getTime() >= new Date().getTime()){
+                                        if(new Date(visitors.departure).getTime() >= new Date().getTime()){
                                             return (
                                                 <Card 
                                                 type="Visitor"
-                                                key={visitor.visitorId}
-                                                title={visitor.name}
-                                                subTitle1={visitor.arrival}
-                                                subTitle2={visitor.departure}
-                                                url={`/visitors/${visitor.visitorId}`}
+                                                key={visitors.visitorId}
+                                                title={visitors.name}
+                                                subTitle1={visitors.arrival}
+                                                subTitle2={visitors.departure}
+                                                url={`/visitors/${visitors.visitorId}`}
                                                 />
                                             );
                                         }
