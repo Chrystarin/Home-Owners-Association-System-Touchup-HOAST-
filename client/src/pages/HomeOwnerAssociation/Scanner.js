@@ -283,7 +283,7 @@ function Scanner() {
 									</div>
 									<div>
 										<h6>Date:</h6>
-										<h6>{new Date(visitor.arrival).toLocaleString('default', { month: 'long' }) + ' ' + new Date(visitor.arrival).getDate() + ', ' + new Date(visitor.arrival).getFullYear()}</h6>
+										<h6>{new Date().toLocaleString('default', { month: 'long' }) + ' ' + new Date().getDate() + ', ' + new Date().getFullYear()}</h6>
 									</div>
 								</div>
 								<Button
