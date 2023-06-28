@@ -131,7 +131,7 @@ function VehicleView() {
 										</div>
 										<div className="GeneralInformation__InfoContainer">
 											<h6>Registered Since: </h6>
-											<h5>{vehicle.createdAt}</h5>
+											<h5>{vehicle.registered}</h5>
 										</div>
 									</div>
 									<Button

@@ -126,7 +126,7 @@ function VisitorView() {
 													', ' +
 													new Date(
 														visitor.arrival
-													).getFullYear()}
+													).getFullYear() + ' | ' + new Date(visitor.arrival).getHours() + ':' + new Date(visitor.arrival).getMinutes() + ':' + new Date(visitor.arrival).getSeconds()}
 											</h5>
 										</div>
 									</div>
@@ -150,7 +150,7 @@ function VisitorView() {
 													', ' +
 													new Date(
 														visitor.departure
-													).getFullYear()}
+													).getFullYear()  + ' | ' + new Date(visitor.departure).getHours() + ':' + new Date(visitor.departure).getMinutes() + ':' + new Date(visitor.departure).getSeconds()}
 											</h5>
 										</div>
 									</div>
