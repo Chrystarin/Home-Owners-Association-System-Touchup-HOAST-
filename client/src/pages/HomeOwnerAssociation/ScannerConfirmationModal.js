@@ -248,7 +248,8 @@ function ScannerConfirmationModal(props) {
 							<div className="ConfirmationModal__Header">
 								<div className="ConfirmationModal__HeaderInfo">
 									<h6 className="ConfirmationModal__Title">
-										300-2432
+										{/* 300-2432 */}
+										{props.info.plateNumber}
 									</h6>
 									<p className="ConfirmationModal__SubTitle">
 										Plate Number
@@ -262,7 +263,8 @@ function ScannerConfirmationModal(props) {
 											Owner:
 										</p>
 										<p className="BodyText3 ConfirmationModal__BodyInfo__Value">
-											Dianne Chrystalin Brandez
+											{/* Dianne Chrystalin Brandez */}
+											{props.info.name}
 										</p>
 									</li>
 									<li
@@ -276,7 +278,8 @@ function ScannerConfirmationModal(props) {
 											Address:
 										</p>
 										<p className="ConfirmationModal__BodyInfo__Value">
-											Abuab II
+											{/* Abuab II */}
+											{props.info.home}
 										</p>
 									</li>
 									<li
@@ -290,7 +293,8 @@ function ScannerConfirmationModal(props) {
 											Color:
 										</p>
 										<p className="ConfirmationModal__BodyInfo__Value">
-											Black
+											{/* Black */}
+											{props.info.color}
 										</p>
 									</li>
 									<li
@@ -304,7 +308,8 @@ function ScannerConfirmationModal(props) {
 											Model & Brand
 										</p>
 										<p className="ConfirmationModal__BodyInfo__Value">
-											Raptor, Ford
+											{/* Raptor, Ford */}
+											{props.info.model} {props.info.brand}
 										</p>
 									</li>
 								</ul>
