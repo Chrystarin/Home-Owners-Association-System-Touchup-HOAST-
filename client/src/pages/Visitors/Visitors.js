@@ -67,8 +67,8 @@ function Visitors() {
                                 type="Visitor"
                                 key={visitor.visitorId}
                                 title={visitor.name}
-                                subTitle1={new Date(visitor.arrival).toLocaleDateString()}
-                                subTitle2={new Date(visitor.departure).toLocaleDateString()}
+                                subTitle1={new Date(visitor.arrival).toLocaleString('default', {month: 'long' }) + " " + new Date(visitor.arrival).getDate() + ", " + new Date(visitor.arrival).getFullYear()  + ' | ' + new Date(visitor.arrival).getHours() + ':' + new Date(visitor.arrival).getMinutes()}
+                                subTitle2={new Date(visitor.departure).toLocaleString('default', {month: 'long' }) + " " + new Date(visitor.departure).getDate() + ", " + new Date(visitor.departure).getFullYear()  + ' | ' + new Date(visitor.departure).getHours() + ':' + new Date(visitor.departure).getMinutes()}
                                 url={`/visitors/${visitor.visitorId}`}
                                 />
                             );
