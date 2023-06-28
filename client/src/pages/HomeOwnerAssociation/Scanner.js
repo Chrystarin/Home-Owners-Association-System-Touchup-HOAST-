@@ -279,14 +279,11 @@ function Scanner() {
 								>
 									<div>
 										<h6>Time:</h6>
-										{/* <h5>3:65 PM</h5> */}
-										{/* <h5 id="clock"></h5> */}
-										<Clock /> 
+										<h5><Clock /></h5>
 									</div>
 									<div>
 										<h6>Date:</h6>
-										{/* <h5>June 1, 2019</h5> */}
-										{/* <h5 id="date"></h5> */}
+										<h6>{new Date(visitor.arrival).toLocaleString('default', { month: 'long' }) + ' ' + new Date(visitor.arrival).getDate() + ', ' + new Date(visitor.arrival).getFullYear()}</h6>
 									</div>
 								</div>
 								<Button
