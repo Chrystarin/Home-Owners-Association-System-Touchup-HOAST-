@@ -36,55 +36,82 @@ function Scanner() {
 		setAnchorEl(null);
 	};
 
-	useEffect(() => {
-		// real time clock
-		function currentTime() {
-			let date = new Date();
+	// useEffect(() => {
+	// 	// real time clock
+	// 	function currentTime() {
+	// 		let date = new Date();
 
-			let hour = date.getHours();
-			let minutes = date.getMinutes();
-			let seconds = date.getSeconds();
-			let session = 'AM';
+	// 		let hour = date.getHours();
+	// 		let minutes = date.getMinutes();
+	// 		let seconds = date.getSeconds();
+	// 		let session = 'AM';
 
-			if (hour == 0) {
-				hour = 12;
-			}
-			if (hour > 12) {
-				hour = hour - 12;
-				session = 'PM';
-			}
+	// 		if (hour == 0) {
+	// 			hour = 12;
+	// 		}
+	// 		if (hour > 12) {
+	// 			hour = hour - 12;
+	// 			session = 'PM';
+	// 		}
 
-			hour = hour < 10 ? '0' + hour : hour;
-			minutes = minutes < 10 ? '0' + minutes : minutes;
-			seconds = seconds < 10 ? '0' + seconds : seconds;
+	// 		hour = hour < 10 ? '0' + hour : hour;
+	// 		minutes = minutes < 10 ? '0' + minutes : minutes;
+	// 		seconds = seconds < 10 ? '0' + seconds : seconds;
 
-			let time = hour + ':' + minutes + ':' + seconds + ' ' + session;
+	// 		let time = hour + ':' + minutes + ':' + seconds + ' ' + session;
 
-			document.getElementById('clock').innerHTML = time;
-			let t = setTimeout(function () {
-				currentTime();
+	// 		document.getElementById('clock').innerText = time;
+	// 		let t = setTimeout(function () {
+	// 			currentTime();
+	// 		}, 1000);
+	// 	}
+
+	// 	// real time date
+	// 	function currentDate() {
+	// 		let today = new Date();
+
+	// 		let month = today.toLocaleString('default', { month: 'long' });
+	// 		let day = today.getDate();
+	// 		let year = today.getFullYear();
+
+	// 		let dateToday = month + ' ' + day + ', ' + year;
+
+	// 		document.getElementById('date').innerText = dateToday;	
+	// 		let d = setTimeout(function () {
+	// 			currentDate();
+	// 		}, 1000);
+	// 	}
+
+	// 	currentTime();
+	// 	currentDate();
+	// }, []);
+
+	const Clock = () => {
+		const [time, setTime] = useState(getCurrentTime());
+	
+		useEffect(() => {
+			const timer = setInterval(() => {
+			setTime(getCurrentTime());
 			}, 1000);
+		
+			return () => clearInterval(timer);
+		}, []);
+		
+		function getCurrentTime() {
+			const date = new Date();
+			const hours = padTime(date.getHours());
+			const minutes = padTime(date.getMinutes());
+			const seconds = padTime(date.getSeconds());
+		
+			return `${hours}:${minutes}:${seconds}`;
 		}
-
-		// real time date
-		function currentDate() {
-			let today = new Date();
-
-			let month = today.toLocaleString('default', { month: 'long' });
-			let day = today.getDate();
-			let year = today.getFullYear();
-
-			let dateToday = month + ' ' + day + ', ' + year;
-
-			document.getElementById('date').innerHTML = dateToday;	
-			let d = setTimeout(function () {
-				currentDate();
-			}, 1000);
+		
+		function padTime(time) {
+			return time.toString().padStart(2, '0');
 		}
-
-		currentTime();
-		currentDate();
-	}, []);
+		
+		return <div>{time}</div>;
+	};
 
 	useEffect(() => {
 		fetchHoa();
@@ -253,12 +280,13 @@ function Scanner() {
 									<div>
 										<h6>Time:</h6>
 										{/* <h5>3:65 PM</h5> */}
-										<h5 id="clock"></h5>
+										{/* <h5 id="clock"></h5> */}
+										<Clock /> 
 									</div>
 									<div>
 										<h6>Date:</h6>
 										{/* <h5>June 1, 2019</h5> */}
-										<h5 id="date"></h5>
+										{/* <h5 id="date"></h5> */}
 									</div>
 								</div>
 								<Button
