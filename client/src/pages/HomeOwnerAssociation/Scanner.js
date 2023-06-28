@@ -60,7 +60,7 @@ function Scanner() {
 
 			let time = hour + ':' + minutes + ':' + seconds + ' ' + session;
 
-			document.getElementById('clock').innerText = time;
+			document.getElementById('clock').innerHTML = time;
 			let t = setTimeout(function () {
 				currentTime();
 			}, 1000);
@@ -76,7 +76,7 @@ function Scanner() {
 
 			let dateToday = month + ' ' + day + ', ' + year;
 
-			document.getElementById('date').innerText = dateToday;	
+			document.getElementById('date').innerHTML = dateToday;	
 			let d = setTimeout(function () {
 				currentDate();
 			}, 1000);
