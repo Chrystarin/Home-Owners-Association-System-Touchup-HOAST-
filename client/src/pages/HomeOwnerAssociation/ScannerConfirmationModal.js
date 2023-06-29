@@ -34,7 +34,7 @@ function ScannerConfirmationModal(props) {
 						setTimeout(() => {
 							result.close();
 							result = null;
-						}, 1000);
+						}, 2000);
 					};
 					openWindow();
 					props.close();
@@ -50,7 +50,7 @@ function ScannerConfirmationModal(props) {
 				setTimeout(() => {
 					result.close();
 					result = null;
-				}, 1000);
+				}, 2000);
 			};
 			openWindow();
 			props.close();
@@ -68,7 +68,7 @@ function ScannerConfirmationModal(props) {
 				setTimeout(() => {
 					result.close();
 					result = null;
-				}, 1000);
+				}, 2000);
 			};
 			openWindow();
 			props.close();
