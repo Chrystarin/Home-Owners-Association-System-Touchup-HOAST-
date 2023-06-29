@@ -107,7 +107,7 @@ function VehicleView() {
 									<div className="Input__Wrapper2">
 										<div className="GeneralInformation__InfoContainer ">
 											<h6>Owner:</h6>
-											<h5>{vehicle.owner}</h5>
+											<h5>{vehicle.owner || JSON.parse(localStorage.getItem('user')).user.userId}</h5>
 										</div>
 										<div className="GeneralInformation__InfoContainer">
 											<h6>Brand: </h6>
