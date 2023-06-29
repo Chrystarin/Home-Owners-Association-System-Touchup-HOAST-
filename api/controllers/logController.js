@@ -84,8 +84,11 @@ const getRecords = async (req, res, next) => {
 	// Get logs of specific entity
 	if(objId && logType) {
 		objProp = logType === 'visitor' ? 'visitorId' : 'plateNumber';
-		logs = logs.filter(log => log[logType][objProp] === objId);
+		console.log(objProp, logType);
+		logs = logs.filter(log => log[logType]?.[objProp] === objId);
 	}
+
+	console.log(type)
 
 	// Get logs of specific entity
 	// if (objId) {
