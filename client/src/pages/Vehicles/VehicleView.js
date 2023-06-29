@@ -40,6 +40,7 @@ function VehicleView() {
 					}
 				})
 				.then((response) => {
+					console.log(response.data);
 					setVehicle(response.data);
 				})
 				.catch((err) => {
@@ -53,7 +54,11 @@ function VehicleView() {
 				.get(`logs`, {
 					params: {
 						objId: `${id}`,
-						logType: 'vehicle'
+						logType: 'vehicle',
+						hoaId:
+							isRole('admin') || isRole('guard')
+								? localStorage.getItem('hoaId')
+								: null
 					}
 				})
 				.then((response) => {
@@ -107,7 +112,14 @@ function VehicleView() {
 									<div className="Input__Wrapper2">
 										<div className="GeneralInformation__InfoContainer ">
 											<h6>Owner:</h6>
-											<h5>{vehicle.owner || JSON.parse(localStorage.getItem('user')).user.userId}</h5>
+											<h5>
+												{vehicle.owner ||
+													JSON.parse(
+														localStorage.getItem(
+															'user'
+														)
+													).user.userId}
+											</h5>
 										</div>
 										<div className="GeneralInformation__InfoContainer">
 											<h6>Brand: </h6>
