@@ -264,7 +264,7 @@ function ScannerConfirmationModal(props) {
 										</p>
 										<p className="BodyText3 ConfirmationModal__BodyInfo__Value">
 											{/* Dianne Chrystalin Brandez */}
-											{props.info.name}
+											{props.info.owner}
 										</p>
 									</li>
 									<li
@@ -279,7 +279,7 @@ function ScannerConfirmationModal(props) {
 										</p>
 										<p className="ConfirmationModal__BodyInfo__Value">
 											{/* Abuab II */}
-											{props.info.home}
+											{props.info.address}
 										</p>
 									</li>
 									<li
