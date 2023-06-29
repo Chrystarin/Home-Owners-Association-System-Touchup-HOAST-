@@ -274,9 +274,9 @@ function ScannerConfirmationModal(props) {
 												: 'BodyText3 ConfirmationModal__BodyInfo__More '
 										}
 									>
-										<p className="ConfirmationModal__BodyInfo__Title">
+										{/* <p className="ConfirmationModal__BodyInfo__Title">
 											Address:
-										</p>
+										</p> */}
 										<p className="ConfirmationModal__BodyInfo__Value">
 											{/* Abuab II */}
 											{props.info.address}
