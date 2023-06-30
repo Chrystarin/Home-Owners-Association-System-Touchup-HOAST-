@@ -26,6 +26,7 @@ function Scanner() {
 	const [openFullScreen, setOpenFullScreen] = useState(false);
 
 	let log = null;
+	let infoScan = null;
 
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
@@ -127,6 +128,7 @@ function Scanner() {
 			})
 			.then((response) => {
 				setInformation(response.data);
+				infoScan = response.data
 			});
 	};
 
@@ -140,6 +142,7 @@ function Scanner() {
 			})
 			.then((response) => {
 				setInformation(response.data);
+				infoScan = response.data
 			});
 	};
 
@@ -153,6 +156,7 @@ function Scanner() {
 			})
 			.then((response) => {
 				setInformation(response.data);
+				infoScan = response.data
 			});
 	};
 
@@ -169,10 +173,44 @@ function Scanner() {
 			});
 	};
 
+	const openWindow = (data) => {
+		let result = {};
+		const url = `${hoa.deviceIP}/?header=${data}`;
+		const windowName = 'Access';
+		const windowSize = 'width=500,height=300';
+		result = window.open(url, windowName, windowSize);
+		setTimeout(() => {
+			result.close();
+			result = null;
+			setScanned(false);
+		}, 5000);
+	};
+
+	async function ProcessAccess(objId, logType) {
+		try {
+			await axios
+				.post(
+					`logs`,
+					JSON.stringify({
+						objectId: objId,
+						logType: logType,
+						hoaId: localStorage.getItem('hoaId')
+					})
+				)
+				.then((response) => {
+					openWindow('true');
+				});
+		} catch (error) {
+			console.log(error);
+			openWindow('false');
+		}
+	}
+	
 	// Function upon scanning
 	async function handleScan(data) {
 		try {
 			if (data) {
+				alert("qr code detected")
 				setScanned(true);
 				setDecryptedData(JSON.parse(data.text));
 				log = JSON.parse(data.text);
@@ -180,20 +218,46 @@ function Scanner() {
 				switch (log.logType) {
 					case 'visitor':
 						await fetchVisitor(log.objId);
+						console.log(infoScan)
+						if(infoScan){
+							ProcessAccess(
+								JSON.parse(data.text).objId,
+								JSON.parse(data.text).logType
+							);
+						} else{
+							openWindow('false');
+						}
 						break;
 					case 'vehicle':
 						await fetchVehicle(log.objId);
+						console.log(infoScan)
+						if(infoScan){
+							setOpenConfirmation(true);
+						} else{
+							openWindow('false');
+						}
 						break;
 					case 'user':
 						await fetchResident(log.objId);
+						console.log(infoScan)
+						if(infoScan){
+							ProcessAccess(
+								JSON.parse(data.text).objId,
+								JSON.parse(data.text).logType
+							);
+						} else{
+							openWindow('false');
+						}
 						break;
 					default:
 						break;
 				}
-				setOpenConfirmation(true);
+
 			}
 		} catch (error) {
+			console.log(error)
 			alert('Invalid QR Code');
+			setScanned(false);
 		}
 	}
 

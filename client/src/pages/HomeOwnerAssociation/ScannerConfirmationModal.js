@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ScannerConfirmationModal.scss';
 import Avatar from '@mui/material/Avatar';
 import { Button } from '@mui/material';
@@ -12,6 +12,13 @@ function ScannerConfirmationModal(props) {
 	console.log(props.info);
 	console.log(props.data);
 	console.log(props);
+
+	useEffect(() => {
+		switch(props.type){
+			case 'visitor':
+				
+		}
+	  }, []);
 
 	async function acceptEntry() {
 		try {

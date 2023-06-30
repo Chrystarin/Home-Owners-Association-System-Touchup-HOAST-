@@ -143,6 +143,7 @@ export default function AddGuard() {
                                         }
                                     }
                                     sendMail();
+                                    console.log(password);
                                     navigate("/guard");
                                 })
                         } catch (error) {
