@@ -210,7 +210,7 @@ function Scanner() {
 	async function handleScan(data) {
 		try {
 			if (data) {
-				alert("qr code detected")
+				console.log("qr code detected")
 				setScanned(true);
 				setDecryptedData(JSON.parse(data.text));
 				log = JSON.parse(data.text);
