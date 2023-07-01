@@ -77,6 +77,9 @@ function AuthProvider({ children }) {
 				localStorage.setItem('delinquentOf', response.data.resident);
 				roles.push('delinquent');
 			}
+			else {
+				localStorage.removeItem("delinquentOf")
+			}
 			localStorage.setItem('roles', roles);
 		});
 	};
