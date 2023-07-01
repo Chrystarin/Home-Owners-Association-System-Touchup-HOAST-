@@ -74,7 +74,7 @@ export default function AddHomeowner() {
                     type:'success',
                     note:"Added Homeowner Succesfully!",
                 }));
-                alert(`Email: ${form.email} Password: ${response.data.credentials.password}`)
+                // alert(`Email: ${form.email} Password: ${response.data.credentials.password}`)
                 navigate("/residentslist");
             })
         }
@@ -83,7 +83,7 @@ export default function AddHomeowner() {
                 ...openSnackBar,
                 open:true,
                 type:'error',
-                note: error?.response?.data?.message ?? "Error Occured!",
+                note: error?.response?.data?.message ?? "Check Your input!",
             }));
             console.error(error.response.data.message);
         }
@@ -107,7 +107,7 @@ export default function AddHomeowner() {
                 ...openSnackBar,
                 open:true,
                 type:'error',
-                note: error?.response?.data?.message ?? "Error Occured!",
+                note: error?.response?.data?.message ?? "Homeowner Already Exists!",
             }));
             console.error(error.response.data.message);
         }

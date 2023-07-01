@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 
 import {useNavigate} from 'react-router';
 import Navbar from '../../layouts/NavBar';
@@ -11,6 +11,7 @@ import axios from '../../utils/axios';
 function AddVehicle() {
     const navigate = useNavigate();
 
+    const [vehicle, setVehicle] = useState();
     const [stepper, setStepper] = useState(1);
 
     const [form, setForm] = useState({
@@ -20,6 +21,16 @@ function AddVehicle() {
         type: '',
         color: ''
     });
+
+    useEffect(() => {
+		const fetchVehicle = async () => {
+			await axios.get(`vehicles`).then((response) => {
+				setVehicle(response.data);
+				console.log(response.data);
+			});
+		};
+		fetchVehicle();
+	}, []);
 
     // Retrieves data from text input then assigns to form
     function updateForm(e) {
@@ -54,7 +65,8 @@ function AddVehicle() {
             })
         }
         catch(err){
-            console.error(err.message);
+            console.error(err);
+            alert("Check your inputs!");
         }
     }
 
@@ -63,7 +75,7 @@ function AddVehicle() {
             case 1:
                 return <>
                     <form onSubmit={Submit} className='Form'>
-                        <TextField required fullWidth  label="Plate Number" variant="filled"  onChange={(e)=>updateForm({ plateNumber: e.target.value })}/>
+                        <TextField required fullWidth  label="Plate Number" variant="filled" onChange={(e)=>updateForm({ plateNumber: e.target.value })}/>
                         <div className='FormWrapper__2'>
                             <TextField required fullWidth  label="Model" variant="filled" onChange={(e)=>updateForm({ model: e.target.value })}/>
                             <TextField required fullWidth  label="Brand" variant="filled" onChange={(e)=>updateForm({ brand: e.target.value })}/>

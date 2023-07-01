@@ -36,7 +36,8 @@ function VisitorView() {
 						hoaId:
 							isRole('admin') || isRole('guard')
 								? localStorage.getItem('hoaId')
-								: null
+								: null,
+						homeId: id
 					}
 				})
 				.then((response) => {
@@ -106,6 +107,16 @@ function VisitorView() {
 									General Information
 								</h5>
 								<div id="GeneralInformation__Car">
+									<div className="Input__Wrapper2">
+										<div className="GeneralInformation__InfoContainer ">
+											<h6>Homeowner:</h6>
+											<h5>{visitor.home}</h5>
+										</div>
+										<div className="GeneralInformation__InfoContainer ">
+											<h6>Visiting Address:</h6>
+											{/* <h5>{visitor.home.address.number}</h5> */}
+										</div>
+									</div>
 									<div className="Input__Wrapper2">
 										<div className="GeneralInformation__InfoContainer ">
 											<h6>Owner:</h6>
