@@ -1,15 +1,9 @@
 const router = require('express').Router();
 
 const asyncHandler = require('../middlewares/asyncHandler');
-const {
-	allowAdmin,
-	allowGuard,
-	notUser,
-	allowResident,
-} = require('../middlewares/authorization');
+const { allowAdmin, allowGuard, notUser, allowResident } = require('../middlewares/authorization');
 
-const { registerHoa, getHoas, addGuard, retireGuard, getGuards, joinHoa } =
-	asyncHandler(require('../controllers/hoaController'));
+const { registerHoa, getHoas, addGuard, retireGuard, getGuards, joinHoa } = asyncHandler(require('../controllers/hoaController'));
 
 /**
  * Register a new HOA
@@ -43,11 +37,11 @@ router.get('/', getHoas);
  *
  * hoaId
  * guardId - optional [1 | n]
- * 
+ *
  * [Resident]
  * homeId
  */
-router.get('/guards', allowAdmin, allowGuard, allowResident, notUser, getGuards);
+router.get('/guards', allowAdmin, allowGuard, allowResident, getGuards);
 
 /**
  * Add new guard

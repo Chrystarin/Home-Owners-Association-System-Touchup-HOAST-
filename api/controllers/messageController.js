@@ -16,12 +16,16 @@ const getMessages = async (req, res, next) => {
     const messages = await Message.find({
         guard: guard._id,
         user: user._id
-    }).exec();
+    })
+        .populate('guard user')
+        .exec();
 
     res.json(messages);
 };
 
-const sendMessage = async ({ userId, guardId, hoaId, sender, receiver, content }) => {
+const sendMessage = async (data) => {
+    const { userId, guardId, hoaId, sender, receiver, content } = data;
+    
     console.log('Message Sent');
     console.log(userId, guardId, hoaId, sender, receiver, content);
 
@@ -43,6 +47,8 @@ const sendMessage = async ({ userId, guardId, hoaId, sender, receiver, content }
         receiver,
         content
     });
+
+    return { user, guard, sender, receiver, content };
 };
 
 module.exports = { getMessages, sendMessage };

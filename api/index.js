@@ -25,7 +25,7 @@ const roleRoute = require('./routes/role');
 const userRoute = require('./routes/user');
 const vehicleRoute = require('./routes/vehicle');
 const visitorRoute = require('./routes/visitor');
-const messageRoute = require('./routes/message ');
+const messageRoute = require('./routes/message');
 const { sendMessage, getMessages } = require('./controllers/messageController');
 
 const app = express();
@@ -91,12 +91,7 @@ io.on('connection', (socket) => {
      *     hoaId
      */
     socket.on('send', async (data) => {
-        await sendMessage(data);
-        socket.emit('receive', data);
-    });
-
-    socket.on('receive', async (data) => {
-        await getMessages(data);
+        data = await sendMessage(data);
         socket.emit('receive', data);
     });
 });

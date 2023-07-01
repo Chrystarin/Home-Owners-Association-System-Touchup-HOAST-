@@ -81,7 +81,6 @@ const joinHoa = async (req, res, next) => {
         details: { name, color, number, street, phase, contactNo }
     });
 
-
     await Notification.create({
         notificationId: genNotificationId(),
         message: messages[notifType.HomeRequestSent](user.name),
@@ -133,17 +132,30 @@ const retireGuard = async (req, res, next) => {
 };
 
 const getGuards = async (req, res, next) => {
-    const { guardId } = req.query;
+    const { guardId, selectedHoa } = req.query;
     const { hoa } = req.user;
 
     checkString(guardId, 'Guard ID', true);
 
-    let guards = hoa.guards;
+    console.log(selectedHoa);
+
+    let guards = {};
+
+    if (selectedHoa) {
+        // Find hoas
+        let hoas = await HOA.find();
+
+        hoas = await HOA.findOne({ selectedHoa }).populate('guards.user');
+        if (!hoas) throw new HOANotFoundError();
+
+        guards = hoas.guards;
+    } else {
+        guards = hoa.guards;
+    }
 
     // Get specific guard
     if (guardId) {
         guards = hoa.guards.find(({ user: { userId } }) => userId == guardId);
-
         if (!guards) throw new NotFoundError('Incorrect guard id');
     }
 
