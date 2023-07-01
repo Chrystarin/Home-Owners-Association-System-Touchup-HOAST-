@@ -48,6 +48,17 @@ function Logs() {
     const [anchorElFilter, setAnchorElFilter] = React.useState(null);
     const openFilter = Boolean(anchorElFilter);
 
+    const crawler = (data,parent) => Object.entries(data).reduce((data,[key,value])=>{
+        if(value instanceof Array) return data;
+
+        key = parent ? `${parent}.${key}`:key;
+
+        if(typeof value === 'object')
+            return{
+                ... data,...crawler(value,key)
+            };
+        return {...data,[key]:value};
+    })
     // Runs onLoad
 	useEffect(() => {
 		const fetchLogs = async () => {

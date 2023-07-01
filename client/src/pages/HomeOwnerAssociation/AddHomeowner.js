@@ -294,6 +294,7 @@ export default function AddHomeowner() {
 												type="number"
 												variant="filled"
 												required
+												inputProps={{maxLength: 11}}
 												onChange={(e) =>
 													updateForm({
 														contactNo:
