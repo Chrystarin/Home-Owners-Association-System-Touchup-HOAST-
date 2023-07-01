@@ -62,6 +62,12 @@ function VisitorsList() {
                                 <div className='SectionController'>
                                     <div id='SearchInput__Container'>
                                         {/* <SearchInput/> */}
+                                        <Button
+                                            variant="contained"
+                                            href="/quickpass"
+                                        >
+                                            Add Quick Pass
+                                        </Button>
                                     </div>
                                     <Button variant="" startIcon={<FilterAltIcon/>} onClick={(event) => setAnchorElFilter(event.currentTarget)}>Filter</Button>
                                     <Menu

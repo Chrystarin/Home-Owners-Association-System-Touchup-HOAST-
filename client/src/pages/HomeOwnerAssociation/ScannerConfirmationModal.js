@@ -286,7 +286,7 @@ function ScannerConfirmationModal(props) {
 										</p> */}
 										<p className="ConfirmationModal__BodyInfo__Value">
 											{/* Abuab II */}
-											{props.info.address}
+											{/* {props.info.address} */}
 										</p>
 									</li>
 									<li

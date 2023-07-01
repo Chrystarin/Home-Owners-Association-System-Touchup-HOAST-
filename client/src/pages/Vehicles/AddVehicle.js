@@ -76,6 +76,7 @@ function AddVehicle() {
 				});
 		} catch (err) {
 			console.error(err);
+			alert('Check your inputs!');
 		}
 	}
 

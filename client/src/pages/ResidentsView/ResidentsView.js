@@ -91,6 +91,10 @@ function ResidentsView() {
                                     <h6>Registered Since: </h6>
                                     <h5>{resident.user.createdAt}</h5>
                                 </div>
+                                <div className='GeneralInformation__InfoContainer'>
+                                    <h6>Type: </h6>
+                                    <h5>{resident.type} member</h5>
+                                </div>
                             </div>
                         </div>
                         {/* <div className="SectionView__Sections">

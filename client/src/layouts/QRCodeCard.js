@@ -75,6 +75,7 @@ function QRCodeCard(props) {
 				<div id="QRCodeContainer">
 					{/* <img src={QRCodeimg} alt="" /> */}
 					{/* <CardInfo category={props.logType}/> */}
+					<p>{props.objId}</p>
 					<QRCode
 						size={256}
 						style={{

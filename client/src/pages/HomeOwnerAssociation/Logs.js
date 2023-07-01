@@ -287,6 +287,7 @@ function Logs() {
                                             <TableCell component="th" align="center"><h6>Name</h6></TableCell>
                                             <TableCell component="th" align='center'><h6>LogType</h6></TableCell>
                                             <TableCell component="th" align="center"><h6>Timestamp</h6></TableCell>
+                                            <TableCell component="th" align="center"><h6>Purpose</h6></TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -320,7 +321,8 @@ function Logs() {
                                                                     log["visitor.name"]}
                                                                 </TableCell>
                                                                 <TableCell component="th" scope="row" align='center'>{log.logType} </TableCell>
-                                                                <TableCell align="center">{new Date(log.createdAt).getMonth() + " / " + new Date(log.createdAt).getDate()  + " / " + new Date(log.createdAt).getFullYear() + " | " + new Date(log.createdAt).getHours() + ":" + new Date(log.createdAt).getMinutes() + ":" + new Date(log.createdAt).getSeconds()}</TableCell> 
+                                                                <TableCell align="center">{new Date(log.createdAt).getMonth() + " - " + new Date(log.createdAt).getDate()  + " - " + new Date(log.createdAt).getFullYear() + " | " + new Date(log.createdAt).getHours() + ":" + new Date(log.createdAt).getMinutes() + ":" + new Date(log.createdAt).getSeconds()}</TableCell>
+                                                                <TableCell align="center">{log?.visitor?.purpose}</TableCell>
                                                             </TableRow>
                                                         </>
                                                     })}

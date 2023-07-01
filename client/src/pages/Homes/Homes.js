@@ -27,6 +27,7 @@ function Homes() {
 		// Retrieves Homes
 		const fetchHomes = async () => {
 			await axios.get(`homes`).then((response) => {
+				console.log(response.data);
 				setHomes(response.data);
 			});
 		};
