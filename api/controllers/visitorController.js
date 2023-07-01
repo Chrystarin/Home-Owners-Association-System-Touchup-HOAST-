@@ -75,7 +75,7 @@ const getVisitors = async (req, res, next) => {
     // Validate input
     checkString(visitorId, 'Visitor ID', true);
 
-    let visitors;
+    let visitors = [];
 
     if (type === USER) {
         const { user } = req.user;
@@ -96,6 +96,7 @@ const getVisitors = async (req, res, next) => {
 
         // Get vistiors of each home under hoa
         ({ visitors } = await extractHomes({ hoa: hoa._id }));
+        visitors = [...visitors, ...hoa.visitors];
     }
 
     //Get specific visitor

@@ -31,6 +31,8 @@ import VehicleList from './pages/HomeOwnerAssociation/VehicleList.js';
 import HomeList from './pages/HomeOwnerAssociation/HomeList.js';
 import DuesView from './pages/HomeOwnerAssociation/DuesView.js';
 
+import CreateQuickPass from './pages/HomeOwnerAssociation/CreateQuickPass.js';
+
 import Scanner from './pages/HomeOwnerAssociation/Scanner.js';
 
 import ProtectedRoute from './utils/ProtectedRoute.js';
@@ -93,6 +95,7 @@ function App() {
 				{/* Private Routes for Guard */}
 				<Route element={<ProtectedRoute allowedRoles={['guard']} />}  >
 					<Route path="/scanner" element={<Scanner />} />
+					<Route path="/quickpass" element={<CreateQuickPass />} />
 				</Route>
 
 				{/* Private Routes for Admin */}

@@ -20,7 +20,8 @@ export default function AddGuard() {
     const [accForm, setAccForm] = useState({
 		firstName: '',
 		lastName: '',
-		email: ''
+		email: '',
+        contact: ''
 	});
 
 
@@ -65,7 +66,8 @@ export default function AddGuard() {
                 JSON.stringify({ 
                     userId: form.userId,
                     hoa: form.hoaId,
-                    hoaId: form.hoaId
+                    hoaId: form.hoaId,
+                    // contactNo: accForm.contact
                 })
             )
             .then((response) => {
@@ -224,15 +226,15 @@ export default function AddGuard() {
                                     required
                                     onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
                                 />
-                                <TextField
+                                {/* <TextField
                                     id="filled-password-input"
                                     label="Contact No."
                                     type="text"
                                     variant="filled"
                                     required
                                     inputProps={{ maxLength: 11 }}
-                                    onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
-                                />
+                                    onChange={(e)=>setAccForm({...accForm, contact: e.target.value })}
+                                /> */}
                                 
                                 <div className='Form__Button'>
                                     <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>

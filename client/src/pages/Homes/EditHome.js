@@ -10,6 +10,12 @@ import ResidentCard from '../../components/ResidentCard/ResidentCard';
 import { useNavigate } from 'react-router';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import SnackbarComp from '../../components/SnackBar/SnackbarComp';
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 function EditHome() {
     const { id } = useParams();
     const {isHomeowner} = useAuth();
@@ -29,7 +35,8 @@ function EditHome() {
     const [accForm, setAccForm] = useState({
 		firstName: '',
 		lastName: '',
-		email: ''
+		email: '',
+        residentType: ''
 	});
 
     const generatePassword = () => {
@@ -89,18 +96,49 @@ function EditHome() {
             await axios
                 .post(
                     `residents`,
-                    JSON.stringify({ 
-                        userId: residentAdd,
-                        homeId: id
+                    JSON.stringify({
+                        homeId: id,
+                        firstName: accForm.firstName,
+                        lastName: accForm.lastName,
+                        residentType: accForm.residentType,
+                        email: accForm.email
                     })
                 )
                 .then((response) => {
+                    console.log("Email: " + accForm.email + " Password: " + response.data.residentPassword);
                     setOpenSnackBar(openSnackBar => ({
                         ...openSnackBar,
                         open:true,
                         type:'success',
                         note:"Resident Added",
                     }));
+                    const sendMail = async () => {
+                        try {
+                            await axios.post('users/verify', {
+                                email: accForm.email,
+                                message:
+                                    'Your Resident Account has been created for the HOAST Website. Below are your account credentials \n Upon login, please change your password. \n' +
+                                    'Email: ' +
+                                    accForm.email +
+                                    '\nPassword: ' +
+                                    response.data.residentPassword +
+                                    "\n P.S Don't share this to anyone"
+                            });
+                
+                            return 'Email sent successfully to ' + accForm.email;
+                        }
+                        catch(err){
+                            setOpenSnackBar(openSnackBar => ({
+                                ...openSnackBar,
+                                open:true,
+                                type:'error',
+                                note:"Didn't Send Email!",
+                            }));
+                            console.error(err.message);
+                        }
+                    }
+                    sendMail();
+
                     fetchHome()
                 })
         } catch(err){
@@ -139,84 +177,6 @@ function EditHome() {
         }
     }
 
-    async function SubmitAccount(e){
-        e.preventDefault();
-        let password = generatePassword();
-        try{
-            await axios
-				.post(`users/signup`,{
-                    firstName: accForm.firstName,
-                    lastName: accForm.lastName,
-                    email: accForm.email,
-                    password: password
-                }
-				)
-				.then((response) => {
-					console.log(response.data)
-                    console.log(response.data.userId)
-                    const addGuard = async () => {
-                        try{
-                            await axios
-                                .post(
-                                    `/residents`,
-                                    JSON.stringify({ 
-                                        userId: response.data.userId,
-                                        hoa: home.hoaId,
-                                        hoaId: home.hoaId
-                                    })
-                                )
-                                .then((response) => {
-                                    const sendMail = async () => {
-                                        try {
-                                            await axios.post('users/verify', {
-                                                email: accForm.email,
-                                                message:
-                                                    'Your Account has been created for the HOAST Website. Below are your account credentials \n Upon login, please change your password. \n' +
-                                                    'Email: ' +
-                                                    accForm.email +
-                                                    '\nPassword: ' +
-                                                    password +
-                                                    "\n P.S Don't share this to anyone"
-                                            });
-                                
-                                            return 'Email sent successfully to ' + accForm.email;
-                                        }
-                                        catch(err){
-                                            setOpenSnackBar(openSnackBar => ({
-                                                ...openSnackBar,
-                                                open:true,
-                                                type:'error',
-                                                note:"Error Occured!",
-                                            }));
-                                            console.error(err.message);
-                                        }
-                                    }
-                                    sendMail();
-                                    console.log(password);
-                                    navigate("/homes");
-                                })
-                        } catch (error) {
-                            setOpenSnackBar(openSnackBar => ({
-                                ...openSnackBar,
-                                open:true,
-                                type:'error',
-                                note:"Error Occured!",
-                            }));
-                        }
-                    }
-                    addGuard();
-				});
-        }
-        catch(err){
-            setOpenSnackBar(openSnackBar => ({
-                ...openSnackBar,
-                open:true,
-                type:'error',
-                note:"Error Occured!",
-            }));
-            console.error(err.message);
-        }
-    }
 
     useEffect(() => {
         fetchHome();
@@ -278,7 +238,7 @@ function EditHome() {
                                         <Button variant="contained"  type='submit' onClick={AddResident}>
                                             Add
                                         </Button> */}
-                                        <form onSubmit={SubmitAccount} className='Form'>
+                            <form onSubmit={AddResident} className='Form'>
                                 <TextField
                                     id="filled-password-input"
                                     label="First Name"
@@ -303,10 +263,21 @@ function EditHome() {
                                     required
                                     onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
                                 />
+                                <FormControl required  variant="outlined" fullWidth>
+                                    <InputLabel  id="home-select">Resident Type</InputLabel>
+                                    <Select
+                                        labelId="home-select"
+                                        value={accForm.residentType}
+                                        label="Home"
+                                        onChange={(e)=>setAccForm({...accForm, residentType: e.target.value})}
+                                    >
+                                        <MenuItem value={'family'}>Family Member</MenuItem> 
+                                        <MenuItem value={'household'}>Household Member</MenuItem> 
+                                    </Select>
+                                </FormControl>
                                 
                                 <div className='Form__Button'>
-                                    <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>
-                                    <Button variant='contained' type='submit' className='Submit'>Submit</Button>
+                                    <Button variant='contained' type='submit' className='Submit'>Add Resident</Button>
                                 </div>
                             </form>
                                     </div>

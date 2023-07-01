@@ -24,6 +24,7 @@ function VisitorView() {
 	const [visitor, setVisitor] = useState();
 	const [logs, setLogs] = useState();
 	const { isRole } = useAuth();
+	const [home, setHome] = useState();
 
 	// Runs onLoad
 	useEffect(() => {
@@ -44,6 +45,19 @@ function VisitorView() {
 					setVisitor(response.data);
 					console.log(response.data);
 					// // Retrieves All of Specific Visitor's Logs Data
+					const fetchHome = async () => {
+						await axios
+						.get(`homes`,{
+								params: {
+									homeId: response.data.home,
+									hoaId: (isRole('admin') || isRole('guard')) ? localStorage.getItem('hoaId') : null
+								}
+							})
+						.then((response) => {
+							console.log(response.data)
+							setHome(response.data);
+						})
+					};
 					const fetchLogs = async () => {
 						await axios
 							.get(`logs`, {
@@ -59,6 +73,7 @@ function VisitorView() {
 							});
 					};
 					fetchLogs();
+					fetchHome();
 				})
 				.catch((err) => {
 					navigate(`${err}`);
@@ -110,11 +125,11 @@ function VisitorView() {
 									<div className="Input__Wrapper2">
 										<div className="GeneralInformation__InfoContainer ">
 											<h6>Homeowner:</h6>
-											<h5>{visitor.home}</h5>
+											<h5>{home.owner.name.firstName + ' ' + home.owner.name.lastName}</h5>
 										</div>
 										<div className="GeneralInformation__InfoContainer ">
 											<h6>Visiting Address:</h6>
-											{/* <h5>{visitor.home.address.number}</h5> */}
+											<h5>{home.address.number} {home.address.street} {home.address.phase}</h5>
 										</div>
 									</div>
 									<div className="Input__Wrapper2">
@@ -137,7 +152,19 @@ function VisitorView() {
 													', ' +
 													new Date(
 														visitor.arrival
-													).getFullYear() + ' | ' + new Date(visitor.arrival).getHours() + ':' + new Date(visitor.arrival).getMinutes() + ':' + new Date(visitor.arrival).getSeconds()}
+													).getFullYear() +
+													' | ' +
+													new Date(
+														visitor.arrival
+													).getHours() +
+													':' +
+													new Date(
+														visitor.arrival
+													).getMinutes() +
+													':' +
+													new Date(
+														visitor.arrival
+													).getSeconds()}
 											</h5>
 										</div>
 									</div>
@@ -161,7 +188,19 @@ function VisitorView() {
 													', ' +
 													new Date(
 														visitor.departure
-													).getFullYear()  + ' | ' + new Date(visitor.departure).getHours() + ':' + new Date(visitor.departure).getMinutes() + ':' + new Date(visitor.departure).getSeconds()}
+													).getFullYear() +
+													' | ' +
+													new Date(
+														visitor.departure
+													).getHours() +
+													':' +
+													new Date(
+														visitor.departure
+													).getMinutes() +
+													':' +
+													new Date(
+														visitor.departure
+													).getSeconds()}
 											</h5>
 										</div>
 									</div>
@@ -278,11 +317,11 @@ function VisitorView() {
 							className="SectionView__SidePanel"
 							id="ViewResident__QRCode__Container"
 						>
-							<QRCodeCard
-								objId={visitor.visitorId}
-								logType={'visitor'}
-								hoaId={visitor.home.hoa}
-							/>
+								<QRCodeCard
+									objId={visitor.visitorId}
+									logType={'visitor'}
+									hoaId={visitor.home.hoa}
+								/>
 						</div>
 
 						{/* <button onClick={()=>DownloadQRCode("ViewResident__QRCode__Container", "QRCode.html")}>Download</button> */}

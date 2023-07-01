@@ -53,7 +53,7 @@ function AuthProvider({ children }) {
 
 	const fetchRole = async () => {
 		await axios.get(`roles`).then((response) => {
-			// console.log(response.data)
+			// console.log(response.data);
 			let roles = [];
 			if (response.data.admin.length >= 1) {
 				localStorage.setItem('hoaId', response.data.admin);
@@ -72,6 +72,10 @@ function AuthProvider({ children }) {
 			if (response.data.resident.length >= 1) {
 				localStorage.setItem('residentOf', response.data.resident);
 				roles.push('resident');
+			}
+			if (response.data.delinquent.length >= 1) {
+				localStorage.setItem('delinquentOf', response.data.resident);
+				roles.push('delinquent');
 			}
 			localStorage.setItem('roles', roles);
 		});

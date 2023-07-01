@@ -12,7 +12,7 @@ const { addVisitor, getVisitors } = asyncHandler(
 	require('../controllers/visitorController')
 );
 
-router.use(allowAdmin, allowGuard, allowResident)
+router.use(allowAdmin, allowGuard, allowResident);
 
 /**
  * Get visitors

@@ -25,7 +25,8 @@ function VehicleView() {
 	const [vehicle, setVehicle] = useState();
 	const [logs, setLogs] = useState();
 	const { isRole } = useAuth();
-
+	const delinquent = localStorage.getItem('delinquentOf');
+	console.log(localStorage.getItem('delinquentOf'));
 	useEffect(() => {
 		// Retrieves Vehicles
 		const fetchVehicle = async () => {
@@ -252,11 +253,15 @@ function VehicleView() {
 							className="SectionView__SidePanel"
 							id="ViewResident__QRCode__Container"
 						>
-							<QRCodeCard
-								objId={vehicle.plateNumber}
-								logType={'vehicle'}
-								hoaId={'9d5YZYUiesmNXua'}
-							/>
+							{delinquent ? (
+								'You have unpaid dues. Please pay your dues to view your QR Code.'
+							) : (
+								<QRCodeCard
+									objId={vehicle.plateNumber}
+									logType={'vehicle'}
+									hoaId={process.env.REACT_APP_HOA_ID}
+								/>
+							)}
 						</div>
 					</div>
 				</section>

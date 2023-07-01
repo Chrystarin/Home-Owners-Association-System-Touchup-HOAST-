@@ -50,7 +50,7 @@ function NavBar(props) {
         await axios
             .get(`notifications`)
             .then((response) => {
-                console.log(response.data)
+                // console.log(response.data)
                 setNotifications(response.data);
         });
     };
