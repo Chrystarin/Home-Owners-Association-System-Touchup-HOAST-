@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { createServer } = require('http');
+// const { createServer } = require('http');
 const { Server } = require('socket.io');
 
 require('dotenv/config');
@@ -28,12 +28,12 @@ const visitorRoute = require('./routes/visitor');
 const { sendMessage } = require('./controllers/messageController');
 
 const app = express();
-const server = createServer(app)
-const io = new Server(server, { 
+const server = createServer(app);
+const io = new Server(server, {
     cors: {
         origin: process.env.CORS_ORIGIN
     }
- });
+});
 
 app.use(cookieParser());
 app.use(express.json());
@@ -42,11 +42,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/device', deviceRoute);
 
 app.use(
-	cors({
-		credentials: true,
+    cors({
+        credentials: true,
         origin: process.env.CORS_ORIGIN
-		// origin: '*'
-	})
+        // origin: '*'
+    })
 );
 
 app.use('/users', userRoute);
@@ -66,12 +66,12 @@ app.use('/vehicles', vehicleRoute);
 app.use('/visitors', visitorRoute);
 
 app.use((err, req, res, next) => {
-	console.log(err);
+    console.log(err);
 
-	res.status(err.status || 500).json({
-		name: err.name,
-		message: err.message
-	});
+    res.status(err.status || 500).json({
+        name: err.name,
+        message: err.message
+    });
 });
 
 app.use(errorHandler);
@@ -81,7 +81,7 @@ io.on('connection', (socket) => {
      * user
      *     id
      *     type
-     * 
+     *
      * guard
      *     id
      *     type
@@ -90,18 +90,18 @@ io.on('connection', (socket) => {
     socket.on('send', async (data) => {
         await sendMessage(data);
         socket.emit('receive', data);
-    })
-})
+    });
+});
 
 mongoose
-	.connect(process.env.DEV_MONGO)
-	.then(() => {
-		console.log('Connected to database');
-		server.listen(process.env.PORT, (err) => {
-			if (err) return console.log('Error', err);
-			console.log('Listening on port', process.env.PORT);
-		});
-	})
-	.catch((err) => {
-		console.log('Failed connecting to database\n', err);
-	});
+    .connect(process.env.DEV_MONGO)
+    .then(() => {
+        console.log('Connected to database');
+        server.listen(process.env.PORT, (err) => {
+            if (err) return console.log('Error', err);
+            console.log('Listening on port', process.env.PORT);
+        });
+    })
+    .catch((err) => {
+        console.log('Failed connecting to database\n', err);
+    });

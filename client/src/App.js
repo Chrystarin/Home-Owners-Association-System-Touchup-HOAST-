@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
-import './styles/main.scss'
+import socketIO from 'socket.io-client';
+
+import './styles/main.scss';
 
 import Error404 from './pages/Error/Error404.js';
 import LandingPage from './pages/LandingPage/LandingPage.js';
@@ -14,7 +16,7 @@ import ViewHome from './pages/Homes/ViewHome.js';
 import EditHome from './pages/Homes/EditHome.js';
 
 import Vehicles from './pages/Vehicles/Vehicles.js';
-import UpdateVehicle from './pages/Vehicles/UpdateVehicle.js'
+import UpdateVehicle from './pages/Vehicles/UpdateVehicle.js';
 import AddVehicle from './pages/Vehicles/AddVehicle.js';
 import VehicleView from './pages/Vehicles/VehicleView.js';
 
@@ -43,86 +45,92 @@ import AddGuard from './pages/HomeOwnerAssociation/AddGuard.js';
 import Guard from './pages/HomeOwnerAssociation/Guard.js';
 import GuardProfile from './pages/HomeOwnerAssociation/GuardProfile.js';
 
-import Profile from './pages/Profile/Profile.js'
-import EditProfile from './pages/Profile/EditProfile.js'
+import Profile from './pages/Profile/Profile.js';
+import EditProfile from './pages/Profile/EditProfile.js';
 import AddHomeowner from './pages/HomeOwnerAssociation/AddHomeowner';
 import ForgotPassword from './pages/Login/ForgotPassword.js';
 
+import Chat from './pages/Chat/ChatPage.js';
+
+const socket = socketIO.connect(process.env.REACT_APP_API_URL);
+
 function App() {
-	return (
-		<Routes>
-			{/* Public Routes */}
-			<Route path="/" element={<LandingPage />} />
+    return (
+        <Routes>
+            {/* Public Routes */}
+            <Route path="/" element={<LandingPage />} />
             <Route path="/terms" element={<TermsAndConditions />} />
-			<Route path="/login"element={<Login />} />
-			<Route path="/register" element={<Register />} />
-			<Route path="/forgotpassword" element={<ForgotPassword />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgotpassword" element={<ForgotPassword />} />
 
-			{/* Private Routes for Users */}
-			<Route element={<ProtectedRoute/>}>
-				<Route path="/hoa" element={<RegisterHoa />} />
+            {/* Private Routes for Users */}
+            <Route element={<ProtectedRoute />}>
+                <Route path="/hoa" element={<RegisterHoa />} />
 
-				{/* <Route path="/resident/:id" element={<ResidentsView />} /> */}
+                <Route path="/chat" element={<Chat socket={socket} />} />
 
-				{/* New Route for editing user datails */}
-                <Route path="/profile" element={<Profile />}/>
-				<Route path="/profile/edit" element={<EditProfile />}/>
+                {/* <Route path="/resident/:id" element={<ResidentsView />} /> */}
 
-				<Route path="/vehicles">
-					<Route path="" element={<Vehicles />} />
-					<Route path="add" element={<AddVehicle />} />
-					<Route path=":id/update" element={<UpdateVehicle />} />
-					<Route path=":id" element={<VehicleView />} />
-				</Route>
+                {/* New Route for editing user datails */}
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/edit" element={<EditProfile />} />
 
-				<Route path="/visitors">
-					<Route path="" element={<Visitors />} />
-					<Route path="add" element={<AddVisitor />} />
-					<Route path=":id" element={<VisitorView />} />
-				</Route>
+                <Route path="/vehicles">
+                    <Route path="" element={<Vehicles />} />
+                    <Route path="add" element={<AddVehicle />} />
+                    <Route path=":id/update" element={<UpdateVehicle />} />
+                    <Route path=":id" element={<VehicleView />} />
+                </Route>
 
-				{/* Private Routes for Homeowner and Residents */}
-				<Route path="/homes">
-					<Route path="" element={<Homes />} />
-					<Route path="add" element={<AddHome />} />
-					<Route path=":id" element={<ViewHome />} />
-					<Route path=":id/:resId" element={<ResidentsView />} />
-                    <Route element={<ProtectedRoute allowedRoles={['homeowner']}/>} >
+                <Route path="/visitors">
+                    <Route path="" element={<Visitors />} />
+                    <Route path="add" element={<AddVisitor />} />
+                    <Route path=":id" element={<VisitorView />} />
+                </Route>
+
+                {/* Private Routes for Homeowner and Residents */}
+                <Route path="/homes">
+                    <Route path="" element={<Homes />} />
+                    <Route path="add" element={<AddHome />} />
+                    <Route path=":id" element={<ViewHome />} />
+                    <Route path=":id/:resId" element={<ResidentsView />} />
+                    <Route element={<ProtectedRoute allowedRoles={['homeowner']} />}>
                         <Route path=":id/edit" element={<EditHome />} />
                     </Route>
-				</Route>
+                </Route>
 
-				{/* Private Routes for Guard */}
-				<Route element={<ProtectedRoute allowedRoles={['guard']} />}  >
-					<Route path="/scanner" element={<Scanner />} />
-					<Route path="/quickpass" element={<CreateQuickPass />} />
-				</Route>
+                {/* Private Routes for Guard */}
+                <Route element={<ProtectedRoute allowedRoles={['guard']} />}>
+                    <Route path="/scanner" element={<Scanner />} />
+                    <Route path="/quickpass" element={<CreateQuickPass />} />
+                </Route>
 
-				{/* Private Routes for Admin */}
-				<Route element={<ProtectedRoute />} allowedRoles={['admin']} >
-					<Route path="/associationdues" element={<AssociationDues />} />
-					<Route path="/guard" element={<Guard />} />
+                {/* Private Routes for Admin */}
+                <Route element={<ProtectedRoute />} allowedRoles={['admin']}>
+                    <Route path="/associationdues" element={<AssociationDues />} />
+                    <Route path="/guard" element={<Guard />} />
                     <Route path="/guard/:id" element={<GuardProfile />} />
-					<Route path="/addguard" element={<AddGuard />} />
-                    <Route path="/addhomeowner" element={<AddHomeowner />}/>
-					<Route path="/duesview" element={<DuesView />} />
-				</Route>
+                    <Route path="/addguard" element={<AddGuard />} />
+                    <Route path="/addhomeowner" element={<AddHomeowner />} />
+                    <Route path="/duesview" element={<DuesView />} />
+                </Route>
 
-				{/* Private Routes for Admin and Guard */}
-				<Route element={<ProtectedRoute />} allowedRoles={['admin', 'guard']} >
-					<Route path="dashboard" element={<Dashboard />} />
-					<Route path="visitorslist" element={<VisitorsList />} />
-					<Route path="logs" element={<Logs />} />
-					<Route path="residentslist" element={<ResidentsList />} />
-					<Route path="vehiclelist" element={<VehicleList />} />
-					<Route path="homelist" element={<HomeList />} />
-				</Route>
-			</Route>
+                {/* Private Routes for Admin and Guard */}
+                <Route element={<ProtectedRoute />} allowedRoles={['admin', 'guard']}>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="visitorslist" element={<VisitorsList />} />
+                    <Route path="logs" element={<Logs />} />
+                    <Route path="residentslist" element={<ResidentsList />} />
+                    <Route path="vehiclelist" element={<VehicleList />} />
+                    <Route path="homelist" element={<HomeList />} />
+                </Route>
+            </Route>
 
-			{/* Error Routes */}
-			<Route path="*" element={<Error404 />} />
-		</Routes>
-	);
+            {/* Error Routes */}
+            <Route path="*" element={<Error404 />} />
+        </Routes>
+    );
 }
 
 export default App;
