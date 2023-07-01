@@ -26,6 +26,23 @@ function EditHome() {
         note:""
     });
     const navigate = useNavigate();
+    const [accForm, setAccForm] = useState({
+		firstName: '',
+		lastName: '',
+		email: ''
+	});
+
+    const generatePassword = () => {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let generatedPassword = '';
+    
+        for (let i = 0; i < 8; i++) {
+          const randomIndex = Math.floor(Math.random() * chars.length);
+          generatedPassword += chars[randomIndex];
+        }
+    
+        return generatedPassword;
+      };
 
     // Retrieve Home Info
     const fetchHome = async () => {
@@ -36,6 +53,7 @@ function EditHome() {
                 }
             })
         .then((response) => {
+            console.log(response.data)
             setHome(response.data);
             let [owner, ...reds] = response.data.residents;
             setResidents(reds)
@@ -121,6 +139,85 @@ function EditHome() {
         }
     }
 
+    async function SubmitAccount(e){
+        e.preventDefault();
+        let password = generatePassword();
+        try{
+            await axios
+				.post(`users/signup`,{
+                    firstName: accForm.firstName,
+                    lastName: accForm.lastName,
+                    email: accForm.email,
+                    password: password
+                }
+				)
+				.then((response) => {
+					console.log(response.data)
+                    console.log(response.data.userId)
+                    const addGuard = async () => {
+                        try{
+                            await axios
+                                .post(
+                                    `/residents`,
+                                    JSON.stringify({ 
+                                        userId: response.data.userId,
+                                        hoa: home.hoaId,
+                                        hoaId: home.hoaId
+                                    })
+                                )
+                                .then((response) => {
+                                    const sendMail = async () => {
+                                        try {
+                                            await axios.post('users/verify', {
+                                                email: accForm.email,
+                                                message:
+                                                    'Your Account has been created for the HOAST Website. Below are your account credentials \n Upon login, please change your password. \n' +
+                                                    'Email: ' +
+                                                    accForm.email +
+                                                    '\nPassword: ' +
+                                                    password +
+                                                    "\n P.S Don't share this to anyone"
+                                            });
+                                
+                                            return 'Email sent successfully to ' + accForm.email;
+                                        }
+                                        catch(err){
+                                            setOpenSnackBar(openSnackBar => ({
+                                                ...openSnackBar,
+                                                open:true,
+                                                type:'error',
+                                                note:"Error Occured!",
+                                            }));
+                                            console.error(err.message);
+                                        }
+                                    }
+                                    sendMail();
+                                    console.log(password);
+                                    navigate("/homes");
+                                })
+                        } catch (error) {
+                            setOpenSnackBar(openSnackBar => ({
+                                ...openSnackBar,
+                                open:true,
+                                type:'error',
+                                note:"Error Occured!",
+                            }));
+                        }
+                    }
+                    addGuard();
+				});
+        }
+        catch(err){
+            setOpenSnackBar(openSnackBar => ({
+                ...openSnackBar,
+                open:true,
+                type:'error',
+                note:"Error Occured!",
+            }));
+            console.error(err.message);
+        }
+    }
+
     useEffect(() => {
         fetchHome();
 	}, []);
@@ -170,7 +267,7 @@ function EditHome() {
                                 <div className='EditHome__ResidentList'>
                                     <h5>List of Residents</h5>
                                     <div className='FormWrapper__2__1'>
-                                            <TextField
+                                            {/* <TextField
                                                 id="filled-password-input"
                                                 label="Residents ID"
                                                 type="text"
@@ -180,7 +277,38 @@ function EditHome() {
                                             />
                                         <Button variant="contained"  type='submit' onClick={AddResident}>
                                             Add
-                                        </Button>
+                                        </Button> */}
+                                        <form onSubmit={SubmitAccount} className='Form'>
+                                <TextField
+                                    id="filled-password-input"
+                                    label="First Name"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>setAccForm({...accForm, firstName: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Last Name"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>setAccForm({...accForm, lastName: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Email"
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
+                                />
+                                
+                                <div className='Form__Button'>
+                                    <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>
+                                    <Button variant='contained' type='submit' className='Submit'>Submit</Button>
+                                </div>
+                            </form>
                                     </div>
                                     <div>
                                         {(residents.length === 0 )?
