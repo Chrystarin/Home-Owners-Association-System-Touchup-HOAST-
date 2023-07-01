@@ -1,4 +1,5 @@
 import React,{useState, useEffect} from 'react';
+import { useParams } from 'react-router-dom';
 
 import {useNavigate} from 'react-router';
 import Navbar from '../../layouts/NavBar';
@@ -11,6 +12,7 @@ import axios from '../../utils/axios';
 function AddVehicle() {
     const navigate = useNavigate();
 
+    const { id } = useParams();
     const [vehicle, setVehicle] = useState();
     const [stepper, setStepper] = useState(1);
 
@@ -24,9 +26,10 @@ function AddVehicle() {
 
     useEffect(() => {
 		const fetchVehicle = async () => {
-			await axios.get(`vehicles`).then((response) => {
+			await axios.get(`vehicles`, {params: {plateNumber: id}}).then((response) => {
 				setVehicle(response.data);
 				console.log(response.data);
+                console.log(response.data.plateNumber);
 			});
 		};
 		fetchVehicle();
@@ -75,17 +78,17 @@ function AddVehicle() {
             case 1:
                 return <>
                     <form onSubmit={Submit} className='Form'>
-                        <TextField required fullWidth  label="Plate Number" variant="filled" onChange={(e)=>updateForm({ plateNumber: e.target.value })}/>
+                        <TextField required fullWidth  label="Plate Number" variant="filled" defaultValue={vehicle?.plateNumber} onChange={(e)=>updateForm({ plateNumber: e.target.value })}/>
                         <div className='FormWrapper__2'>
-                            <TextField required fullWidth  label="Model" variant="filled" onChange={(e)=>updateForm({ model: e.target.value })}/>
-                            <TextField required fullWidth  label="Brand" variant="filled" onChange={(e)=>updateForm({ brand: e.target.value })}/>
+                            <TextField required fullWidth  label="Model" variant="filled" defaultValue={vehicle?.model} onChange={(e)=>updateForm({ model: e.target.value })}/>
+                            <TextField required fullWidth  label="Brand" variant="filled" defaultValue={vehicle?.brand} onChange={(e)=>updateForm({ brand: e.target.value })}/>
                         </div>
                         <div className='FormWrapper__2'>
-                            <TextField required fullWidth  label="Type" variant="filled" onChange={(e)=>updateForm({ type: e.target.value })}/>
-                            <TextField required fullWidth  label="Color" variant="filled" onChange={(e)=>updateForm({ color: e.target.value })}/>
+                            <TextField required fullWidth  label="Type" variant="filled" defaultValue={vehicle?.type} onChange={(e)=>updateForm({ type: e.target.value })}/>
+                            <TextField required fullWidth  label="Color" variant="filled" defaultValue={vehicle?.color} onChange={(e)=>updateForm({ color: e.target.value })}/>
                         </div>
                         
-                        <div className='FormWrapper__2'>
+                        {/* <div className='FormWrapper__2'>
                             <div className='UploadDocument__Holder'>
                                     <input className='UploadDocument__Input' type="file" name="" id="upload" required/>
                                     <label htmlFor='upload' className='UploadDocument__Holder'  style={{width:"300px"}}>
@@ -98,7 +101,7 @@ function AddVehicle() {
                                 <img src="" alt="" />
                             </div>
                             <div></div>
-                        </div>
+                        </div> */}
                         <div className='Form__Button'>
                             <Button variant='text'>Cancel</Button>
                             <Button variant='contained' type='submit' className='Submit'>Update</Button>

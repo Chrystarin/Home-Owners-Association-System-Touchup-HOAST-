@@ -119,7 +119,7 @@ function VisitorView() {
 									</div>
 									<div className="Input__Wrapper2">
 										<div className="GeneralInformation__InfoContainer ">
-											<h6>Owner:</h6>
+											<h6>Guest:</h6>
 											<h5>{visitor.name}</h5>
 										</div>
 										<div className="GeneralInformation__InfoContainer">

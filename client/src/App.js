@@ -69,7 +69,7 @@ function App() {
 				<Route path="/vehicles">
 					<Route path="" element={<Vehicles />} />
 					<Route path="add" element={<AddVehicle />} />
-					<Route path="update" element={<UpdateVehicle />} />
+					<Route path=":id/update" element={<UpdateVehicle />} />
 					<Route path=":id" element={<VehicleView />} />
 				</Route>
 

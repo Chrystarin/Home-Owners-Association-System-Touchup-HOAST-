@@ -148,7 +148,7 @@ function VehicleView() {
 									</div>
 									<Button
 										variant="contained"
-										href="/vehicles/update"
+										href={`${vehicle.plateNumber}/update`}
 									>
 										{' '}
 										Update
