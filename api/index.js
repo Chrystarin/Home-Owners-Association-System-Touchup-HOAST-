@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-// const { createServer } = require('http');
+const { createServer } = require('http');
 const { Server } = require('socket.io');
 
 require('dotenv/config');
 
-const { createServer } = require('https');
+// const { createServer } = require('https');
 
 const authenticate = require('./middlewares/authentication');
 const errorHandler = require('./middlewares/errorHandler');
@@ -25,7 +25,8 @@ const roleRoute = require('./routes/role');
 const userRoute = require('./routes/user');
 const vehicleRoute = require('./routes/vehicle');
 const visitorRoute = require('./routes/visitor');
-const { sendMessage } = require('./controllers/messageController');
+const messageRoute = require('./routes/message ');
+const { sendMessage, getMessages } = require('./controllers/messageController');
 
 const app = express();
 const server = createServer(app);
@@ -65,6 +66,8 @@ app.use('/residents', residentRoute);
 app.use('/vehicles', vehicleRoute);
 app.use('/visitors', visitorRoute);
 
+app.use('/messages', messageRoute);
+
 app.use((err, req, res, next) => {
     console.log(err);
 
@@ -89,6 +92,11 @@ io.on('connection', (socket) => {
      */
     socket.on('send', async (data) => {
         await sendMessage(data);
+        socket.emit('receive', data);
+    });
+
+    socket.on('receive', async (data) => {
+        await getMessages(data);
         socket.emit('receive', data);
     });
 });

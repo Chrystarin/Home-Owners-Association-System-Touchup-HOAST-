@@ -2,7 +2,7 @@ const { Schema, model } = require('mongoose');
 const { ObjectId } = Schema.Types;
 
 module.exports = model(
-    "Message",
+    'Message',
     new Schema(
         {
             guard: {
@@ -38,4 +38,4 @@ module.exports = model(
         },
         { timestamps: true }
     )
-)
+);

@@ -22,6 +22,9 @@ const getMessages = async (req, res, next) => {
 };
 
 const sendMessage = async ({ userId, guardId, hoaId, sender, receiver, content }) => {
+    console.log('Message Sent');
+    console.log(userId, guardId, hoaId, sender, receiver, content);
+
     if (userId === guardId || sender === receiver) throw new InvalidInputError('Sender and receiver cannot be the same');
 
     const user = await User.findOne({ userId });
