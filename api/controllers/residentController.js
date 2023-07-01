@@ -43,7 +43,7 @@ const getResidents = async (req, res, next) => {
 };
 
 const addResident = async (req, res, next) => {
-    const { firstName, lastName, email } = req.body;
+    const { firstName, lastName, email, residentType } = req.body;
     const { home } = req.user;
 
     const genPass = genPassword();
@@ -61,7 +61,7 @@ const addResident = async (req, res, next) => {
     if (residentExists) throw new ForbiddenError('User is already resident');
 
     // Add user as resident in home
-    home.residents.push({ user: resident._id });
+    home.residents.push({ user: resident._id, type: residentType });
     await home.save();
 
     res.status(201).json({
