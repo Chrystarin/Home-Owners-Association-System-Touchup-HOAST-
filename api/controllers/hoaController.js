@@ -96,18 +96,19 @@ const joinHoa = async (req, res, next) => {
 };
 
 const addGuard = async (req, res, next) => {
-    const { userId } = req.body;
+    const { userId, contactNo } = req.body;
     const { hoa } = req.user;
 
     // Validate input
     checkString(userId, 'User ID');
+    checkString(contactNo, 'Guard Contact', true);
 
     // Find user (to be guard)
     const user = await User.findOne({ userId });
     if (!user) throw new UserNotFoundError();
 
     // Add guard to HOA
-    hoa.guards.push({ user: user._id });
+    hoa.guards.push({ user: user._id, contactNo });
     await hoa.save();
 
     res.status(201).json({ message: 'Guard added' });
