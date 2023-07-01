@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { createServer } = require('http');
+const { Server } = require('socket.io');
 
 require('dotenv/config');
 
 const { createServer } = require('https');
-const { readFileSync } = require('fs');
 
 const authenticate = require('./middlewares/authentication');
 const errorHandler = require('./middlewares/errorHandler');
@@ -24,8 +25,15 @@ const roleRoute = require('./routes/role');
 const userRoute = require('./routes/user');
 const vehicleRoute = require('./routes/vehicle');
 const visitorRoute = require('./routes/visitor');
+const { sendMessage } = require('./controllers/messageController');
 
 const app = express();
+const server = createServer(app)
+const io = new Server(server, { 
+    cors: {
+        origin: process.env.CORS_ORIGIN
+    }
+ });
 
 app.use(cookieParser());
 app.use(express.json());
@@ -40,8 +48,6 @@ app.use(
 		// origin: '*'
 	})
 );
-
-
 
 app.use('/users', userRoute);
 app.use(authenticate);
@@ -70,24 +76,31 @@ app.use((err, req, res, next) => {
 
 app.use(errorHandler);
 
+io.on('connection', (socket) => {
+    /**
+     * user
+     *     id
+     *     type
+     * 
+     * guard
+     *     id
+     *     type
+     *     hoaId
+     */
+    socket.on('send', async (data) => {
+        await sendMessage(data);
+        socket.emit('receive', data);
+    })
+})
+
 mongoose
 	.connect(process.env.DEV_MONGO)
 	.then(() => {
 		console.log('Connected to database');
-		app.listen(process.env.PORT, (err) => {
+		server.listen(process.env.PORT, (err) => {
 			if (err) return console.log('Error', err);
 			console.log('Listening on port', process.env.PORT);
 		});
-		// createServer(
-		// 	{
-		// 		key: readFileSync('./test/localhost.key'),
-		// 		cert: readFileSync('./test/localhost.crt')
-		// 	},
-		// 	app
-		// ).listen(process.env.PORT, (err) => {
-		// 	if (err) return console.log('Failed launching server\n', err);
-		// 	console.log('Listening on port', process.env.PORT);
-		// });
 	})
 	.catch((err) => {
 		console.log('Failed connecting to database\n', err);
