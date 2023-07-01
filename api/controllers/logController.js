@@ -35,14 +35,14 @@ const getRecords = async (req, res, next) => {
 	const { logId, objId, logType } = req.query;
 	const { type } = req.user;
 
-	console.log(req.query);
+	// console.log(req.query);
 
 	// Validate input
 	checkString(logId, 'Log ID', true);
 
 	let logs;
 
-	if (type == USER) {
+	if (type === USER) {
 		const { user } = req.user;
 		logs = [
 			// user logs
@@ -69,7 +69,7 @@ const getRecords = async (req, res, next) => {
 		});
 
 		logs = [
-			...(await getLogsByLookup('user', residents, 'userId')), // user logs
+			...(await getLogsByLookup('user', residents.map(({ user }) => user), 'userId')), // user logs
 			...(await getLogsByLookup('visitor', visitors, 'visitorId')), // visitor logs
 			...(await getLogsByLookup('vehicle', vehicles, 'plateNumber')) // vehicle logs
 		];
@@ -88,7 +88,9 @@ const getRecords = async (req, res, next) => {
 		logs = logs.filter(log => log[logType]?.[objProp] === objId);
 	}
 
-	console.log(type)
+	// console.log(logs)
+
+	// console.log(type)
 
 	// Get logs of specific entity
 	// if (objId) {

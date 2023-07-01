@@ -12,18 +12,26 @@ function SearchInput(props) {
         focus:false,
     })
 
+    const crawler = (data,parent) => Object.entries(data).reduce((data,[key,value])=>{
+        if(value instanceof Array) return data;
 
+        key = parent ? `${parent}.${key}`:key;
+
+        if(typeof value === 'object')
+            return{
+                ... data,...crawler(value,key)
+            };
+        return {...data,[key]:value};
+    })
 
     useEffect(() => {
-        
         props.setData(()=>{
-            return sortBy(
-                searchData(props.data),
-                props.filterValue.sortBy
-            );
+            return searchData(props.data.map((data) => crawler(data)))
         })
+        console.log( searchData(props.data.map((data) => crawler(data))))
+        
     }, [search.focus, search.value,props.filterValue]);
-
+    
 
     const searchData = (data) => {
         return data.filter(

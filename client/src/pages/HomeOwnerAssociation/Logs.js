@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import NavBar from '../../layouts/NavBar';
 import './Dashboard.scss';
+import './Logs.scss'
 import SideBar from './SideBar';
 import Button from '@mui/material/Button';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -19,10 +20,25 @@ import loading from '../../images/loading.gif';
 import axios from '../../utils/axios';
 import TablePagination from '@mui/material/TablePagination';
 import TableFooter from '@mui/material/TableFooter';
+import Modal from '@mui/material/Modal';
 import SnackbarComp from '../../components/SnackBar/SnackbarComp';
+import {useAuth} from '../../utils/AuthContext.js';
 function Logs() {
+    const [home, setHome] = useState();
+    const [user, setUser] = useState();
+    const [open, setOpen] = React.useState(false);
+    const [selectedValue,setSelectedValue] = useState();
 
-    const [logs, setLogs] = useState()
+    const {isRole} = useAuth();
+
+    const [logs, setLogs] = useState();
+
+    const [data,setData] = useState({});
+    const [filterValue,setFilterValue] = useState(
+        {
+            sortBy:"A_Z"
+        }
+    );
     const [openSnackBar, setOpenSnackBar] = React.useState({
         open:false,
         type:"",
@@ -65,6 +81,34 @@ function Logs() {
 		};
 		fetchLogs();
 	}, []);
+
+    // Retrieves Home Data
+    const fetchHome = async (id) => {
+        await axios
+        .get(`homes`,{
+                params: {
+                    homeId: id,
+                    hoaId: (isRole('admin') || isRole('guard')) ? localStorage.getItem('hoaId') : null
+                }
+            })
+        .then((response) => {
+            console.log(response.data);
+            setHome(response.data);
+        })
+    };
+    const fetchUser = async (id) => {
+        await axios
+            .get(`residents`, {
+                params: {
+                    residentId: id,
+                    hoaId: (isRole('admin') || isRole('guard')) ? localStorage.getItem('hoaId') : null,
+                }
+            })
+            .then((response) => {
+                setUser(response.data)
+                console.log(response.data)
+            });
+    };
 
     // Function for downloading csv
     // function downloadCSV(input) {
@@ -159,15 +203,17 @@ function Logs() {
   </>
 
     return <>
+            
         <NavBar/>
         <div className='SectionHolder'>
+
             <section className='Section SectionManage'>
                 <SideBar active="Logs"/>
                 <div id='HOA__Content'>
                     <h3 className='SectionTitleDashboard'><span><a href="">Logs</a></span></h3>
                     <div className='SectionController'>
                         <div id='SearchInput__Container'>
-                            {/* <SearchInput/> */}
+                        <SearchInput setData={setData} data={logs} keys={["logType"]} filterValue={filterValue}/>
                         </div>
                         <Button variant="" startIcon={<FilterAltIcon/>} onClick={(event) => setAnchorElFilter(event.currentTarget)}>Filter</Button>
                         <Menu
@@ -245,35 +291,42 @@ function Logs() {
                                     </TableHead>
                                     <TableBody>
 
-                                        {logs.length === 0 ? (
+                                        {data.length === 0 ? (
 													<></>
                                         ) : (
                                             <>
-                                                {logs.length > 0 &&
-                                                    logs.map((log) => {
-                                                        return (
+                                                {data.length > 0 &&
+                                                    data.map((log) => {
+                                                        return <>
                                                             <TableRow
+                                                                className='TableRow'
+                                                                onClick={()=> {
+                                                                    setOpen(true); 
+                                                                    setSelectedValue(log);
+                                                                    if(log.logType === 'visitor') fetchHome(log["visitor.home"])
+                                                                    if(log.logType === 'vehicle') fetchUser(log["vehicle.owner"])
+                                                                }}
                                                                 key={log.logId}
                                                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                             >
                                                                 <TableCell component="th" scope="row" align='center'>
-                                                                    {log.logType === 'user' ? log.user.userId :
-                                                                    log.logType === 'vehicle' ? log.vehicle.plateNumber :
-                                                                    log.visitor.visitorId}
+                                                                    {log.logType === 'user' ? log["user.userId"] :
+                                                                    log.logType === 'vehicle' ? log["vehicle.plateNumber"] :
+                                                                    log["visitor.visitorId"]}
                                                                 </TableCell>
                                                                 <TableCell align="center">
-                                                                    {log.logType === 'user' ? log.user.name.firstName + ' ' + log.user.name.lastName :
-                                                                    log.logType === 'vehicle' ? log.vehicle.brand:
-                                                                    log.visitor.name}
+                                                                    {log.logType === 'user' ? log["user.name.firstName"] + ' ' + log["user.name.lastName"] :
+                                                                    log.logType === 'vehicle' ? log["vehicle.brand"]:
+                                                                    log["visitor.name"]}
                                                                 </TableCell>
                                                                 <TableCell component="th" scope="row" align='center'>{log.logType} </TableCell>
-                                                                <TableCell align="center">{new Date(log.createdAt).getMonth() + " - " + new Date(log.createdAt).getDate()  + " - " + new Date(log.createdAt).getFullYear() + " | " + new Date(log.createdAt).getHours() + ":" + new Date(log.createdAt).getMinutes() + ":" + new Date(log.createdAt).getSeconds()}</TableCell>
+                                                                <TableCell align="center">{new Date(log.createdAt).getMonth() + " / " + new Date(log.createdAt).getDate()  + " / " + new Date(log.createdAt).getFullYear() + " | " + new Date(log.createdAt).getHours() + ":" + new Date(log.createdAt).getMinutes() + ":" + new Date(log.createdAt).getSeconds()}</TableCell> 
                                                             </TableRow>
-                                                        );
+                                                        </>
                                                     })}
                                             </>
                                         )}
-
+                                       
                                         {/* {Logs.map((Log) => (
                                             <TableRow
                                                 key={Log.id}
@@ -312,6 +365,79 @@ function Logs() {
                     </div>
                 </div>
             </section>
+            <Modal
+                open={open}
+                onClose={()=> setOpen(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <div className='LogsModal'>
+                    <div className='LogsModal__Header'>
+                        {selectedValue?.logType === "user"? <>
+                            <h5>{selectedValue["user.name.firstName"]} {selectedValue["user.name.lastName"]} </h5>
+                        </>:""}
+                        {selectedValue?.logType === "visitor"? <>
+                            <h5>{selectedValue["visitor.name"]}</h5>
+                        </>:""}
+                        {selectedValue?.logType === "vehicle"? <>
+                            <h5>{selectedValue["vehicle.plateNumber"]}</h5>
+                        </>:""}
+                        <p>{selectedValue?.logType}</p>
+                    </div>
+                    <ul className='LogsModal__Body'>
+                        {selectedValue?.logType === "user"?<>
+                            
+                            <li>
+                                <h6>Log Time</h6>
+                                 
+                                <p>{new Date(selectedValue.createdAt).getMonth() + " / " + new Date(selectedValue.createdAt).getDate()  + " / " + new Date(selectedValue.createdAt).getFullYear() + " | " + new Date(selectedValue.createdAt).getHours() + ":" + new Date(selectedValue.createdAt).getMinutes() + ":" + new Date(selectedValue.createdAt).getSeconds()}</p>
+                            </li>
+                        </>:""}
+                        {selectedValue?.logType === "visitor"?<>
+                            <li>
+                                <h6>Arrival - Departure Date: </h6>
+                                
+                                <p>{new Date(selectedValue["visitor.arrival"] ).getMonth() + " / " + new Date(selectedValue["visitor.arrival"] ).getDate()  + " / " + new Date(selectedValue["visitor.arrival"] ).getFullYear() + " | " + new Date(selectedValue["visitor.arrival"] ).getHours() + ":" + new Date(selectedValue["visitor.arrival"] ).getMinutes() + ":" + new Date(selectedValue["visitor.arrival"] ).getSeconds()} 
+                                to {new Date(selectedValue["visitor.departure"]).getMonth() + " / " + new Date(selectedValue["visitor.departure"]).getDate()  + " / " + new Date(selectedValue["visitor.departure"]).getFullYear() + " | " + new Date(selectedValue["visitor.departure"]).getHours() + ":" + new Date(selectedValue["visitor.departure"]).getMinutes() + ":" + new Date(selectedValue["visitor.departure"]).getSeconds()} </p>
+                            </li>
+                            <li>
+                                <h6>Purpose: </h6>
+                                <p>{selectedValue["visitor.purpose"]}</p>
+                            </li>
+                            <li>
+                                <h6>Note: </h6>
+                                <p>{selectedValue["visitor.note"]}</p>
+                            </li>
+                            <li>
+                                <h6>Home Address: </h6>
+                                <p>{home?.hoa.address.street}</p>
+                            </li>
+                        </>:""}
+                        {selectedValue?.logType === "vehicle"?<>
+                            <li>
+                                <h6>Owner Name</h6>
+                                <p>{user?.user.name.firstName} {user.user.name.lastName}</p>
+                            </li>
+                            <li>
+                                <h6>Model</h6>
+                                <p>{selectedValue["vehicle.model"]}</p>
+                            </li>
+                            <li>
+                                <h6>Brand</h6>
+                                <p>{selectedValue["vehicle.brand"]}</p>
+                            </li>
+                            <li>
+                                <h6>Type</h6>
+                                <p>{selectedValue["vehicle.type"]}</p>
+                            </li>
+                            
+                        </>:""}
+                    </ul>
+                    <div className='LogsModal__Button'>
+                        <Button onClick={()=> setOpen(false)} variant='contained' fullWidth>Close</Button>
+                    </div>
+                </div>
+            </Modal>
             <SnackbarComp open={openSnackBar} setter={setOpenSnackBar}/>
         </div>
     </>
