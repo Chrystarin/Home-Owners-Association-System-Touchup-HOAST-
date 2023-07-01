@@ -35,14 +35,12 @@ const getRecords = async (req, res, next) => {
 	const { logId, objId, logType } = req.query;
 	const { type } = req.user;
 
-	console.log(req.query);
-
 	// Validate input
 	checkString(logId, 'Log ID', true);
 
 	let logs;
 
-	if (type == USER) {
+	if (type === USER) {
 		const { user } = req.user;
 		logs = [
 			// user logs
