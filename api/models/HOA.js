@@ -44,7 +44,33 @@ module.exports = model(
 					},
 					hiredAt: { type: Date, default: new Date() }
 				}
-			]
+			],
+            visitors: [
+                {
+                    visitorId: {
+                        type: String,
+                        index: { unique: true, sparse: true },
+                        required: true
+                    },
+                    name: {
+                        type: String,
+                        required: [true, 'Visitor Name is required']
+                    },
+                    purpose: {
+                        type: String,
+                        required: [true, 'Purpose is required']
+                    },
+                    arrival: {
+                        type: Date,
+                        required: [true, 'Arrival is required']
+                    },
+                    departure: {
+                        type: Date,
+                        required: [true, 'Departure is required']
+                    },
+                    note: String
+                }
+            ]
 		},
 		{ timestamps: true }
 	)

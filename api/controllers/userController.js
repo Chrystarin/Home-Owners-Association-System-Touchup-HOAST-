@@ -17,7 +17,7 @@ const createToken = (userId) =>
 const cookieOptions = { httpOnly: true, sameSite: 'none', secure: true };
 
 const signup = async (req, res, next) => {
-    const { firstName, lastName, email, password } = req.body;
+    const { firstName, lastName, email, password, contactNo } = req.body;
     
     checkString(firstName, 'First Name');
     checkString(lastName, 'Last Name');
@@ -28,6 +28,7 @@ const signup = async (req, res, next) => {
     const user = await User.create({
         userId: genUserId(),
         name: { firstName, lastName },
+        contactNo,
         credentials: { email, password: await bcrypt.hash(password, 10) }
     });
 
@@ -88,6 +89,7 @@ const addHomeowner = async (req, res, next) => {
     const homeowner = await User.create({
         userId: genUserId(),
         name: { firstName, lastName },
+        contactNo,
         credentials: { email, password: await bcrypt.hash(genPass, 10) }
     });
 

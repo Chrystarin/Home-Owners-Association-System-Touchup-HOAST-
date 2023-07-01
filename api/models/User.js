@@ -15,6 +15,10 @@ module.exports = model(
 					required: [true, 'Last Name is required']
 				}
 			},
+            contactNo: {
+                type: String,
+                required: [true, 'Contact No is required']
+            },
 			credentials: {
 				email: {
 					type: String,

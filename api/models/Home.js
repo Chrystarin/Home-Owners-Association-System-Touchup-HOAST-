@@ -59,6 +59,11 @@ module.exports = model(
                         ref: 'User',
                         required: [true, 'User is required']
                     },
+                    type: {
+                        type: String,
+                        enum: ['family', 'household'],
+                        required: [true, 'Resident type is required']
+                    },
                     status: {
                         type: String,
                         enum: ['active', 'inactive'],

@@ -12,6 +12,8 @@ const { addVisitor, getVisitors } = asyncHandler(
 	require('../controllers/visitorController')
 );
 
+router.use(allowAdmin, allowGuard, allowResident)
+
 /**
  * Get visitors
  *
@@ -23,7 +25,7 @@ const { addVisitor, getVisitors } = asyncHandler(
  * [Resident]
  * homeId
  */
-router.get('/', allowAdmin, allowGuard, allowResident, getVisitors);
+router.get('/', getVisitors);
 
 /**
  * Create a visitor
@@ -34,6 +36,6 @@ router.get('/', allowAdmin, allowGuard, allowResident, getVisitors);
  * departureDate
  * note
  */
-router.post('/', allowResident, notUser, addVisitor);
+router.post('/', notUser, addVisitor);
 
 module.exports = router;

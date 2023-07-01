@@ -12,7 +12,7 @@ const { notifType, messages } = require('../helpers/notificationUtils');
 
 const addVisitor = async (req, res, next) => {
     const { name, purpose, arrival, departure, note } = req.body;
-    const { home } = req.user;
+    const { type } = req.user;
 
     // Validate input
     checkString(name, 'Visitor Name');
@@ -31,27 +31,36 @@ const addVisitor = async (req, res, next) => {
         note
     };
 
-    home.visitors.push(visitor);
-    await home.save();
-    await home.populate('owner');
+    if(EMPLOYEE.has(type)) {
+        const { hoa } = req.user;
 
-    console.log(home);
+        hoa.visitors.push(visitor);
+        await hoa.save();
+    }
 
-    const hoa = await HOA.findById(home.hoa);
+    if(RESIDENT.has(type)) {
+        const { home } = req.user;
 
-    const notifParams = {
-        message: messages[notifType.NewVisitor](home.owner.name, visitor.visitorId, home.name, visitor.arrival),
-        type: notifType.NewVisitor,
-        subjectId: visitor.visitorId
-    };
+        home.visitors.push(visitor);
+        await home.save();
+        await home.populate('owner');
 
-    const createNotifs = [];
-    createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: hoa.admin }));
-    hoa.guards
-        .filter(({ status }) => status === 'active')
-        .forEach((guard) => createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: guard.user })));
+        const hoa = await HOA.findById(home.hoa);
 
-    await Promise.all(createNotifs);
+        const notifParams = {
+            message: messages[notifType.NewVisitor](home.owner.name, visitor.visitorId, home.name, visitor.arrival),
+            type: notifType.NewVisitor,
+            subjectId: visitor.visitorId
+        };
+
+        const createNotifs = [];
+        createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: hoa.admin }));
+        hoa.guards
+            .filter(({ status }) => status === 'active')
+            .forEach((guard) => createNotifs.push(Notification.create({ ...notifParams, notificationId: genNotificationId(), user: guard.user })));
+
+        await Promise.all(createNotifs);
+    }
 
     res.status(201).json({
         message: 'Visitor added',
@@ -68,7 +77,7 @@ const getVisitors = async (req, res, next) => {
 
     let visitors;
 
-    if (type == USER) {
+    if (type === USER) {
         const { user } = req.user;
 
         // Get visitors from homes
