@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from './../../utils/AuthContext.js';
-
+import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
 const ChatFooter = ({ socket, recipient }) => {
     const [message, setMessage] = useState('');
     const { isRole } = useAuth();
@@ -26,16 +27,12 @@ const ChatFooter = ({ socket, recipient }) => {
         setMessage('');
     };
     return (
-        // <div className="chat__footer">
-        //     <form onSubmit={handleSendMessage}>
-        //         <input type="text" placeholder="Type a message..." value={message} onChange={(e) => setMessage(e.target.value)} />
-        //         <button type="submit">Send</button>
-        //     </form>
-        // </div>
         <div className="chat__footer">
             <form className="form" onSubmit={handleSendMessage}>
                 <input type="text" placeholder="Write message" className="message" value={message} onChange={(e) => setMessage(e.target.value)} />
-                <button className="sendBtn">SEND</button>
+                <Button variant="contained" type="submit">
+                    SEND
+                </Button>
             </form>
         </div>
     );

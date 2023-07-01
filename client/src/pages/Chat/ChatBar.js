@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './../../utils/AuthContext.js';
 import axios from '../../utils/axios';
-
 const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
     const [users, setUsers] = useState([]);
 
@@ -54,10 +53,8 @@ const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
 
     return (
         <div className="chat__sidebar">
-            <h4>Chats</h4>
-
+            <h4 id="chat__sidebar__Title">Chats</h4>
             <div>
-                {/* <h4 className="chat__header">ACTIVE USERS</h4> */}
                 <div className="chat__users">
                     {users.map((user) => (
                         <p
@@ -65,7 +62,7 @@ const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
                             onClick={() => {
                                 setSelectedUser(user.user.userId);
                             }}
-                            style={{ cursor: 'pointer', backgroundColor: user.user.userId === selectedUser ? 'red' : '' }}
+                            className={user.user.userId === selectedUser ? 'activeUser' : 'UsersList'}
                         >
                             {user.user.name.firstName} {user.user.name.lastName}
                         </p>

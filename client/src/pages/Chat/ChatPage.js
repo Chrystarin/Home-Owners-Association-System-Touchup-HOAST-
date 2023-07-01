@@ -12,7 +12,7 @@ const ChatPage = ({ socket }) => {
     const [messages, setMessages] = useState([]);
     const [selectedUser, setSelectedUser] = useState();
     const { isRole } = useAuth();
-
+    const [scroll, setScroll] = useState(false);
     useEffect(() => {
         socket.on('receive', (data) => setMessages([...messages, data]));
     }, [socket, messages]);
@@ -51,10 +51,14 @@ const ChatPage = ({ socket }) => {
         <div className="chat">
             {/* <input type="text" placeholder="Recipient" value={selectedUser} onChange={(e) => setSelectedUser(e.target.value)} /> */}
 
-            <ChatBar socket={socket} setSelectedUser={setSelectedUser} selectedUser={selectedUser} />
+            <ChatBar socket={socket} setSelectedUser={setSelectedUser} selectedUser={selectedUser} setScroll={setScroll} />
             <div className="chat__main">
-                <p>Selected User: {selectedUser}</p>
-                <ChatBody messages={messages} />
+                <div className="chat__main__Container">
+                    <div className="chat__main__Header">
+                        <h6>{selectedUser}</h6>
+                    </div>
+                    <ChatBody messages={messages} scroll={scroll} setScroll={setScroll} />
+                </div>
                 <ChatFooter socket={socket} recipient={selectedUser} />
             </div>
         </div>
