@@ -137,7 +137,7 @@ export default function AddGuard() {
                                                 ...openSnackBar,
                                                 open:true,
                                                 type:'error',
-                                                note:"Error Occured!",
+                                                note:"Didn't Send Email!",
                                             }));
                                             console.error(err.message);
                                         }
@@ -151,7 +151,7 @@ export default function AddGuard() {
                                 ...openSnackBar,
                                 open:true,
                                 type:'error',
-                                note:"Error Occured!",
+                                note:"Check Email!",
                             }));
                         }
                     }
@@ -163,7 +163,7 @@ export default function AddGuard() {
                 ...openSnackBar,
                 open:true,
                 type:'error',
-                note:"Error Occured!",
+                note:"Check your Inputs!",
             }));
             console.error(err.message);
         }
@@ -222,6 +222,15 @@ export default function AddGuard() {
                                     type="text"
                                     variant="filled"
                                     required
+                                    onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
+                                />
+                                <TextField
+                                    id="filled-password-input"
+                                    label="Contact No."
+                                    type="text"
+                                    variant="filled"
+                                    required
+                                    inputProps={{ maxLength: 11 }}
                                     onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
                                 />
                                 
