@@ -15,23 +15,20 @@ module.exports = model(
 					required: [true, 'Last Name is required']
 				}
 			},
-			contactNo: {
-				type: String
-			},
 			credentials: {
 				email: {
 					type: String,
 					required: [true, 'Email is required'],
-					unique: true
+                    unique: true
 				},
 				password: {
 					type: String,
 					required: [true, 'Password is required']
 				},
-				isVerified: {
-					type: Boolean,
-					default: false
-				}
+                isVerified: {
+                    type: Boolean,
+                    default: false
+                }
 			},
 			vehicles: [
 				{
@@ -56,23 +53,23 @@ module.exports = model(
 						type: String,
 						required: [true, 'Color is required']
 					},
-					frontImage: {
-						type: String,
-						required: [true, 'Front Image is required']
-					},
-					backImage: {
-						type: String,
-						required: [true, 'Back Image is required']
-					}
+                    frontImage: {
+                        type: String,
+                        required: [true, 'Front Image is required']
+                    },
+                    backImage: {
+                        type: String,
+                        required: [true, 'Back Image is required']
+                    }
 				}
 			]
 		},
 		{
 			timestamps: true,
 			toJSON: {
-				transform: function (doc, ret) {
-					delete ret.credentials;
-					return ret;
+				transform: function(doc, ret) {
+					delete ret.credentials
+					return ret
 				}
 			}
 		}

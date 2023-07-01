@@ -42,6 +42,7 @@ module.exports = model(
 						enum: ['active', 'retired'],
 						default: 'active'
 					},
+                    contactNo: String,
 					hiredAt: { type: Date, default: new Date() }
 				}
 			],
