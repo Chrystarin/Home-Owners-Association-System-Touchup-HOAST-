@@ -98,6 +98,8 @@ const addGuard = async (req, res, next) => {
     const { userId, contactNo } = req.body;
     const { hoa } = req.user;
 
+    console.log(contactNo);
+
     // Validate input
     checkString(userId, 'User ID');
     checkString(contactNo, 'Guard Contact', true);

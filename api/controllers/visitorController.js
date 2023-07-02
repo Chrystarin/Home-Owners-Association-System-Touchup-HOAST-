@@ -17,7 +17,7 @@ const addVisitor = async (req, res, next) => {
     // Validate input
     checkString(name, 'Visitor Name');
     checkString(purpose, 'Purpose');
-    checkString(note, 'Note');
+    checkString(note, 'Note', true);
     checkDate(arrival, 'Arrival');
     checkDate(departure, 'Departure');
 
@@ -31,14 +31,14 @@ const addVisitor = async (req, res, next) => {
         note
     };
 
-    if(EMPLOYEE.has(type)) {
+    if (EMPLOYEE.has(type)) {
         const { hoa } = req.user;
 
         hoa.visitors.push(visitor);
         await hoa.save();
     }
 
-    if(RESIDENT.has(type)) {
+    if (RESIDENT.has(type)) {
         const { home } = req.user;
 
         home.visitors.push(visitor);

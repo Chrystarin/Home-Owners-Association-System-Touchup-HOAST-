@@ -391,7 +391,8 @@ function Logs() {
                                                                             {log.logType}{' '}
                                                                         </TableCell>
                                                                         <TableCell align="center">
-                                                                            {new Date(log.createdAt).getMonth() + 1 +
+                                                                            {new Date(log.createdAt).getMonth() +
+                                                                                1 +
                                                                                 ' / ' +
                                                                                 new Date(log.createdAt).getDate() +
                                                                                 ' / ' +
@@ -542,7 +543,7 @@ function Logs() {
                                     </li>
                                     <li>
                                         <h6>Home Address: </h6>
-                                        <p>{home?.hoa.address.street}</p>
+                                        <p>{home?.address?.number + ' ' + home?.address?.street + ' ' + home?.address?.phase}</p>
                                     </li>
                                 </>
                             ) : (

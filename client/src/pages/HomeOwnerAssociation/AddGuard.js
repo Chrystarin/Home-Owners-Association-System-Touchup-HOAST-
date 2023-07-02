@@ -29,7 +29,7 @@ export default function AddGuard() {
         note: ''
     });
 
-    const [stepper, setStepper] = useState(1);
+    const [stepper, setStepper] = useState(2);
 
     const generatePassword = () => {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -111,7 +111,8 @@ export default function AddGuard() {
                                     JSON.stringify({
                                         userId: response.data.userId,
                                         hoa: form.hoaId,
-                                        hoaId: form.hoaId
+                                        hoaId: form.hoaId,
+                                        contactNo: accForm.contact
                                     })
                                 )
                                 .then((response) => {
@@ -176,14 +177,14 @@ export default function AddGuard() {
                             <span>Add Guard</span>
                         </h3>
                         <div className="SectionContent">
-                            <div>
+                            {/* <div>
                                 <Button variant="text" className={stepper === 1 ? 'active' : ''} onClick={() => setStepper(1)}>
                                     Add Existing Guard
                                 </Button>
                                 <Button variant="text" className={stepper === 2 ? 'active' : ''} onClick={() => setStepper(2)}>
                                     Create Guard Account
                                 </Button>
-                            </div>
+                            </div> */}
                             {stepper === 1 ? (
                                 <>
                                     <form onSubmit={Submit} className="Form">

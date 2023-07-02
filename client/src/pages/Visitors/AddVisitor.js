@@ -183,7 +183,7 @@ function AddVisitor() {
                             </Select>
                         </FormControl>
 
-                            <TextField required fullWidth  label="Note" variant="outlined" onChange={(e)=>updateForm({ note: e.target.value })}/>
+                            <TextField fullWidth  label="Note" variant="outlined" onChange={(e)=>updateForm({ note: e.target.value })}/>
                         </div>
                         <div className='Form__Button'>
                             <Button variant='text'>Cancel</Button>

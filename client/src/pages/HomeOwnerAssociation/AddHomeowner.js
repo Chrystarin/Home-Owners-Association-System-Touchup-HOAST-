@@ -139,7 +139,7 @@ export default function AddHomeowner() {
             // Split into Rows
             let [head, ...rows] = csv.split('\n');
 
-            head = ['firstName', 'lastName', 'email', 'contactNo', 'name', 'homeNo', 'street', 'phase'];
+            head = ['firstName', 'lastName', 'email', 'name', 'homeNo', 'street', 'phase', 'contactNo'];
             const accounts = [];
 
             console.log(rows);
@@ -160,14 +160,14 @@ export default function AddHomeowner() {
                         resident: {
                             firstName: account.firstName,
                             lastName: account.lastName,
-                            email: account.email,
-                            contactNo: account.contactNo
+                            email: account.email
                         },
                         home: {
                             homeNo: account.homeNo,
                             name: account.name,
                             street: account.street,
-                            phase: account.phase
+                            phase: account.phase,
+                            contactNo: account.contactNo
                         }
                     })
                 )
