@@ -81,6 +81,8 @@ const addHomeowner = async (req, res, next) => {
     } = req.body;
     const { hoa } = req.user;
 
+    console.log(req.body);
+
     const genPass = genPassword();
 
     // Create user
