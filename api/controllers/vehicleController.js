@@ -71,4 +71,19 @@ const addVehicle = async (req, res, next) => {
     res.status(201).json({ message: 'Vehicle added' });
 };
 
-module.exports = { getVehicles, addVehicle };
+const updateVehicle = async (req, res, next) => {
+    const { color, plateNumber } = req.body;
+    const { user } = req.user;
+
+    console.log(color);
+
+    const vehicle = user.vehicles.find((vehicle) => plateNumber === vehicle.plateNumber);
+    if (vehicle === undefined) throw new VehicleNotFoundError();
+
+    vehicle.color = color;
+    await user.save();
+
+    res.json({ message: 'Vehicle updated' });
+};
+
+module.exports = { getVehicles, addVehicle, updateVehicle };

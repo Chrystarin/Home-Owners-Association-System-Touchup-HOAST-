@@ -8,7 +8,7 @@ const {
 	allowGuard
 } = require('../middlewares/authorization');
 
-const { getVehicles, addVehicle } = asyncHandler(
+const { getVehicles, addVehicle, updateVehicle } = asyncHandler(
 	require('../controllers/vehicleController')
 );
 
@@ -37,5 +37,13 @@ router.get('/', allowAdmin, allowGuard, allowResident, getVehicles);
  * color
  */
 router.post('/', fileUpload(), addVehicle);
+
+/**
+ * Update vehicle color
+ * 
+ * plateNumber
+ * color
+ */
+router.patch('/', updateVehicle);
 
 module.exports = router;
