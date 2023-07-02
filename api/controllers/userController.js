@@ -18,7 +18,7 @@ const cookieOptions = { httpOnly: true, sameSite: 'none', secure: true };
 
 const signup = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
-    
+
     checkString(firstName, 'First Name');
     checkString(lastName, 'Last Name');
     checkString(password, 'Password');
@@ -77,7 +77,7 @@ const updateUser = async (req, res, next) => {
 const addHomeowner = async (req, res, next) => {
     const {
         resident: { firstName, lastName, email },
-        home: { homeNo, street, phase }
+        home: { homeNo, street, phase, contactNo }
     } = req.body;
     const { hoa } = req.user;
 
@@ -97,7 +97,7 @@ const addHomeowner = async (req, res, next) => {
         owner: homeowner._id,
         hoa: hoa._id,
         address: { number: homeNo, street, phase },
-        contactNo,
+        contactNo: contactNo,
         residents: [{ user: homeowner._id }]
     });
 
@@ -116,7 +116,7 @@ const forgetPassword = async (req, res, next) => {
     const { email, password } = req.body;
     const user = await User.findOne({ 'credentials.email': email }).exec();
 
-    if(!user) new UnauthorizedError('User not found');
+    if (!user) new UnauthorizedError('User not found');
 
     user.credentials.password = bcrypt.hashSync(password, 10);
     await user.save();
@@ -132,8 +132,8 @@ const sendMail = async (req, res, next) => {
     checkEmail(email);
 
     await sendEmail(email, message);
-    
+
     res.json({ message: 'Email sent' });
-}
+};
 
 module.exports = { signup, login, getUser, updateUser, forgetPassword, sendMail, addHomeowner };
