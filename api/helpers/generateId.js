@@ -81,6 +81,7 @@ const genNotificationId = () => generateId('NTF', ++notificationNonce);
 const genPassword = () => [...randomBytes(8)].map((byte) => alphabet[byte & 63]).join('');
 
 module.exports = {
+    dateToString,
     genDueId,
     generateId,
     genHoaId,

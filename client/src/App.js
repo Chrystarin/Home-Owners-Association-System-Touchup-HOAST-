@@ -32,6 +32,7 @@ import ResidentsList from './pages/HomeOwnerAssociation/ResidentsList.js';
 import VehicleList from './pages/HomeOwnerAssociation/VehicleList.js';
 import HomeList from './pages/HomeOwnerAssociation/HomeList.js';
 import DuesView from './pages/HomeOwnerAssociation/DuesView.js';
+import Reports from './pages/HomeOwnerAssociation/Reports.js';
 
 import CreateQuickPass from './pages/HomeOwnerAssociation/CreateQuickPass.js';
 
@@ -124,6 +125,7 @@ function App() {
                     <Route path="residentslist" element={<ResidentsList />} />
                     <Route path="vehiclelist" element={<VehicleList />} />
                     <Route path="homelist" element={<HomeList />} />
+                    <Route path="reports" element={<Reports />} />
                 </Route>
             </Route>
 

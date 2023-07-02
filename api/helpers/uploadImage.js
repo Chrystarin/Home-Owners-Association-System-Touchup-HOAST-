@@ -32,6 +32,8 @@ module.exports = async (image, path) => {
 		mode: 'overwrite' // Overwrite the file if it already exists.
 	});
 
+	console.log(path_display)
+
 	let url;
 
 	try {

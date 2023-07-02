@@ -44,6 +44,9 @@ function SideBar(props) {
                 <li>
                     <a href="homelist" className={(props.active=="HomesList")?"active":""}><h6>Homes List</h6></a>
                 </li>
+                <li>
+                    <a href="reports" className={(props.active=="Reports")?"active":""}><h6>Reports</h6></a>
+                </li>
                 
             </ul>
         </div>

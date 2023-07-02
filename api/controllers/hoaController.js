@@ -137,6 +137,8 @@ const getGuards = async (req, res, next) => {
     const { guardId, selectedHoa } = req.query;
     const { hoa } = req.user;
 
+    console.log(req.query);
+
     checkString(guardId, 'Guard ID', true);
 
     let guards = {};

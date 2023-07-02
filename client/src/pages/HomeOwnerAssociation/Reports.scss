@@ -1,0 +1,40 @@
+.ReportCards {
+    display: flex;
+    gap: 25px;
+    flex-wrap: wrap;
+    div {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.141);
+        width: 300px;
+        overflow: hidden;
+
+        p:nth-child(1) {
+            padding-left: 1em;
+
+            padding-top: 25px;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+        p:nth-child(2) {
+            margin: 45px 0;
+            padding-bottom: 35px;
+            text-align: center;
+            font-size: 4em;
+            margin-bottom: 25px;
+        }
+        a {
+            display: block;
+            padding: 1em;
+            width: 100%;
+            color: white;
+            background-color: var(--secondary-color);
+            opacity: 1;
+            transition: all 300ms ease-in-out;
+        }
+        a:hover {
+            opacity: 0.9;
+        }
+    }
+}

@@ -1,7 +1,11 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-const ChatBody = ({ messages }) => {
+import { useAuth } from './../../utils/AuthContext.js';
+import axios from '../../utils/axios';
+
+const ChatBody = ({ messages, selectedUser, selectedName }) => {
     const messageContainerRef = useRef(null);
+
     // console.log(messages);
 
     // const handleLeaveChat = () => {
@@ -9,15 +13,56 @@ const ChatBody = ({ messages }) => {
     //     navigate('/');
     //     window.location.reload();
     // };
+
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
+
     const scrollToBottom = () => {
         if (messageContainerRef.current) {
             messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
         }
     };
     scrollToBottom();
+
+    // const fetchGuard = async () => {
+    //     await axios
+    //         .get(`hoas/guards`, {
+    //             params: {
+    //                 hoaId: process.env.REACT_APP_HOA_ID,
+    //                 guardId: selectedUser
+    //             }
+    //         })
+    //         .then((response) => {
+    //             console.log(response.data);
+    //             setGuard(response.data);
+    //         });
+    // };
+
+    // const { isRole } = useAuth();
+    // const [guard, setGuard] = useState();
+
+    // const fetchGuards = async () => {
+    //     await axios
+    //         .get(`hoas/guards`, {
+    //             params: {
+    //                 selectedHoa: process.env.REACT_APP_HOA_ID
+    //             }
+    //         })
+    //         .then((response) => {
+    //             const getUserById = (userId) => {
+    //                 return response.data.find((item) => item.user.userId === userId);
+    //             };
+    //             setGuard(getUserById(selectedUser));
+    //             console.log(getUserById(selectedUser));
+    //         });
+    // };
+
+    // useEffect(() => {
+    //     if (!isRole('guard')) {
+    //         if (selectedUser) fetchGuards();
+    //     }
+    // }, [selectedUser]);
 
     if (!messages) return <div>Loading...</div>;
 
@@ -49,7 +94,8 @@ const ChatBody = ({ messages }) => {
                                     </div>
                                 ) : (
                                     <div className="message__chats" key={message.id}>
-                                        <p>{message[message.receiver].name.firstName}</p>
+                                        {/* <p>{message[message.receiver].name.firstName}</p> */}
+                                        <p>{selectedName}</p>
                                         <div className="message__recipient">
                                             <p>{message.content}</p>
                                         </div>

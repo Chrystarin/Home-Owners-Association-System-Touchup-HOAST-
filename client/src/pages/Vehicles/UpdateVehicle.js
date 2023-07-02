@@ -59,10 +59,14 @@ function AddVehicle() {
 
         try {
             // Login
-            await axios.patch(`vehicles`, formData).then((response) => {
-                console.log(JSON.stringify(response?.data));
-                navigate('/vehicles');
-            });
+            await axios
+                .patch(`vehicles`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                })
+                .then((response) => {
+                    console.log(JSON.stringify(response?.data));
+                    navigate('/vehicles');
+                });
         } catch (err) {
             console.error(err);
             alert('Check your inputs!');

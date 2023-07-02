@@ -52,6 +52,30 @@ const ChatPage = ({ socket }) => {
         };
     }, [socket, messages]);
 
+    const [guard, setGuard] = useState();
+
+    const fetchGuards = async () => {
+        await axios
+            .get(`hoas/guards`, {
+                params: {
+                    selectedHoa: process.env.REACT_APP_HOA_ID
+                }
+            })
+            .then((response) => {
+                const getUserById = (userId) => {
+                    return response.data.find((item) => item.user.userId === userId);
+                };
+                setGuard(getUserById(selectedUser));
+                console.log(getUserById(selectedUser));
+            });
+    };
+
+    useEffect(() => {
+        if (!isRole('guard')) {
+            if (selectedUser) fetchGuards();
+        }
+    }, [selectedUser]);
+
     return (
         <>
             <NavBar />
@@ -67,9 +91,12 @@ const ChatPage = ({ socket }) => {
                 <div className="chat__main">
                     <div className="chat__main__Container">
                         <div className="chat__main__Header">
-                            <h6>{selectedName}</h6>
+                            <h6>
+                                {selectedName}
+                                {isRole('guard') ? '' : ` (${guard?.contactNo})`}
+                            </h6>
                         </div>
-                        <ChatBody messages={messages} scroll={scroll} setScroll={setScroll} />
+                        <ChatBody messages={messages} scroll={scroll} setScroll={setScroll} selectedUser={selectedUser} selectedName={selectedName} />
                     </div>
                     <ChatFooter socket={socket} recipient={selectedUser} setMessages={setMessages} />
                 </div>

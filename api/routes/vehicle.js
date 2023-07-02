@@ -44,6 +44,6 @@ router.post('/', fileUpload(), addVehicle);
  * plateNumber
  * color
  */
-router.patch('/', updateVehicle);
+router.patch('/', fileUpload(), updateVehicle);
 
 module.exports = router;

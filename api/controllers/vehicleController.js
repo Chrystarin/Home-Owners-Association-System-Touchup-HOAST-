@@ -6,6 +6,7 @@ const { checkString } = require('../helpers/validData');
 const { VehicleNotFoundError } = require('../helpers/errors');
 const extractHomes = require('../helpers/extractHomes');
 const uploadImage = require('../helpers/uploadImage');
+const { dateToString } = require('../helpers/generateId');
 
 const getVehicles = async (req, res, next) => {
     const { plateNumber } = req.query;
@@ -75,13 +76,24 @@ const updateVehicle = async (req, res, next) => {
     const { color, plateNumber } = req.body;
     const { user } = req.user;
 
-    console.log(color);
-
     const vehicle = user.vehicles.find((vehicle) => plateNumber === vehicle.plateNumber);
     if (vehicle === undefined) throw new VehicleNotFoundError();
 
+    // console.log('before upload: ' + vehicle)
+
+    const frontImage = req.files?.frontImage;
+    if (frontImage) vehicle.frontImage = await uploadImage(frontImage, `vehicles/${plateNumber}-front`);
+
+    const backImage = req.files?.backImage;
+    if (backImage) vehicle.backImage = await uploadImage(backImage, `vehicles/${plateNumber}-back`);
+
     vehicle.color = color;
+
+    // console.log('after upload: ' + vehicle)
+
     await user.save();
+
+    // console.log('after save: ' + user.vehicles.find((vehicle) => plateNumber === vehicle.plateNumber))
 
     res.json({ message: 'Vehicle updated' });
 };
