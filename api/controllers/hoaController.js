@@ -137,8 +137,6 @@ const getGuards = async (req, res, next) => {
 
     checkString(guardId, 'Guard ID', true);
 
-    console.log(selectedHoa);
-
     let guards = {};
 
     if (selectedHoa) {

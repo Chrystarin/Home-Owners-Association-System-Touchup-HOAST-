@@ -9,13 +9,6 @@ const ChatFooter = ({ socket, recipient }) => {
     const handleSendMessage = (e) => {
         e.preventDefault();
 
-        console.log('content: ' + message);
-        console.log('userId: ' + isRole('guard') ? recipient : JSON.parse(localStorage.getItem('user')).user.userId);
-        console.log('hoaId: ' + process.env.REACT_APP_HOA_ID);
-        console.log('guardId: ' + isRole('guard') ? JSON.parse(localStorage.getItem('user')).user.userId : recipient);
-        console.log('sender: ' + isRole('guard') ? 'guard' : 'user');
-        console.log('receiver: ' + isRole('guard') ? 'user' : 'guard');
-
         socket.emit('send', {
             content: message,
             userId: isRole('guard') ? recipient : JSON.parse(localStorage.getItem('user')).user.userId,

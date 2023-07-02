@@ -9,6 +9,9 @@ const ChatBody = ({ messages }) => {
     //     navigate('/');
     //     window.location.reload();
     // };
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
     const scrollToBottom = () => {
         if (messageContainerRef.current) {
             messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;

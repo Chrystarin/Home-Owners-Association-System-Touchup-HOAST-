@@ -230,12 +230,17 @@ function NavBar(props) {
                                 </MenuItem>
                             </a>
                             <Divider />
-                            <MenuItem onClick={hoaButton}>
-                                <ListItemIcon>
-                                    <MapsHomeWorkIcon fontSize="small" />
-                                </ListItemIcon>
-                                Homeowners Associations
-                            </MenuItem>
+                            {isRole('admin') || isRole('guard') ? (
+                                <MenuItem onClick={hoaButton}>
+                                    <ListItemIcon>
+                                        <MapsHomeWorkIcon fontSize="small" />
+                                    </ListItemIcon>
+                                    Homeowners Associations
+                                </MenuItem>
+                            ) : (
+                                <></>
+                            )}
+
                             <MenuItem onClick={logout}>
                                 <ListItemIcon>
                                     <Logout fontSize="small" />

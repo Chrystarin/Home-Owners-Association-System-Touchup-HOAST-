@@ -7,11 +7,13 @@ const User = require('../models/User');
 const getMessages = async (req, res, next) => {
     const { userId, guardId } = req.query;
 
+    console.log(req.query);
+
     const user = await User.findOne({ userId });
-    if (user === null) throw NotFoundError('User not found');
+    if (user === null) throw new NotFoundError('User not found');
 
     const guard = await User.findOne({ userId: guardId });
-    if (guard === null) throw NotFoundError('Guard not found');
+    if (guard === null) throw new NotFoundError('Guard not found');
 
     const messages = await Message.find({
         guard: guard._id,
@@ -25,9 +27,9 @@ const getMessages = async (req, res, next) => {
 
 const sendMessage = async (data) => {
     const { userId, guardId, hoaId, sender, receiver, content } = data;
-    
-    console.log('Message Sent');
-    console.log(userId, guardId, hoaId, sender, receiver, content);
+
+    // console.log('Message Sent');
+    // console.log(data);
 
     if (userId === guardId || sender === receiver) throw new InvalidInputError('Sender and receiver cannot be the same');
 

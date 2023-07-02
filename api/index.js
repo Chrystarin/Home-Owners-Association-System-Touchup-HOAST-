@@ -92,7 +92,7 @@ io.on('connection', (socket) => {
      */
     socket.on('send', async (data) => {
         data = await sendMessage(data);
-        socket.emit('receive', data);
+        io.sockets.emit('receive', data);
     });
 });
 

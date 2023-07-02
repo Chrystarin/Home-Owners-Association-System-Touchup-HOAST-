@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './../../utils/AuthContext.js';
 import axios from '../../utils/axios';
-const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
+const ChatBar = ({ socket, setSelectedUser, selectedUser, setMessages, setSelectedName }) => {
     const [users, setUsers] = useState([]);
-
     const { isRole } = useAuth();
 
-    // useEffect(() => {
-    //     socket.on('newUserResponse', (data) => setUsers(data));
-    // }, [socket, users]);
-
     useEffect(() => {
-        // Retrieves Requests
-
+        
         const fetchResidents = async () => {
             await axios
                 .get(`residents`, {
@@ -21,7 +15,7 @@ const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
                     }
                 })
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     setUsers(response.data);
                 });
         };
@@ -30,25 +24,18 @@ const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
             await axios
                 .get(`hoas/guards`, {
                     params: {
-                        // hoaId: process.env.REACT_APP_HOA_ID
                         selectedHoa: process.env.REACT_APP_HOA_ID
                     }
                 })
                 .then((response) => {
-                    console.log(response.data);
                     setUsers(response.data);
                 });
         };
         if (isRole('guard')) {
-            console.log('user is guard');
             fetchResidents();
         } else {
-            console.log('user is not guard');
             fetchGuards();
         }
-
-        // fetchGuards();
-        // fetchResidents();
     }, []);
 
     return (
@@ -61,6 +48,8 @@ const ChatBar = ({ socket, setSelectedUser, selectedUser }) => {
                             key={user.user.userId}
                             onClick={() => {
                                 setSelectedUser(user.user.userId);
+                                setSelectedName(user.user.name.firstName + ' ' + user.user.name.lastName);
+                                setMessages([]);
                             }}
                             className={user.user.userId === selectedUser ? 'activeUser' : 'UsersList'}
                         >
