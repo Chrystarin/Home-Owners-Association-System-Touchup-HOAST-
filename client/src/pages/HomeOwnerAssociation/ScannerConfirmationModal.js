@@ -49,7 +49,6 @@ function ScannerConfirmationModal(props) {
                         console.log('No device IP');
                     }
 
-                    // openWindow();
                     props.close();
                 });
         } catch (error) {
@@ -87,7 +86,12 @@ function ScannerConfirmationModal(props) {
                     result = null;
                 }, 5000);
             };
-            openWindow();
+            if (props.ipAdd) {
+                openWindow();
+            } else {
+                console.log('No device IP');
+            }
+
             props.close();
         } catch (error) {
             alert(error);
