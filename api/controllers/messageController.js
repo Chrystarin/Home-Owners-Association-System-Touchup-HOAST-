@@ -28,19 +28,21 @@ const getMessages = async (req, res, next) => {
 const sendMessage = async (data) => {
     const { userId, guardId, hoaId, sender, receiver, content } = data;
 
+    console.log(data);
+
     // console.log('Message Sent');
     // console.log(data);
 
     if (userId === guardId || sender === receiver) throw new InvalidInputError('Sender and receiver cannot be the same');
 
     const user = await User.findOne({ userId });
-    if (user === null) throw NotFoundError('User not found');
+    if (user === null) throw new NotFoundError('User not found');
 
     const guard = await User.findOne({ userId: guardId });
-    if (guard === null) throw NotFoundError('Guard not found');
+    if (guard === null) throw new NotFoundError('Guard not found');
 
     const isGuardActive = await HOA.findOne({ hoaId, 'guards.user': guard._id, 'guard.status': 'active' });
-    if (!isGuardActive) throw NotFoundError('Guard is not active');
+    if (!isGuardActive) throw new NotFoundError('Guard is not active');
 
     await Message.create({
         guard: guard._id,

@@ -76,7 +76,7 @@ const updateUser = async (req, res, next) => {
 
 const addHomeowner = async (req, res, next) => {
     const {
-        resident: { firstName, lastName, email },
+        resident: { firstName, lastName, email},
         home: { homeNo, street, phase, contactNo }
     } = req.body;
     const { hoa } = req.user;
@@ -99,7 +99,7 @@ const addHomeowner = async (req, res, next) => {
         owner: homeowner._id,
         hoa: hoa._id,
         address: { number: homeNo, street, phase },
-        contactNo: contactNo,
+        contactNo,
         residents: [{ user: homeowner._id }]
     });
 

@@ -17,6 +17,7 @@ const ChatPage = ({ socket }) => {
 
     const fetchMessages = async () => {
         console.log('Messages Fetched');
+        
         await axios
             .get(`messages`, {
                 params: {

@@ -9,6 +9,8 @@ const ChatFooter = ({ socket, recipient }) => {
     const handleSendMessage = (e) => {
         e.preventDefault();
 
+        console.log(JSON.parse(localStorage.getItem('user')).user.userId);
+        console.log(recipient);
         socket.emit('send', {
             content: message,
             userId: isRole('guard') ? recipient : JSON.parse(localStorage.getItem('user')).user.userId,

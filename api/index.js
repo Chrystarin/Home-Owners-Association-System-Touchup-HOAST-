@@ -93,6 +93,7 @@ io.on('connection', (socket) => {
     socket.on('send', async (data) => {
         data = await sendMessage(data);
         io.sockets.emit('receive', data);
+        // socket.emit('receive', data);
     });
 });
 
