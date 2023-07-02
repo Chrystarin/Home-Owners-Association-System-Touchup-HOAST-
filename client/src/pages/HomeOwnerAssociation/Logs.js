@@ -391,7 +391,7 @@ function Logs() {
                                                                             {log.logType}{' '}
                                                                         </TableCell>
                                                                         <TableCell align="center">
-                                                                            {new Date(log.createdAt).getMonth() +
+                                                                            {new Date(log.createdAt).getMonth() + 1 +
                                                                                 ' / ' +
                                                                                 new Date(log.createdAt).getDate() +
                                                                                 ' / ' +
