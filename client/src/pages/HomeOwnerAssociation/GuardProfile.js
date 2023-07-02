@@ -61,7 +61,10 @@ function GuardProfile() {
                                     <h6>Hired Since: </h6>
                                     <h5>{new Date(guard.hiredAt).toLocaleString('default', { month: 'long' }) + " " + new Date(guard.hiredAt).getDate() + ", " + new Date(guard.hiredAt).getFullYear() }</h5>
                                 </div>
-
+                                <div className='GeneralInformation__InfoContainer'>
+                                    <h6>Status: </h6>
+                                    <h5>{guard.contactNo}</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
