@@ -225,7 +225,7 @@ function Scanner() {
         } catch (error) {
             console.log(error);
             openWindow('false');
-			setScanned(false);
+            setScanned(false);
         }
     }
 
@@ -272,7 +272,7 @@ function Scanner() {
             }
         } catch (error) {
             console.log(error);
-            alert('Invalid QR Code');
+            openWindow('false');
             setScanned(false);
         }
     }
