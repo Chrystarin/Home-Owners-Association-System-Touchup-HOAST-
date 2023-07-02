@@ -140,9 +140,26 @@ function Scanner() {
                     hoaId: localStorage.getItem('hoaId')
                 }
             })
-            .then((response) => {
+            .then(async (response) => {
                 setInformation(response.data);
                 infoScan = response.data;
+
+                let owner = {};
+
+                const fetchOwner = async () => {
+                    await axios
+                        .get(`residents`, {
+                            params: {
+                                residentId: response.data.owner,
+                                hoaId: localStorage.getItem('hoaId')
+                            }
+                        })
+                        .then((response) => {
+                            owner = response.data.user.name.firstName + ' ' + response.data.user.name.lastName;
+                        });
+                };
+                await fetchOwner();
+                infoScan.owner = owner;
             });
     };
 
