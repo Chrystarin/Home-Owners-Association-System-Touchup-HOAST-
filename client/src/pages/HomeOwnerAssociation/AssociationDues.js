@@ -106,7 +106,7 @@ function AssociationDues() {
 				...openSnackBar,
 				open:true,
 				type:'error',
-				note:'Invalid Input! ' + err.message,
+				note:'Check your Input! ',
 			}));
 			console.error(err.message);
 		}
