@@ -519,7 +519,7 @@ function Logs() {
                                                 new Date(selectedValue['visitor.arrival']).getMinutes() +
                                                 ':' +
                                                 new Date(selectedValue['visitor.arrival']).getSeconds()}
-                                            to{' '}
+                                            {' '} to {' '}
                                             {new Date(selectedValue['visitor.departure']).getMonth() +
                                                 ' / ' +
                                                 new Date(selectedValue['visitor.departure']).getDate() +

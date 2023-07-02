@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from './../../utils/AuthContext.js';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
-const ChatFooter = ({ socket, recipient }) => {
+const ChatFooter = ({ socket, recipient, setMessages }) => {
     const [message, setMessage] = useState('');
     const { isRole } = useAuth();
 
@@ -19,6 +19,17 @@ const ChatFooter = ({ socket, recipient }) => {
             sender: isRole('guard') ? 'guard' : 'user',
             receiver: isRole('guard') ? 'user' : 'guard'
         });
+        // setMessages((prevMessages) => [
+        //     ...prevMessages,
+        //     {
+        //         content: message,
+        //         userId: isRole('guard') ? recipient : JSON.parse(localStorage.getItem('user')).user.userId,
+        //         hoaId: process.env.REACT_APP_HOA_ID,
+        //         guardId: isRole('guard') ? JSON.parse(localStorage.getItem('user')).user.userId : recipient,
+        //         sender: isRole('guard') ? 'guard' : 'user',
+        //         receiver: isRole('guard') ? 'user' : 'guard'
+        //     }
+        // ]);
         setMessage('');
     };
     return (

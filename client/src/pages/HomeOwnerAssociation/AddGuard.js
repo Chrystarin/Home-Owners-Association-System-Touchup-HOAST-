@@ -126,7 +126,7 @@ export default function AddGuard() {
                                                     accForm.email +
                                                     '\nPassword: ' +
                                                     password +
-                                                    "\n P.S Don't share this to anyone"
+                                                    "\n Note: Don't share this to anyone"
                                             });
 
                                             return 'Email sent successfully to ' + accForm.email;

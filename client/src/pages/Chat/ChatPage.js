@@ -17,7 +17,7 @@ const ChatPage = ({ socket }) => {
 
     const fetchMessages = async () => {
         console.log('Messages Fetched');
-        
+
         await axios
             .get(`messages`, {
                 params: {
@@ -26,6 +26,7 @@ const ChatPage = ({ socket }) => {
                 }
             })
             .then((response) => {
+                console.log(response.data);
                 setMessages(response.data);
             });
     };
@@ -38,7 +39,12 @@ const ChatPage = ({ socket }) => {
 
     useEffect(() => {
         socket.on('receive', (data) => {
-            setMessages((prevMessages) => [...prevMessages, data]);
+            if (
+                (data[data.receiver].userId === JSON.parse(localStorage.getItem('user')).user.userId && data[data.sender].userId === selectedUser) ||
+                (data[data.receiver].userId === selectedUser && data[data.sender].userId === JSON.parse(localStorage.getItem('user')).user.userId)
+            ) {
+                setMessages((prevMessages) => [...prevMessages, data]);
+            }
         });
 
         return () => {
@@ -65,7 +71,7 @@ const ChatPage = ({ socket }) => {
                         </div>
                         <ChatBody messages={messages} scroll={scroll} setScroll={setScroll} />
                     </div>
-                    <ChatFooter socket={socket} recipient={selectedUser} />
+                    <ChatFooter socket={socket} recipient={selectedUser} setMessages={setMessages} />
                 </div>
             </div>
         </>

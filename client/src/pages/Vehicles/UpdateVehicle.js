@@ -16,6 +16,9 @@ function AddVehicle() {
     const [vehicle, setVehicle] = useState();
     const [stepper, setStepper] = useState(1);
 
+    const [frontImage, setFrontImage] = useState();
+    const [backImage, setBackImage] = useState();
+
     const [form, setForm] = useState({
         plateNumber: '',
         model: '',
@@ -48,20 +51,18 @@ function AddVehicle() {
     async function Submit(e) {
         e.preventDefault();
 
+        const formData = new FormData();
+        formData.append('frontImage', frontImage);
+        formData.append('backImage', backImage);
+        formData.append('plateNumber', vehicle?.plateNumber);
+        formData.append('color', form.color || vehicle?.color);
+
         try {
             // Login
-            await axios
-                .patch(
-                    `vehicles`,
-                    JSON.stringify({
-                        plateNumber: vehicle?.plateNumber,
-                        color: form.color ? form.color : vehicle?.color
-                    })
-                )
-                .then((response) => {
-                    console.log(JSON.stringify(response?.data));
-                    navigate('/vehicles');
-                });
+            await axios.patch(`vehicles`, formData).then((response) => {
+                console.log(JSON.stringify(response?.data));
+                navigate('/vehicles');
+            });
         } catch (err) {
             console.error(err);
             alert('Check your inputs!');
@@ -90,6 +91,62 @@ function AddVehicle() {
                                     onChange={(e) => updateForm({ color: e.target.value })}
                                 />
                             </div>
+
+                            {!frontImage ? (
+                                <div className="FormWrapper__2">
+                                    <div className="UploadDocument__Holder">
+                                        <input
+                                            className="UploadDocument__Input"
+                                            accept="image/png, image/jpeg"
+                                            type="file"
+                                            name=""
+                                            id="upload"
+                                            required
+                                            onChange={(e) => setFrontImage(e.target.files[0])}
+                                        />
+
+                                        <label htmlFor="upload" className="UploadDocument__Holder" style={{ width: '300px' }}>
+                                            <div className="UploadDocumentInput__Container">
+                                                <h6>Upload front picture of the vehicle</h6>
+                                                <p>Make sure the plate number is visible</p>
+                                            </div>
+                                        </label>
+                                        <br />
+                                        <img src="" alt="" />
+                                    </div>
+                                    <div></div>
+                                </div>
+                            ) : (
+                                <img src={URL.createObjectURL(frontImage)} alt="" />
+                            )}
+
+                            {!backImage ? (
+                                <div className="FormWrapper__2">
+                                    <div className="UploadDocument__Holder">
+                                        <input
+                                            className="UploadDocument__Input"
+                                            accept="image/png, image/jpeg"
+                                            type="file"
+                                            name=""
+                                            id="upload"
+                                            required
+                                            onChange={(e) => setBackImage(e.target.files[0])}
+                                        />
+
+                                        <label htmlFor="upload" className="UploadDocument__Holder" style={{ width: '300px' }}>
+                                            <div className="UploadDocumentInput__Container">
+                                                <h6>Upload back picture of the vehicle</h6>
+                                                <p>Make sure the plate number is visible</p>
+                                            </div>
+                                        </label>
+                                        <br />
+                                        <img src="" alt="" />
+                                    </div>
+                                    <div></div>
+                                </div>
+                            ) : (
+                                <img src={URL.createObjectURL(backImage)} alt="" />
+                            )}
 
                             {/* <div className='FormWrapper__2'>
                             <div className='UploadDocument__Holder'>

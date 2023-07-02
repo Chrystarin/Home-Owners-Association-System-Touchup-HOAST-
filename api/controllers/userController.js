@@ -62,13 +62,22 @@ const getUser = async (req, res, next) => {
 
 const updateUser = async (req, res, next) => {
     const { firstName, lastName, email, password } = req.body;
+    let { user } = req.user;
 
-    // Update user
-    user = {
-        ...user,
-        name: { firstName, lastName },
-        credentials: { email, password }
+    console.log(req.body);
+
+    user.name = { firstName, lastName };
+
+    user.credentials = {
+        email,
+        password: await bcrypt.hash(password, 10)
     };
+
+    // user.credentials.email = email;
+    // if (password===null) {
+    //     user.credentials.password = await bcrypt.hash(password, 10);
+    // }
+
     await user.save();
 
     res.json({ message: 'User updated' });
@@ -76,7 +85,7 @@ const updateUser = async (req, res, next) => {
 
 const addHomeowner = async (req, res, next) => {
     const {
-        resident: { firstName, lastName, email},
+        resident: { firstName, lastName, email },
         home: { homeNo, street, phase, contactNo }
     } = req.body;
     const { hoa } = req.user;
