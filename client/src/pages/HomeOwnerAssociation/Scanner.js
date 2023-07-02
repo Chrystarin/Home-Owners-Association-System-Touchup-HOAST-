@@ -225,6 +225,7 @@ function Scanner() {
         } catch (error) {
             console.log(error);
             openWindow('false');
+			setScanned(false);
         }
     }
 
