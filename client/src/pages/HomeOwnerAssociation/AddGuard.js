@@ -67,7 +67,7 @@ export default function AddGuard() {
                     userId: form.userId,
                     hoa: form.hoaId,
                     hoaId: form.hoaId,
-                    // contactNo: accForm.contact
+                    contactNo: accForm.contact
                 })
             )
             .then((response) => {
@@ -226,7 +226,7 @@ export default function AddGuard() {
                                     required
                                     onChange={(e)=>setAccForm({...accForm, email: e.target.value })}
                                 />
-                                {/* <TextField
+                                <TextField
                                     id="filled-password-input"
                                     label="Contact No."
                                     type="text"
@@ -234,7 +234,7 @@ export default function AddGuard() {
                                     required
                                     inputProps={{ maxLength: 11 }}
                                     onChange={(e)=>setAccForm({...accForm, contact: e.target.value })}
-                                /> */}
+                                />
                                 
                                 <div className='Form__Button'>
                                     <Button variant='text' onClick={()=> navigate("/guard")}>cancel</Button>
