@@ -30,6 +30,7 @@ function Reports() {
     const [guards, setGuards] = useState();
     const [residents, setResidents] = useState();
     const [logs, setLogs] = useState();
+    const [vehicles, setVehicles] = useState();
 
     const [openSnackBar, setOpenSnackBar] = React.useState({
         open: false,
@@ -86,14 +87,27 @@ function Reports() {
             });
     };
 
+    const fetchVehicles = async () => {
+        await axios
+            .get(`vehicles`, {
+                params: {
+                    hoaId: process.env.REACT_APP_HOA_ID
+                }
+            })
+            .then((response) => {
+                setVehicles(response.data);
+            });
+    };
+
     useEffect(() => {
         fetchHomes();
         fetchGuards();
         fetchLogs();
         fetchResidents();
+        fetchVehicles();
     }, []);
 
-    if (!homes || !guards || !residents || !logs)
+    if (!homes || !guards || !residents || !logs || !vehicles)
         return (
             <div className="Loading">
                 <img src={loading} alt="loading" />
@@ -137,6 +151,11 @@ function Reports() {
                                 <p>Homeowners</p>
                                 <p>{homes.length}</p>
                                 <a href="/homelist">View</a>
+                            </div>
+                            <div className="">
+                                <p>Vehicles</p>
+                                <p>{vehicles.length}</p>
+                                <a href="/vehiclelist">View</a>
                             </div>
                         </div>
                     </div>
