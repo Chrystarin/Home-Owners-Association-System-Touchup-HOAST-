@@ -36,6 +36,59 @@ function VisitorsList() {
 		};
         fetchVisitors();
 	}, []);
+
+    function crawler(data, parent = '') {
+        return Object.entries(data).reduce((result, [key, value]) => {
+            const updatedKey = parent ? `${parent}.${key}` : key;
+
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                return {
+                    ...result,
+                    ...crawler(value, updatedKey)
+                };
+            }
+
+            return {
+                ...result,
+                [updatedKey]: value
+            };
+        }, {});
+    }
+
+	function exportVisitorsList(data) {
+        // console.log(data)
+        // Create the CSV content
+        let csvContent = data
+            .map((d) => {
+                const crawled = crawler(d);
+
+				const arrival = crawled['arrival'];
+                const departure = crawled['departure'];
+
+                return [
+                    crawled['name'],
+                    crawled['home'],
+                    `${arrival.getMonth() + 1}/${arrival.getDate()}/${arrival.getFullYear()}`,
+                    `${departure.getMonth() + 1}/${departure.getDate()}/${departure.getFullYear()}`,
+                ].join(',');
+            })
+            .join('\n');
+        
+        const date = new Date();
+        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+                     `Header,Visitors List\n` +
+                     '\n' +
+                     'Visitor Name,Home ID,Arrival Date,Departure Date\n' +
+                     csvContent;
+
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        downloadLink.download = 'visitor_list.csv';
+
+        // Trigger the download
+        downloadLink.click();
+    }
   
     if(!visitors) return <>
     <div className='Loading'>
@@ -112,6 +165,9 @@ function VisitorsList() {
                                             </div>
                                         </div>
                                     </Menu>
+                                    <Button variant="contained" onClick={() => exportVisitorsList(visitors)}>
+                                        Export Visitors List to Excel
+                                    </Button>
                                 </div>
                                 <div className='SectionList'>
                                 {(visitors.length === 0 )?
@@ -183,6 +239,7 @@ function VisitorsList() {
                                             </div>
                                         </div>
                                     </Menu>
+                                    
                                 </div>
                                 <div className='SectionList'>
                                     {(visitors.length === 0 )?

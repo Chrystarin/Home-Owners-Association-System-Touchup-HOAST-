@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react';
 
 import NavBar from '../../layouts/NavBar';
 import './Dashboard.scss';
@@ -9,12 +9,11 @@ import SearchInput from '../../components/SearchInput/SearchInput';
 import Card from '../../components/Card/Card';
 import Menu from '@mui/material/Menu';
 import NativeSelect from '@mui/material/NativeSelect';
-import loading from '../../images/loading.gif'
+import loading from '../../images/loading.gif';
 
 import axios from '../../utils/axios';
 
 function VehicleList() {
-
     // States for popup filter
     const [anchorElFilter, setAnchorElFilter] = React.useState(null);
     const openFilter = Boolean(anchorElFilter);
@@ -23,108 +22,179 @@ function VehicleList() {
 
     // Retrieve All User Vehicles Data
     useEffect(() => {
-      const fetchVehicles = async () => {
-        await axios
-            .get(`vehicles`, {
-                params: {
-                    hoaId: localStorage.getItem('hoaId')
-                }
-            })
-            .then((response) => {
-                setVehicles(response.data);
-            });
-      };
-      fetchVehicles();
+        const fetchVehicles = async () => {
+            await axios
+                .get(`vehicles`, {
+                    params: {
+                        hoaId: localStorage.getItem('hoaId')
+                    }
+                })
+                .then((response) => {
+                    setVehicles(response.data);
+                });
+        };
+        fetchVehicles();
     }, []);
 
-    if (!vehicles) return <>
-    <div className='Loading'>
-      <img src={loading} alt="" />
-      <h3>Loading...</h3>
-    </div>
-  </>
+    function crawler(data, parent = '') {
+        return Object.entries(data).reduce((result, [key, value]) => {
+            const updatedKey = parent ? `${parent}.${key}` : key;
 
-    return <>
-        <NavBar/>
-        <div className='SectionHolder'>
-            <section className='Section SectionManage'>
-                <SideBar active="VehiclesList"/>
-                <div id='HOA__Content'>
-                    <h3 className='SectionTitleDashboard'><span><a href="">Vehicles List</a></span></h3>
-                    <div className='SectionController'>
-                        <div id='SearchInput__Container'>
-                            {/* <SearchInput/> */}
-                        </div>
-                        <Button variant="" startIcon={<FilterAltIcon/>} onClick={(event) => setAnchorElFilter(event.currentTarget)}>Filter</Button>
-                        <Menu
-                            id="basic-menu"
-                            anchorEl={anchorElFilter}
-                            open={openFilter}
-                            onClose={() => {
-                                setAnchorElFilter(null);
-                            }}
-                            MenuListProps={{
-                            'aria-labelledby': 'basic-button',
-                            }}
-                            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                        >
-                            <div className='Filter'>
-                                <h6 className='Filter__Title'>Filter</h6>
-                                <ul>
-                                    <li>
-                                    <p className="BodyText3 Filter__Titles">Sort by</p>
-                                    <div>
-                                    <NativeSelect
-                                        defaultValue={null}
-                                        inputProps={{
-                                        name: 'age',
-                                        id: 'uncontrolled-native',
-                                        }}
-                                    >
-                                        <option value={10}>A to Z</option>
-                                        <option value={20}>Recent Register</option>
-                                        <option value={30}>More Residents</option>
-                                    </NativeSelect>
-                                    </div>
-                                    </li>
-                                </ul>
-                                <div className='Filter__Buttons'>
-                                    <div>
-                                    <Button variant=''>Reset All</Button>
-                                    </div>
-                                    <Button variant=''>Cancel</Button>
-                                    <Button variant='contained' onClick={() => {setAnchorElFilter(null)}}>Apply</Button>
-                                </div>
-                            </div>
-                        </Menu>
-                    </div>
-                    <div className='SectionList'>
-                    {(vehicles.length === 0 )?
-                        <p>No Vehicles found!</p>
-                        :
-                        <>
-                            {vehicles.length > 0 &&
-                            vehicles.map((vehicle) => {
-                            return (
-                                <Card 
-                                type="Vehicles"
-                                key={vehicle.plateNumber}
-                                id={vehicle.plateNumber}
-                                title={vehicle.plateNumber}
-                                subTitle1={vehicle.brand}
-                                subTitle2={vehicle.model}
-                                url={`/vehicles/${vehicle.plateNumber}`}
-                                />
-                            );
-                            })}
-                        </>
-                    }
-                    </div>
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                return {
+                    ...result,
+                    ...crawler(value, updatedKey)
+                };
+            }
+
+            return {
+                ...result,
+                [updatedKey]: value
+            };
+        }, {});
+    }
+
+    function exportVehiclesList(data) {
+        // Create the CSV content
+        let csvContent = data
+            .map((d) => {
+                const crawled = crawler(d);
+
+                return [
+                    crawled['plateNumber'],
+                    crawled['owner'],
+                    crawled['brand'],
+                    crawled['model'],
+                    crawled['type'],
+                    crawled['color']
+                ].join(',');
+            })
+            .join('\n');
+
+        const date = new Date();
+        csvContent =
+            `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+            `Header,Vehicles List\n` +
+            '\n' +
+            'Plate Number,Owner ID,Brand,Model,Type,Color\n' +
+            csvContent;
+
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        downloadLink.download = 'vehicle_list.csv';
+
+        // Trigger the download
+        downloadLink.click();
+    }
+
+    if (!vehicles)
+        return (
+            <>
+                <div className="Loading">
+                    <img src={loading} alt="" />
+                    <h3>Loading...</h3>
                 </div>
-            </section>
-        </div>
-    </>
+            </>
+        );
+
+    return (
+        <>
+            <NavBar />
+            <div className="SectionHolder">
+                <section className="Section SectionManage">
+                    <SideBar active="VehiclesList" />
+                    <div id="HOA__Content">
+                        <h3 className="SectionTitleDashboard">
+                            <span>
+                                <a href="">Vehicles List</a>
+                            </span>
+                        </h3>
+                        <div className="SectionController">
+                            <div id="SearchInput__Container">{/* <SearchInput/> */}</div>
+                            <Button variant="" startIcon={<FilterAltIcon />} onClick={(event) => setAnchorElFilter(event.currentTarget)}>
+                                Filter
+                            </Button>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorElFilter}
+                                open={openFilter}
+                                onClose={() => {
+                                    setAnchorElFilter(null);
+                                }}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button'
+                                }}
+                                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                            >
+                                <div className="Filter">
+                                    <h6 className="Filter__Title">Filter</h6>
+                                    <ul>
+                                        <li>
+                                            <p className="BodyText3 Filter__Titles">Sort by</p>
+                                            <div>
+                                                <NativeSelect
+                                                    defaultValue={null}
+                                                    inputProps={{
+                                                        name: 'age',
+                                                        id: 'uncontrolled-native'
+                                                    }}
+                                                >
+                                                    <option value={10}>A to Z</option>
+                                                    <option value={20}>Recent Register</option>
+                                                    <option value={30}>More Residents</option>
+                                                </NativeSelect>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div className="Filter__Buttons">
+                                        <div>
+                                            <Button variant="">Reset All</Button>
+                                        </div>
+                                        <Button variant="">Cancel</Button>
+                                        <Button
+                                            variant="contained"
+                                            onClick={() => {
+                                                setAnchorElFilter(null);
+                                            }}
+                                        >
+                                            Apply
+                                        </Button>
+                                    </div>
+                                </div>
+                            </Menu>
+                            <Button variant="contained" onClick={() => exportVehiclesList(vehicles)}>
+                                Export Vehicle List to Excel
+                            </Button>
+                        </div>
+                        <div className="SectionList">
+                            {vehicles.length === 0 ? (
+                                <p>No Vehicles found!</p>
+                            ) : (
+                                <>
+                                    {vehicles.length > 0 &&
+                                        vehicles.map((vehicle) => {
+                                            return (
+                                                <Card
+                                                    type="Vehicles"
+                                                    key={vehicle.plateNumber}
+                                                    id={vehicle.plateNumber}
+                                                    title={vehicle.plateNumber}
+                                                    subTitle1={vehicle.brand}
+                                                    subTitle2={vehicle.model}
+                                                    url={`/vehicles/${vehicle.plateNumber}`}
+                                                />
+                                            );
+                                        })}
+                                </>
+                            )}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </>
+    );
 }
 
-export default VehicleList
+export default VehicleList;

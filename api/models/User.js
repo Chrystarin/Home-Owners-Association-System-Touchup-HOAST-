@@ -68,8 +68,9 @@ module.exports = model(
 			timestamps: true,
 			toJSON: {
 				transform: function(doc, ret) {
-					delete ret.credentials
-					return ret
+					const { credentials: { email }, ...rest } = ret;
+
+					return { ...rest, email };
 				}
 			}
 		}

@@ -46,7 +46,9 @@ export default function AddHomeowner() {
     async function Submit(e) {
         e.preventDefault();
         console.log(form);
+
         try {
+            if (form.firstName === "") throw Error('First Name Field is empty!');
             await axios
                 .post(`/users/homeowner`, {
                     hoaId: localStorage.getItem('hoaId'),
@@ -73,13 +75,19 @@ export default function AddHomeowner() {
                     navigate('/residentslist');
                 });
         } catch (error) {
+            // setOpenSnackBar((openSnackBar) => ({
+            //     ...openSnackBar,
+            //     open: true,
+            //     type: 'error',
+            //     note: error?.response?.data?.message ?? 'Check Your input!'
+            // }));
+
             setOpenSnackBar((openSnackBar) => ({
                 ...openSnackBar,
                 open: true,
                 type: 'error',
-                note: error?.response?.data?.message ?? 'Check Your input!'
+                note: error.message
             }));
-            console.error(error.response.data.message);
         }
     }
 
@@ -222,7 +230,7 @@ export default function AddHomeowner() {
                                                 label="First Name"
                                                 type="text"
                                                 variant="filled"
-                                                required
+                                                // required
                                                 onChange={(e) =>
                                                     updateForm({
                                                         firstName: e.target.value

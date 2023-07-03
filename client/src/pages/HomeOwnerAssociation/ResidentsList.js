@@ -73,6 +73,54 @@ function ResidentsList() {
 	const [anchorElFilter, setAnchorElFilter] = React.useState(null);
 	const openFilter = Boolean(anchorElFilter);
 
+	function crawler(data, parent = '') {
+        return Object.entries(data).reduce((result, [key, value]) => {
+            const updatedKey = parent ? `${parent}.${key}` : key;
+
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                return {
+                    ...result,
+                    ...crawler(value, updatedKey)
+                };
+            }
+
+            return {
+                ...result,
+                [updatedKey]: value
+            };
+        }, {});
+    }
+
+	function exportResidentsList(data) {
+        // Create the CSV content
+        let csvContent = data
+            .map((d) => {
+                const crawled = crawler(d);
+
+                return [
+                    `${crawled['user.name.firstName']} ${crawled['user.name.lastName']}`,
+                    crawled['home'],
+                    crawled['title'] || 'Homeowner'
+                ].join(',');
+            })
+            .join('\n');
+        
+        const date = new Date();
+        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+                     `Header,Residents List\n` +
+                     '\n' +
+                     'Resident Name,Home ID,Title\n' +
+                     csvContent;
+
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        downloadLink.download = 'residents_list.csv';
+
+        // Trigger the download
+        downloadLink.click();
+    }
+
 	if (!requests || !residents)
 		return (
 			<>
@@ -190,6 +238,9 @@ function ResidentsList() {
 									</div>
 								</div>
 							</Menu>
+							<Button variant="contained" onClick={() => exportResidentsList(residents)}>
+								Export Residents List to Excel
+							</Button>
 						</div>
 						<div className="SectionList">
 							{residents.length === 0 ? (

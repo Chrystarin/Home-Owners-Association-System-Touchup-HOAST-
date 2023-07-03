@@ -12,8 +12,12 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import loading from '../../images/loading.gif';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-function CreateQuickPass() {
+function CreateQuickPassVehicle() {
     const navigate = useNavigate();
 
     const [stepper, setStepper] = useState(1);
@@ -23,8 +27,6 @@ function CreateQuickPass() {
         type: '',
         note: ''
     });
-
-    const [selectEntity, setSelectEntity] = useState('');
 
     // Collection of form data
     const [form, setForm] = useState({
@@ -93,7 +95,7 @@ function CreateQuickPass() {
                     </div>
                     <div className="SectionContent">
                         <form onSubmit={Submit} className="Form">
-                            <TextField required fullWidth label="Name / Plate Number" variant="outlined" onChange={(e) => updateForm({ name: e.target.value })} />
+                            <TextField required fullWidth label="Name" variant="outlined" onChange={(e) => updateForm({ name: e.target.value })} />
                             <div className="FormWrapper__2">
                                 {/* <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/> */}
                                 {/* <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} /> */}
@@ -139,4 +141,4 @@ function CreateQuickPass() {
     );
 }
 
-export default CreateQuickPass;
+export default CreateQuickPassVehicle;

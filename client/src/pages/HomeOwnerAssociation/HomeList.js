@@ -93,6 +93,92 @@ function HomeList() {
         }
     }
 
+    function crawler(data, parent = '') {
+        return Object.entries(data).reduce((result, [key, value]) => {
+            const updatedKey = parent ? `${parent}.${key}` : key;
+
+            if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+                return {
+                    ...result,
+                    ...crawler(value, updatedKey)
+                };
+            }
+
+            return {
+                ...result,
+                [updatedKey]: value
+            };
+        }, {});
+    }
+
+    function exportHomesList(data) {
+        // Create the CSV content
+        let csvContent = data
+            .map((d) => {
+                const crawled = crawler(d);
+                const date = new Date(crawled['paidUntil']);
+
+                return [
+                    crawled['address.number'],
+                    crawled['address.street'],
+                    crawled['address.phase'],
+                    `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
+                    crawled['contactNo'],
+                    `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
+                ].join(',');
+            })
+            .join('\n');
+        
+        const date = new Date();
+        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+                     `Header,Homes List\n` +
+                     '\n' +
+                     'House No.,Street,Phase,Owner,Contact No,Paid Until\n' +
+                     csvContent;
+
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        downloadLink.download = 'homes_list.csv';
+
+        // Trigger the download
+        downloadLink.click();
+    }
+
+    function exportHomeownersList(data) {
+        // Create the CSV content
+        let csvContent = data
+            .map((d) => {
+                const crawled = crawler(d);
+                const date = new Date(crawled['paidUntil']);
+
+                return [
+                    `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
+                    crawled['address.number'],
+                    crawled['address.street'],
+                    crawled['address.phase'],
+                    crawled['owner.email'],
+                    `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
+                ].join(',');
+            })
+            .join('\n');
+        
+        const date = new Date();
+        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+                     `Header,Homeowners List\n` +
+                     '\n' +
+                     'Homeowner,House No.,Street,Phase,Email,Paid Until\n' +
+                     csvContent;
+
+        // Create a download link
+        const downloadLink = document.createElement('a');
+        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        downloadLink.download = 'homeowner_list.csv';
+
+        // Trigger the download
+        downloadLink.click();
+    }
+
     const Houses = [
         { name: 'Llagas', address: 'Ucaliptus', residents: '8' },
         { name: 'Castillo', address: 'Saint Dominic', residents: '8' },
@@ -104,16 +190,6 @@ function HomeList() {
     // States for popup filter
     const [anchorElFilter, setAnchorElFilter] = React.useState(null);
     const openFilter = Boolean(anchorElFilter);
-
-    if (!homes)
-        return (
-            <>
-                <div className="Loading">
-                    <img src={loading} alt="" />
-                    <h3>Loading...</h3>
-                </div>
-            </>
-        );
 
     if (!homes)
         return (
@@ -204,6 +280,12 @@ function HomeList() {
                                             </div>
                                         </div>
                                     </Menu>
+                                    <Button variant="contained" onClick={() => exportHomesList(homes)}>
+                                        Export Homes List to Excel
+                                    </Button>
+                                    <Button variant="contained" onClick={() => exportHomeownersList(homes)}>
+                                        Export Homeowners List to Excel
+                                    </Button>
                                 </div>
                                 <div className="SectionList">
                                     {homes.length === 0 ? (

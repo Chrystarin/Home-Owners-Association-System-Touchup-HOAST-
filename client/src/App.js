@@ -105,6 +105,7 @@ function App() {
                 <Route element={<ProtectedRoute allowedRoles={['guard']} />}>
                     <Route path="/scanner" element={<Scanner />} />
                     <Route path="/quickpass" element={<CreateQuickPass />} />
+                    
                 </Route>
 
                 {/* Private Routes for Admin */}

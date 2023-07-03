@@ -63,6 +63,9 @@ module.exports = model(
                         type: String,
                         enum: ['family', 'household']
                     },
+                    title: {
+                        type: String
+                    },
                     status: {
                         type: String,
                         enum: ['active', 'inactive'],

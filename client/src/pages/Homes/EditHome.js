@@ -36,7 +36,8 @@ function EditHome() {
         firstName: '',
         lastName: '',
         email: '',
-        residentType: ''
+        residentType: '',
+        title: ''
     });
 
     const generatePassword = () => {
@@ -99,7 +100,8 @@ function EditHome() {
                         firstName: accForm.firstName,
                         lastName: accForm.lastName,
                         residentType: accForm.residentType,
-                        email: accForm.email
+                        email: accForm.email,
+                        title: accForm.title
                     })
                 )
                 .then((response) => {
@@ -188,152 +190,221 @@ function EditHome() {
                     <h3 className="SectionTitleDashboard">Edit Home</h3>
                     <div className="SectionContent" id="ViewHome">
                         <div className="Form" id="ViewHome__Content">
-                            <div className="EditHome">
-                                <TextField
-                                    className="EditHome__Name"
-                                    id="filled-password-input"
-                                    label="Name"
-                                    type="text"
-                                    autoComplete="current-password"
-                                    variant="filled"
-                                    defaultValue={home.name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                                <TextField
-                                    className="EditHome__Name"
-                                    id="filled-password-input"
-                                    label="Color"
-                                    type="text"
-                                    autoComplete="current-password"
-                                    variant="filled"
-                                    defaultValue={home.color}
-                                    onChange={(e) => setColor(e.target.value)}
-                                />
-                                <TextField
-                                    className="EditHome__Name"
-                                    id="filled-password-input"
-                                    label="Contact Number"
-                                    type="text"
-                                    autoComplete="current-password"
-                                    variant="filled"
-                                    defaultValue={home.conactNumber}
-                                    onChange={(e) => setContactNumber(e.target.value)}
-                                />
-                                <div className="EditHome__ResidentList">
-                                    <h5>List of Residents</h5>
-                                    <div className="FormWrapper__2__1">
-                                        {/* <TextField
-                                                id="filled-password-input"
-                                                label="Residents ID"
-                                                type="text"
-                                                autoComplete="current-password"
-                                                variant="filled"
-                                                onChange={(e)=>setResidentAdd(e.target.value)}
-                                            />
-                                        <Button variant="contained"  type='submit' onClick={AddResident}>
-                                            Add
-                                        </Button> */}
-                                        <form onSubmit={AddResident} className="Form">
-                                            <TextField
-                                                id="filled-password-input"
-                                                label="First Name"
-                                                type="text"
-                                                variant="filled"
-                                                required
-                                                onChange={(e) => setAccForm({ ...accForm, firstName: e.target.value })}
-                                            />
-                                            <TextField
-                                                id="filled-password-input"
-                                                label="Last Name"
-                                                type="text"
-                                                variant="filled"
-                                                required
-                                                onChange={(e) => setAccForm({ ...accForm, lastName: e.target.value })}
-                                            />
-                                            <TextField
-                                                id="filled-password-input"
-                                                label="Email"
-                                                type="text"
-                                                variant="filled"
-                                                required
-                                                onChange={(e) => setAccForm({ ...accForm, email: e.target.value })}
-                                            />
+                            <form onSubmit={Submit}>
+                                <div className="EditHome">
+                                    <TextField
+                                        className="EditHome__Name"
+                                        id="filled-password-input"
+                                        label="Name"
+                                        type="text"
+                                        autoComplete="current-password"
+                                        variant="filled"
+                                        defaultValue={home.name}
+                                        onChange={(e) => setName(e.target.value)}
+                                    />
+                                    <TextField
+                                        className="EditHome__Name"
+                                        id="filled-password-input"
+                                        label="Color"
+                                        type="text"
+                                        autoComplete="current-password"
+                                        variant="filled"
+                                        defaultValue={home.color}
+                                        onChange={(e) => setColor(e.target.value)}
+                                    />
+                                    <TextField
+                                        className="EditHome__Name"
+                                        id="filled-password-input"
+                                        label="Contact Number"
+                                        type="text"
+                                        autoComplete="current-password"
+                                        variant="filled"
+                                        defaultValue={home.conactNumber}
+                                        onChange={(e) => setContactNumber(e.target.value)}
+                                    />
+                                    <Button variant="contained" size="large" type="submit" onClick={Submit}>
+                                        Submit
+                                    </Button>
+                                </div>
+                            </form>
+                            <div className="">
+                                <h5>Add Residents </h5>
+                                <div className="FormWrapper__2__1">
+                                    <form onSubmit={AddResident} className="Form">
+                                        <TextField
+                                            id="filled-password-input"
+                                            label="First Name"
+                                            type="text"
+                                            variant="filled"
+                                            required
+                                            onChange={(e) => setAccForm({ ...accForm, firstName: e.target.value })}
+                                        />
+                                        <TextField
+                                            id="filled-password-input"
+                                            label="Last Name"
+                                            type="text"
+                                            variant="filled"
+                                            required
+                                            onChange={(e) => setAccForm({ ...accForm, lastName: e.target.value })}
+                                        />
+                                        <TextField
+                                            id="filled-password-input"
+                                            label="Email"
+                                            type="text"
+                                            variant="filled"
+                                            required
+                                            onChange={(e) => setAccForm({ ...accForm, email: e.target.value })}
+                                        />
+                                        <FormControl required variant="outlined" fullWidth>
+                                            <InputLabel id="home-select">Resident Type</InputLabel>
+                                            <Select
+                                                labelId="home-select"
+                                                value={accForm.residentType}
+                                                label="Home"
+                                                onChange={(e) => setAccForm({ ...accForm, residentType: e.target.value })}
+                                            >
+                                                <MenuItem value={'family'}>Family Member</MenuItem>
+                                                <MenuItem value={'household'}>Household Member</MenuItem>
+                                            </Select>
+                                        </FormControl>
+
+                                        {accForm.residentType === 'family' ? (
                                             <FormControl required variant="outlined" fullWidth>
-                                                <InputLabel id="home-select">Resident Type</InputLabel>
+                                                <InputLabel id="home-select">Family Member</InputLabel>
                                                 <Select
                                                     labelId="home-select"
-                                                    value={accForm.residentType}
+                                                    value={accForm.title}
                                                     label="Home"
-                                                    onChange={(e) => setAccForm({ ...accForm, residentType: e.target.value })}
+                                                    onChange={(e) => setAccForm({ ...accForm, title: e.target.value })}
                                                 >
-                                                    <MenuItem value={'family'}>Family Member</MenuItem>
-                                                    <MenuItem value={'household'}>Household Member</MenuItem>
+                                                    <MenuItem value={'Cousin'}>Cousin</MenuItem>
+                                                    <MenuItem value={'Friend'}>Friend</MenuItem>
+                                                    <MenuItem value={'Mother'}>Mother</MenuItem>
+                                                    <MenuItem value={'Father'}>Father</MenuItem>
+                                                    <MenuItem value={'Nephew'}>Nephew</MenuItem>
+                                                    <MenuItem value={'Aunt'}>Aunt</MenuItem>
+                                                    <MenuItem value={'Uncle'}>Uncle</MenuItem>
+                                                    <MenuItem value={'Brother'}>Brother</MenuItem>
+                                                    <MenuItem value={'Sister'}>Sister</MenuItem>
+                                                    <MenuItem value={'Niece'}>Niece</MenuItem>
                                                 </Select>
                                             </FormControl>
-
-                                            <div className="Form__Button">
-                                                <Button variant="contained" type="submit" className="Submit">
-                                                    Add Resident
-                                                </Button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div>
-                                        {residents.length === 0 ? (
-                                            <p>No Residents Available!</p>
                                         ) : (
-                                            <>
-                                                <h6>List of Residents</h6>
+                                            <></>
+                                        )}
+
+                                        {accForm.residentType === 'household' ? (
+                                            <FormControl required variant="outlined" fullWidth>
+                                                <InputLabel id="home-select">Household Member</InputLabel>
+                                                <Select
+                                                    labelId="home-select"
+                                                    value={accForm.title}
+                                                    label="Home"
+                                                    onChange={(e) => setAccForm({ ...accForm, title: e.target.value })}
+                                                >
+                                                    <MenuItem value={'Maid'}>Maid</MenuItem>
+                                                    <MenuItem value={'Driver'}>Driver</MenuItem>
+                                                    <MenuItem value={'Gardener'}>Gardener</MenuItem>
+                                                    <MenuItem value={'Boy'}>Boy</MenuItem>
+                                                    <MenuItem value={'Baby Sitter'}>Baby Sitter</MenuItem>
+                                                    <MenuItem value={'Caretaker'}>Caretaker</MenuItem>
+                                                </Select>
+                                            </FormControl>
+                                        ) : (
+                                            <></>
+                                        )}
+                                        <div>
+                                            <Button variant="contained" type="submit" className="Submit">
+                                                Add Resident
+                                            </Button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <br />
+                                <hr />
+                                <br />
+                                <div>
+                                    {residents.length === 0 ? (
+                                        <p>No Residents Available!</p>
+                                    ) : (
+                                        <>
+                                            <div>
+                                                <h6>List of Family Members</h6>
                                                 <br />
                                                 <div className="ResidentListWrapper">
                                                     {residents.length > 0 &&
                                                         residents.map((resident) => {
-                                                            if (resident.status == 'active')
+                                                            if (resident.status == 'active' && resident.type == 'family')
                                                                 return (
                                                                     // <p>{JSON.stringify(resident.user.name.firstName)}</p>
                                                                     <ResidentCard
                                                                         key={resident._id}
                                                                         username={resident.user.name.firstName + ' ' + resident.user.name.lastName}
                                                                         type="Edit"
+                                                                        residentId={resident.user.userId}
+                                                                        homeId={id}
                                                                         action={() => RemoveResident(resident.user.userId)}
                                                                     />
                                                                 );
                                                         })}
                                                 </div>
-                                                <br />
-                                                <hr />
-                                                <br />
-                                                <h6>Removed Residents</h6>
+                                            </div>
+                                            <br />
+                                            <div>
+                                                <h6>List of Household Members</h6>
                                                 <br />
                                                 <div className="ResidentListWrapper">
                                                     {residents.length > 0 &&
                                                         residents.map((resident) => {
-                                                            if (resident.status == 'inactive')
+                                                            if (resident.status == 'active' && resident.type == 'household')
                                                                 return (
                                                                     // <p>{JSON.stringify(resident.user.name.firstName)}</p>
                                                                     <ResidentCard
                                                                         key={resident._id}
                                                                         username={resident.user.name.firstName + ' ' + resident.user.name.lastName}
-                                                                        type="View"
+                                                                        residentId={resident.user.userId}
+                                                                        homeId={id}
+                                                                        type="Edit"
                                                                         action={() => RemoveResident(resident.user.userId)}
                                                                     />
                                                                 );
                                                         })}
                                                 </div>
-                                            </>
-                                        )}
-                                    </div>
+                                            </div>
+
+                                            <br />
+                                            <hr />
+                                            <br />
+                                            <h6>Removed Residents</h6>
+                                            <br />
+                                            <div className="ResidentListWrapper">
+                                                {residents.length > 0 &&
+                                                    residents.map((resident) => {
+                                                        if (resident.status == 'inactive')
+                                                            return (
+                                                                // <p>{JSON.stringify(resident.user.name.firstName)}</p>
+                                                                <ResidentCard
+                                                                    key={resident._id}
+                                                                    username={resident.user.name.firstName + ' ' + resident.user.name.lastName}
+                                                                    type="View"
+                                                                    action={() => RemoveResident(resident.user.userId)}
+                                                                />
+                                                            );
+                                                    })}
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
-                            <div className="Form__Button">
+                            {/* <div className="Form__Button">
                                 <Button variant="contained" size="large" type="submit" onClick={() => navigate(-1)}>
                                     Cancel
                                 </Button>
                                 <Button variant="contained" size="large" type="submit" onClick={Submit}>
                                     Save
                                 </Button>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </section>
