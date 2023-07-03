@@ -4,7 +4,7 @@ import './Dashboard.scss';
 import SideBar from './SideBar';
 import Button from '@mui/material/Button';
 import ResidentCard from '../../components/ResidentCard/ResidentCard';
-
+import ExcelJS from 'exceljs';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import SearchInput from '../../components/SearchInput/SearchInput';
 import Menu from '@mui/material/Menu';
@@ -93,32 +93,71 @@ function ResidentsList() {
 
 	function exportResidentsList(data) {
         // Create the CSV content
-        let csvContent = data
-            .map((d) => {
-                const crawled = crawler(d);
+        // let csvContent = data
+        //     .map((d) => {
+        //         const crawled = crawler(d);
 
-                return [
-                    `${crawled['user.name.firstName']} ${crawled['user.name.lastName']}`,
-                    crawled['home'],
-                    crawled['title'] || 'Homeowner'
-                ].join(',');
-            })
-            .join('\n');
+        //         return [
+        //             `${crawled['user.name.firstName']} ${crawled['user.name.lastName']}`,
+        //             crawled['home'],
+        //             crawled['title'] || 'Homeowner'
+        //         ].join(',');
+        //     })
+        //     .join('\n');
         
+        // const date = new Date();
+        // csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+        //              `Header,Residents List\n` +
+        //              '\n' +
+        //              'Resident Name,Home ID,Title\n' +
+        //              csvContent;
+
+        // // Create a download link
+        // const downloadLink = document.createElement('a');
+        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        // downloadLink.download = 'residents_list.csv';
+
+        // // Trigger the download
+        // downloadLink.click();
+
+		const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
         const date = new Date();
-        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-                     `Header,Residents List\n` +
-                     '\n' +
-                     'Resident Name,Home ID,Title\n' +
-                     csvContent;
+        // Define custom header and footer content
+        const headerContent = 'Suburbia East HOA \n RESIDENTS LIST REPORT';
+        const footerContent = 'Prepared By: Princess Dela Cruz \n Date Prepared: ' + (date.getMonth() + 1) + " / " + date.getDate() + " / " + date.getFullYear();
 
-        // Create a download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        downloadLink.download = 'residents_list.csv';
+        worksheet.headerFooter.oddHeader = headerContent;
+        worksheet.headerFooter.oddFooter = footerContent;
 
-        // Trigger the download
-        downloadLink.click();
+        worksheet.columns = [
+            { header: 'Resident Name', key: 'user.name.firstName + user.name.lastName' },
+			{ header: 'Home ID', key: 'home' },
+			{ header: 'Title', key: 'title' }
+        ];
+
+        data.forEach((item) => {
+            worksheet.addRow(item);
+        });
+
+        console.log(worksheet);
+
+        // Save the Excel file
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
+        });
+    }
+
+	function saveExcelFile(data, filename) {
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
 	if (!requests || !residents)

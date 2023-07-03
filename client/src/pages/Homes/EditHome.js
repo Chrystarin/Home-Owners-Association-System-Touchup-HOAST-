@@ -308,6 +308,7 @@ function EditHome() {
                                                     <MenuItem value={'Boy'}>Boy</MenuItem>
                                                     <MenuItem value={'Baby Sitter'}>Baby Sitter</MenuItem>
                                                     <MenuItem value={'Caretaker'}>Caretaker</MenuItem>
+                                                    <MenuItem value={'Others'}>Others</MenuItem>
                                                 </Select>
                                             </FormControl>
                                         ) : (

@@ -10,7 +10,7 @@ import Card from '../../components/Card/Card';
 import Menu from '@mui/material/Menu';
 import NativeSelect from '@mui/material/NativeSelect';
 import loading from '../../images/loading.gif';
-
+import ExcelJS from 'exceljs';
 import axios from '../../utils/axios';
 
 function VehicleList() {
@@ -55,37 +55,79 @@ function VehicleList() {
     }
 
     function exportVehiclesList(data) {
-        // Create the CSV content
-        let csvContent = data
-            .map((d) => {
-                const crawled = crawler(d);
 
-                return [
-                    crawled['plateNumber'],
-                    crawled['owner'],
-                    crawled['brand'],
-                    crawled['model'],
-                    crawled['type'],
-                    crawled['color']
-                ].join(',');
-            })
-            .join('\n');
+        console.log(data);
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
+        // Create the CSV content
+        // let csvContent = data
+        //     .map((d) => {
+        //         const crawled = crawler(d);
+
+        //         return [crawled['plateNumber'], crawled['owner'], crawled['brand'], crawled['model'], crawled['type'], crawled['color']].join(',');
+        //     })
+        //     .join('\n');
+
+        // console.log(csvContent);
 
         const date = new Date();
-        csvContent =
-            `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-            `Header,Vehicles List\n` +
-            '\n' +
-            'Plate Number,Owner ID,Brand,Model,Type,Color\n' +
-            csvContent;
+        // Define custom header and footer content
+        const headerContent = 'Suburbia East HOA \n VEHICLE LIST REPORT';  
+        const footerContent = 'Prepared By: Princess Dela Cruz \n Date Prepared: ' + (date.getMonth() + 1) + " / " + date.getDate() + " / " + date.getFullYear();
 
-        // Create a download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        downloadLink.download = 'vehicle_list.csv';
+        // Set custom header and footer
+        worksheet.headerFooter.oddHeader = headerContent;
+        worksheet.headerFooter.oddFooter = footerContent;
 
-        // Trigger the download
-        downloadLink.click();
+        worksheet.columns = [
+            { header: 'Plate Number', key: 'plateNumber' },
+            { header: 'Owner ID', key: 'owner' },
+            { header: 'Brand', key: 'brand' },
+            { header: 'Model', key: 'model' },
+            { header: 'Type', key: 'type' },
+            { header: 'Color', key: 'color' }   
+        ];
+
+        data.forEach((item) => {
+            worksheet.addRow(item);
+        });
+
+        console.log(worksheet);
+
+        // Save the Excel file
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            saveExcelFile(buffer, 'vehicle_list.xlsx');
+        }); 
+
+        // const date = new Date();
+        // csvContent =
+        //     // `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+        //     // `Header,Vehicles List\n` +
+        //     // '\n' +
+        //     'Plate Number,Owner ID,Brand,Model,Type,Color\n' + csvContent;
+
+        // console.log(csvContent);
+
+        // // Create a download link
+        // const downloadLink = document.createElement('a');
+        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        // downloadLink.download = 'vehicle_list.csv';
+
+        // // Trigger the download
+        // downloadLink.click();
+    }
+
+    function saveExcelFile(data, filename) {
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
     if (!vehicles)

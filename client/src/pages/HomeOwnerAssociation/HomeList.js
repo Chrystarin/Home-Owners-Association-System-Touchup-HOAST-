@@ -12,6 +12,7 @@ import axios from '../../utils/axios';
 import loading from '../../images/loading.gif';
 import { Avatar } from '@mui/material';
 import { useAuth } from '../../utils/AuthContext.js';
+import ExcelJS from 'exceljs';
 
 function HomeList() {
     const [homes, setHomes] = useState();
@@ -113,70 +114,142 @@ function HomeList() {
 
     function exportHomesList(data) {
         // Create the CSV content
-        let csvContent = data
-            .map((d) => {
-                const crawled = crawler(d);
-                const date = new Date(crawled['paidUntil']);
+        // let csvContent = data
+        //     .map((d) => {
+        //         const crawled = crawler(d);
+        //         const date = new Date(crawled['paidUntil']);
 
-                return [
-                    crawled['address.number'],
-                    crawled['address.street'],
-                    crawled['address.phase'],
-                    `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
-                    crawled['contactNo'],
-                    `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
-                ].join(',');
-            })
-            .join('\n');
+        //         return [
+        //             crawled['address.number'],
+        //             crawled['address.street'],
+        //             crawled['address.phase'],
+        //             `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
+        //             crawled['contactNo'],
+        //             `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
+        //         ].join(',');
+        //     })
+        //     .join('\n');
         
+        // const date = new Date();
+        // csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+        //              `Header,Homes List\n` +
+        //              '\n' +
+        //              'House No.,Street,Phase,Owner,Contact No,Paid Until\n' +
+        //              csvContent;
+
+        // // Create a download link
+        // const downloadLink = document.createElement('a');
+        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        // downloadLink.download = 'homes_list.csv';
+
+        // // Trigger the download
+        // downloadLink.click();
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
         const date = new Date();
-        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-                     `Header,Homes List\n` +
-                     '\n' +
-                     'House No.,Street,Phase,Owner,Contact No,Paid Until\n' +
-                     csvContent;
+        // Define custom header and footer content
+        const headerContent = 'Suburbia East HOA \n HOMES LIST REPORT';
+        const footerContent = 'Prepared By: Princess Dela Cruz \n Date Prepared: ' + (date.getMonth() + 1) + " / " + date.getDate() + " / " + date.getFullYear();
 
-        // Create a download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        downloadLink.download = 'homes_list.csv';
+        worksheet.headerFooter.oddHeader = headerContent;
+        worksheet.headerFooter.oddFooter = footerContent;
 
-        // Trigger the download
-        downloadLink.click();
+        worksheet.columns = [
+            { header: 'House No.', key: 'number' },
+            { header: 'Street', key: 'street' },
+            { header: 'Phase', key: 'phase' },
+            { header: 'Owner', key: 'firstName + lastName' },
+            { header: 'Contact No.', key: 'contactNo' },
+            { header: 'Paid Until', key: 'paidUntil' },
+        ];
+
+        data.forEach((item) => {
+            worksheet.addRow(item);
+        });
+
+        console.log(worksheet);
+
+        // Save the Excel file
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
+        });
     }
 
     function exportHomeownersList(data) {
         // Create the CSV content
-        let csvContent = data
-            .map((d) => {
-                const crawled = crawler(d);
-                const date = new Date(crawled['paidUntil']);
+        // let csvContent = data
+        //     .map((d) => {
+        //         const crawled = crawler(d);
+        //         const date = new Date(crawled['paidUntil']);
 
-                return [
-                    `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
-                    crawled['address.number'],
-                    crawled['address.street'],
-                    crawled['address.phase'],
-                    crawled['owner.email'],
-                    `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
-                ].join(',');
-            })
-            .join('\n');
+        //         return [
+        //             `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
+        //             crawled['address.number'],
+        //             crawled['address.street'],
+        //             crawled['address.phase'],
+        //             crawled['owner.email'],
+        //             `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
+        //         ].join(',');
+        //     })
+        //     .join('\n');
         
+        // const date = new Date();
+        // csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
+        //              `Header,Homeowners List\n` +
+        //              '\n' +
+        //              'Homeowner,House No.,Street,Phase,Email,Paid Until\n' +
+        //              csvContent;
+
+        // // Create a download link
+        // const downloadLink = document.createElement('a');
+        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
+        // downloadLink.download = 'homeowner_list.csv';
+
+        // // Trigger the download
+        // downloadLink.click();
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('Sheet1');
+
         const date = new Date();
-        csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-                     `Header,Homeowners List\n` +
-                     '\n' +
-                     'Homeowner,House No.,Street,Phase,Email,Paid Until\n' +
-                     csvContent;
+        // Define custom header and footer content
+        const headerContent = 'Suburbia East HOA \n HOMEOWNERS LIST REPORT';
+        const footerContent = 'Prepared By: Princess Dela Cruz \n Date Prepared: ' + (date.getMonth() + 1) + " / " + date.getDate() + " / " + date.getFullYear();
 
-        // Create a download link
-        const downloadLink = document.createElement('a');
-        downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        downloadLink.download = 'homeowner_list.csv';
+        worksheet.headerFooter.oddHeader = headerContent;
+        worksheet.headerFooter.oddFooter = footerContent;
 
-        // Trigger the download
-        downloadLink.click();
+        worksheet.columns = [
+            { header: 'Homeowner', key: 'owner.name.firstName + owner.name.lastName' },
+            { header: 'House No.', key: 'address.number' },
+            { header: 'Street', key: 'address.street' },
+            { header: 'Email', key: 'owner.email' },
+            { header: 'Paid Until', key: 'paidUntil' },
+        ];
+
+        data.forEach((item) => {
+            worksheet.addRow(item);
+        });
+
+        console.log(worksheet);
+
+        // Save the Excel file
+        workbook.xlsx.writeBuffer().then(function (buffer) {
+            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
+        });
+    }
+
+    function saveExcelFile(data, filename) {
+        const blob = new Blob([data], { type: 'application/octet-stream' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
     const Houses = [
