@@ -66,7 +66,13 @@ function VehicleList() {
         //     .map((d) => {
         //         const crawled = crawler(d);
 
-        //         return [crawled['plateNumber'], crawled['owner'], crawled['brand'], crawled['model'], crawled['type'], crawled['color']].join(',');
+        //         return [crawled['plateNumber'], 
+        //            crawled['owner'], 
+        //            crawled['brand'], 
+        //            crawled['model'], 
+        //            crawled['type'], 
+        //            crawled['color']
+        //        ].join(',');
         //     })
         //     .join('\n');
 
@@ -91,14 +97,27 @@ function VehicleList() {
         ];
 
         data.forEach((item) => {
-            worksheet.addRow(item);
+            const crawled = crawler(item);
+            
+            const worksheetItem = {
+                plateNumber: crawled['plateNumber'],
+                owner: crawled['owner'],
+                brand: crawled['brand'],
+                model: crawled['model'],
+                type: crawled['type'],
+                color: crawled['color']
+            }
+
+            worksheet.addRow(worksheetItem);
         });
 
         console.log(worksheet);
+        
+        const dateToday = new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear();
 
         // Save the Excel file
         workbook.xlsx.writeBuffer().then(function (buffer) {
-            saveExcelFile(buffer, 'vehicle_list.xlsx');
+            saveExcelFile(buffer, 'vehicle_list_' + dateToday + '.xlsx');
         }); 
 
         // const date = new Date();

@@ -132,20 +132,30 @@ function ResidentsList() {
         worksheet.headerFooter.oddFooter = footerContent;
 
         worksheet.columns = [
-            { header: 'Resident Name', key: 'user.name.firstName + user.name.lastName' },
+            { header: 'Resident Name', key: 'visitor' },
 			{ header: 'Home ID', key: 'home' },
 			{ header: 'Title', key: 'title' }
         ];
 
         data.forEach((item) => {
-            worksheet.addRow(item);
+			const crawled = crawler(item);
+            
+            const worksheetItem = {
+                visitor: `${crawled['user.name.firstName']} ${crawled['user.name.lastName']}`,
+				home: crawled['home'],
+				title: crawled['title'] || 'Homeowner'
+            }
+
+            worksheet.addRow(worksheetItem);
         });
 
         console.log(worksheet);
 
+		const dateToday = new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+		
         // Save the Excel file
         workbook.xlsx.writeBuffer().then(function (buffer) {
-            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
+            saveExcelFile(buffer, 'residents_list_' + dateToday + '.xlsx');
         });
     }
 

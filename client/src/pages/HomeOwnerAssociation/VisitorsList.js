@@ -63,7 +63,7 @@ function VisitorsList() {
         const date = new Date();
         // Define custom header and footer content
         const headerContent = 'Suburbia East HOA \n VISITOR LIST REPORT';
-        const footerContent = 'Prepared By: Princess Dela Cruz \n Date Prepared: ' + (date.getMonth() + 1) + " / " + date.getDate() + " / " + date.getFullYear();
+        const footerContent = 'Prepared By: Princess Dela Cruz \n Date Prepared: ' + (date.getMonth() + 1) + ' / ' + date.getDate() + ' / ' + date.getFullYear();
 
         worksheet.headerFooter.oddHeader = headerContent;
         worksheet.headerFooter.oddFooter = footerContent;
@@ -72,19 +72,33 @@ function VisitorsList() {
             { header: 'Visitor Name', key: 'name' },
             { header: 'Home ID', key: 'home' },
             { header: 'Arrival Date', key: 'arrival' },
-            { header: 'Departure Date', key: 'departure' } 
+            { header: 'Departure Date', key: 'departure' }
         ];
 
         data.forEach((item) => {
-            worksheet.addRow(item);
+            const crawled = crawler(item);
+
+            const arvl = new Date(crawled['arrival']);
+            const dept = new Date(crawled['departure']);
+
+            const worksheetItem = {
+                name: crawled['name'],
+                home: crawled['home'],
+                arrival: `${arvl.getMonth() + 1} / ${arvl.getDate()} / ${arvl.getFullYear()} | ${arvl.getHours()}:${arvl.getMinutes()}`,
+                departure: `${dept.getMonth() + 1} / ${dept.getDate()} / ${dept.getFullYear()} | ${dept.getHours()}:${dept.getMinutes()}`
+            };
+
+            worksheet.addRow(worksheetItem);
         });
 
         console.log(worksheet);
 
+        const dateToday = new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+
         // Save the Excel file
         workbook.xlsx.writeBuffer().then(function (buffer) {
-            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
-        }); 
+            saveExcelFile(buffer, 'visitors_list_' + dateToday + '.xlsx');
+        });
 
         // Create the CSV content
         // let csvContent = data

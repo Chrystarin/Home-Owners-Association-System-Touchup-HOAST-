@@ -160,20 +160,35 @@ function HomeList() {
             { header: 'House No.', key: 'number' },
             { header: 'Street', key: 'street' },
             { header: 'Phase', key: 'phase' },
-            { header: 'Owner', key: 'firstName + lastName' },
+            { header: 'Owner', key: 'owner' },
             { header: 'Contact No.', key: 'contactNo' },
             { header: 'Paid Until', key: 'paidUntil' },
         ];
 
         data.forEach((item) => {
-            worksheet.addRow(item);
+            const crawled = crawler(item);
+
+            const date = new Date(crawled['paidUntil']);
+            
+            const worksheetItem = {
+                number: crawled['address.number'],
+                street: crawled['address.street'],
+                phase: crawled['address.phase'],
+                owner: `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
+                contactNo: crawled['contactNo'],
+                paidUntil: `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`,
+            }
+
+            worksheet.addRow(worksheetItem);
         });
 
         console.log(worksheet);
 
+        const dateToday = new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+
         // Save the Excel file
         workbook.xlsx.writeBuffer().then(function (buffer) {
-            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
+            saveExcelFile(buffer, 'homes_list_' + dateToday + '.xlsx');
         });
     }
 
@@ -222,22 +237,36 @@ function HomeList() {
         worksheet.headerFooter.oddFooter = footerContent;
 
         worksheet.columns = [
-            { header: 'Homeowner', key: 'owner.name.firstName + owner.name.lastName' },
-            { header: 'House No.', key: 'address.number' },
-            { header: 'Street', key: 'address.street' },
-            { header: 'Email', key: 'owner.email' },
+            { header: 'Homeowner', key: 'owner' },
+            { header: 'House No.', key: 'number' },
+            { header: 'Street', key: 'street' },
+            { header: 'Email', key: 'email' },
             { header: 'Paid Until', key: 'paidUntil' },
         ];
 
         data.forEach((item) => {
-            worksheet.addRow(item);
+            const crawled = crawler(item);
+
+            const date = new Date(crawled['paidUntil']);
+            
+            const worksheetItem = {
+                owner: `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
+                number: crawled['address.number'],
+                street: crawled['address.street'],
+                email: crawled['owner.email'],
+                paidUntil: `${date.getMonth() + 1} / ${date.getDate()} / ${date.getFullYear()}`,
+            }
+
+            worksheet.addRow(worksheetItem);
         });
 
         console.log(worksheet);
 
+        const dateToday = new Date().getMonth() + 1 + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+
         // Save the Excel file
         workbook.xlsx.writeBuffer().then(function (buffer) {
-            saveExcelFile(buffer, 'customHeaderFooter.xlsx');
+            saveExcelFile(buffer, 'homeowners_list_' + dateToday + '.xlsx');
         });
     }
 
