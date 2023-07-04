@@ -211,7 +211,7 @@ function Scanner() {
                     JSON.stringify({
                         objectId: objId,
                         logType: logType,
-                        hoaId: localStorage.getItem('hoaId')
+                        hoaId: localStorage.getItem('hoaId') 
                     })
                 )
                 .then((response) => {
@@ -252,7 +252,8 @@ function Scanner() {
                         await fetchVehicle(log.objId);
                         console.log(infoScan);
                         if (infoScan) {
-                            setOpenConfirmation(true);
+                            // setOpenConfirmation(true);
+                            ProcessAccess(JSON.parse(data.text).objId, JSON.parse(data.text).logType);
                         } else {
                             openWindow('false');
                         }
