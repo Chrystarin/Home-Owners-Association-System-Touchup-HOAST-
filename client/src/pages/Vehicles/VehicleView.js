@@ -204,7 +204,19 @@ function VehicleView() {
                         </div>
                         <div className="SectionView__SidePanel" id="ViewResident__QRCode__Container">
                             {delinquent ? (
-                                'You have unpaid dues. The QR code pass will be temporarily revoked until you pay your dues.\n\n To gain access to the QR Code pass again, follow these steps:\n1. Go to the admin to check your status.\n2. Pay your balanced dues.\n3. the admin will change your status to paid after making successful transaction.\n4. Your QR code pass will be available again.'
+                                <div>
+                                    You have unpaid dues. The QR code pass will be temporarily revoked until you pay your dues.
+                                    <br /><br />
+                                    To gain access to the QR Code pass again, follow these steps:
+                                    <br />
+                                    1. Go to the admin to check your status.
+                                    <br />
+                                    2. Pay your balanced dues.
+                                    <br />
+                                    3. The admin will change your status to paid after making a successful transaction.
+                                    <br />
+                                    4. Your QR code pass will be available again.
+                                </div>
                             ) : (
                                 <QRCodeCard objId={vehicle.plateNumber} logType={'vehicle'} hoaId={process.env.REACT_APP_HOA_ID} />
                             )}
