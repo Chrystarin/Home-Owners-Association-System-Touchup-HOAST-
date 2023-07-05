@@ -211,7 +211,7 @@ function Scanner() {
                     JSON.stringify({
                         objectId: objId,
                         logType: logType,
-                        hoaId: localStorage.getItem('hoaId') 
+                        hoaId: localStorage.getItem('hoaId')
                     })
                 )
                 .then((response) => {
@@ -226,6 +226,7 @@ function Scanner() {
             console.log(error);
             openWindow('false');
             setScanned(false);
+            alert(error?.response?.data?.message ?? error.toString());
         }
     }
 
@@ -275,6 +276,7 @@ function Scanner() {
             console.log(error);
             openWindow('false');
             setScanned(false);
+            alert(error?.response?.data?.message ?? error.toString());
         }
     }
 

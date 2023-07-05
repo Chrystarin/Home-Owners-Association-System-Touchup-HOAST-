@@ -14,6 +14,8 @@ const {
 const { checkString } = require('../helpers/validData');
 const { genLogId } = require('../helpers/generateId');
 const extractHomes = require('../helpers/extractHomes');
+const User = require('../models/User');
+const Home = require('../models/Home');
 
 const getLogsByLookup = async (logType, objects, objectId) => {
 	const logs = await Log.find({
@@ -142,6 +144,14 @@ const addRecord = async (req, res, next) => {
 				'Visitor is out of the arrival and departure duration'
 			);
 		case 'vehicle':
+			const owner = await User.findOne({ 'vehicles.plateNumber': objectId });
+			if(owner === null) throw UserNotFoundError();
+
+			const home = await Home.findOne({ 'residents.user': owner._id });
+			if(home === null) throw NotFoundError();
+
+			if(home.paidUntil < new Date()) throw new UnauthorizedError('Home has unpaid dues');
+
 			if (vehicles.find(({ plateNumber }) => plateNumber === objectId))
 				break;
 			throw new VehicleNotFoundError();
