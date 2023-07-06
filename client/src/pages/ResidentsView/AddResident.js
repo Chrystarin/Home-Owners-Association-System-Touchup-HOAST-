@@ -94,11 +94,6 @@ function AddResident() {
                 return <>
                     <div className='Form' id='GeneralInformation'>
                         <TextField fullWidth label="Resident Name" variant="filled" onChange={(e)=>updateForm({ residentName: e.target.value })} defaultValue={form.residentName}/>
-                        {/* <TextField fullWidth label="Home Number" variant="filled" onChange={(e)=>updateForm({ houseNumber: e.target.value })} defaultValue={form.houseNumber}/>
-                        <div className='FormWrapper__2'>
-                            <TextField fullWidth  label="Street" variant="filled" onChange={(e)=>updateForm({ street: e.target.value })} defaultValue={form.street}/>
-                            <TextField fullWidth  label="Phase" variant="filled" onChange={(e)=>updateForm({ phase: e.target.value })} defaultValue={form.phase}/>
-                        </div> */}
                         <div className='Form__Button'>
                             <Button variant='contained' type='submit' className='Submit' onClick={()=> {setStepper(2);console.log(form)}}>Next</Button>
                         </div>
@@ -151,26 +146,7 @@ function AddResident() {
                     </form>
                 </>
                 break;
-            // case 3:
-            //     return <>
-            //         <form onSubmit={Submit} className='Form' id='GeneralInformation'>
-            //             <div>
-            //                 <SearchInput/>
-            //             </div>
-            //             <div className='SectionList'>
-            //                 <ResidentCard UserName="Dianne Chrystalin Brandez" Type="Edit"/>
-            //                 <ResidentCard UserName="Vincent Brandez" Type="Edit"/>
-            //                 <ResidentCard UserName="Digi-An Brandez" Type="Edit"/>
-            //                 <ResidentCard UserName="Nicole Dianne Chrystalin Brandes" Type="Edit"/>
-            //                 <ResidentCard UserName="Vinnie Dianne Chrystalin Brandes" Type="Edit"/>
-            //             </div>
-            //             <div className='Form__Button'>
-            //                 <Button variant='text' onClick={()=> setStepper(2)}>Back</Button>
-            //                 <Button variant='contained' type='submit' className='Submit' >Submit</Button>
-            //             </div>
-            //         </form>
-            //     </>
-            //     break;
+            
         
             default:
                 break;
@@ -188,7 +164,6 @@ function AddResident() {
                 <div className='SectionStepper'> 
                     <Button variant='text' className={(stepper === 1)?"active":""} onClick={()=> setStepper(1)}>General Information</Button>
                     <Button variant='text' className={(stepper === 2)?"active":""} onClick={()=> setStepper(2)}>Join Home</Button>
-                    {/* <Button variant='text'className={(stepper === 3)?"active":""} onClick={()=> setStepper(3)}>Residents</Button> */}
                 </div>
                 <div className='SectionContent'>
                     <Stepper homes={homes}/>

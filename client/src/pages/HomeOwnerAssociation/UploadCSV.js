@@ -25,7 +25,6 @@ export default function MassGenerateAccount() {
         var reader = new FileReader();
 
         reader.readAsText(data);
-        // console.log(reader.readAsText(data));
 
         // Reads the CSV file and Generate HTML
         reader.onload = async () => {
@@ -77,10 +76,6 @@ export default function MassGenerateAccount() {
                     responses.forEach((response) => console.log(response.value || response.reason));
                 })
                 .catch(console.error);
-
-            // responses
-            // 	.filter(({ status }) => status === 'fulfilled')
-            // 	.forEach(({ value }) => sendUserCredential(value.data.credentials));
         };
 
         function columner(row) {

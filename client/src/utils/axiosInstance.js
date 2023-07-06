@@ -10,10 +10,6 @@ const axiosInstance = axios.create({
     }
 });
 
-        //   const role = axiosInstance.get(`roles`)
-        //   localStorage.setItem('role', JSON.stringify(role))
-        //   console.log(localStorage.getItem('role'))
-
 let shouldRunFunction = true;
 
 async function getData() {

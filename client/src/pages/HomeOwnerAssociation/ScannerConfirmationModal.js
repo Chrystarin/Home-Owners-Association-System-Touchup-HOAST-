@@ -9,10 +9,6 @@ import axios from '../../utils/axios';
 function ScannerConfirmationModal(props) {
     const [viewMore, setViewMore] = useState(false);
 
-    // console.log(props.info);
-    // console.log(props.data);
-    // console.log(props);
-
     useEffect(() => {
         switch (props.type) {
             case 'visitor':
@@ -212,7 +208,6 @@ function ScannerConfirmationModal(props) {
                             <div className="ConfirmationModal__Header">
                                 <div className="ConfirmationModal__HeaderInfo">
                                     <h6 className="ConfirmationModal__Title">
-                                        {/* 300-2432 */}
                                         {props.info.plateNumber}
                                     </h6>
                                     <p className="ConfirmationModal__SubTitle">Plate Number</p>
@@ -223,30 +218,22 @@ function ScannerConfirmationModal(props) {
                                     <li>
                                         <p className="ConfirmationModal__BodyInfo__Title">Owner:</p>
                                         <p className="BodyText3 ConfirmationModal__BodyInfo__Value">
-                                            {/* Dianne Chrystalin Brandez */}
                                             {props.info.owner}
                                         </p>
                                     </li>
                                     <li className={viewMore ? 'BodyText3' : 'BodyText3 ConfirmationModal__BodyInfo__More '}>
-                                        {/* <p className="ConfirmationModal__BodyInfo__Title">
-											Address:
-										</p> */}
                                         <p className="ConfirmationModal__BodyInfo__Value">
-                                            {/* Abuab II */}
-                                            {/* {props.info.address} */}
                                         </p>
                                     </li>
                                     <li className={viewMore ? 'BodyText3' : 'BodyText3 ConfirmationModal__BodyInfo__More '}>
                                         <p className="ConfirmationModal__BodyInfo__Title">Color:</p>
                                         <p className="ConfirmationModal__BodyInfo__Value">
-                                            {/* Black */}
                                             {props.info.color}
                                         </p>
                                     </li>
                                     <li className={viewMore ? 'BodyText3' : 'BodyText3 ConfirmationModal__BodyInfo__More '}>
                                         <p className="ConfirmationModal__BodyInfo__Title">Model & Brand</p>
                                         <p className="ConfirmationModal__BodyInfo__Value">
-                                            {/* Raptor, Ford */}
                                             {props.info.model} {props.info.brand}
                                         </p>
                                     </li>

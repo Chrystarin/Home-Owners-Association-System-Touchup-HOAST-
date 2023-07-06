@@ -253,7 +253,6 @@ function Scanner() {
                         await fetchVehicle(log.objId);
                         console.log(infoScan);
                         if (infoScan) {
-                            // setOpenConfirmation(true);
                             ProcessAccess(JSON.parse(data.text).objId, JSON.parse(data.text).logType);
                         } else {
                             openWindow('false');

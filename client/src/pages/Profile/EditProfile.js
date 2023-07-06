@@ -191,11 +191,6 @@ export default function EditHome() {
                                     onChange={(e) => setForm({ ...form, confirmPass: e.target.value })}
                                 />
                             </div>
-
-                            {/* First Name: <input type="text" value={user_id['user'].name.firstName}/>
-                                Last Name: <input type="text" value={user_id['user'].name.lastName}/>
-                                Email: <input type="text" value={user.email}/>
-                                Passwrod: <input type="text"/> */}
                             <div className="Form__Button">
                                 <Button variant="text" href="/profile">
                                     Cancel

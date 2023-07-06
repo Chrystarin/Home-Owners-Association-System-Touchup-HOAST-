@@ -383,7 +383,6 @@ function EditHome() {
                                                     residents.map((resident) => {
                                                         if (resident.status == 'inactive')
                                                             return (
-                                                                // <p>{JSON.stringify(resident.user.name.firstName)}</p>
                                                                 <ResidentCard
                                                                     key={resident._id}
                                                                     username={resident.user.name.firstName + ' ' + resident.user.name.lastName}
@@ -397,15 +396,6 @@ function EditHome() {
                                     )}
                                 </div>
                             </div>
-
-                            {/* <div className="Form__Button">
-                                <Button variant="contained" size="large" type="submit" onClick={() => navigate(-1)}>
-                                    Cancel
-                                </Button>
-                                <Button variant="contained" size="large" type="submit" onClick={Submit}>
-                                    Save
-                                </Button>
-                            </div> */}
                         </div>
                     </div>
                 </section>

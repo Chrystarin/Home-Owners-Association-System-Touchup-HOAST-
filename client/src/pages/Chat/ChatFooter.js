@@ -19,17 +19,6 @@ const ChatFooter = ({ socket, recipient, setMessages }) => {
             sender: isRole('guard') ? 'guard' : 'user',
             receiver: isRole('guard') ? 'user' : 'guard'
         });
-        // setMessages((prevMessages) => [
-        //     ...prevMessages,
-        //     {
-        //         content: message,
-        //         userId: isRole('guard') ? recipient : JSON.parse(localStorage.getItem('user')).user.userId,
-        //         hoaId: process.env.REACT_APP_HOA_ID,
-        //         guardId: isRole('guard') ? JSON.parse(localStorage.getItem('user')).user.userId : recipient,
-        //         sender: isRole('guard') ? 'guard' : 'user',
-        //         receiver: isRole('guard') ? 'user' : 'guard'
-        //     }
-        // ]);
         setMessage('');
     };
     return (

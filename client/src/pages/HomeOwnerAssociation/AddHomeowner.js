@@ -75,12 +75,6 @@ export default function AddHomeowner() {
                     navigate('/residentslist');
                 });
         } catch (error) {
-            // setOpenSnackBar((openSnackBar) => ({
-            //     ...openSnackBar,
-            //     open: true,
-            //     type: 'error',
-            //     note: error?.response?.data?.message ?? 'Check Your input!'
-            // }));
 
             setOpenSnackBar((openSnackBar) => ({
                 ...openSnackBar,
@@ -137,7 +131,6 @@ export default function AddHomeowner() {
         var reader = new FileReader();
 
         reader.readAsText(data);
-        // console.log(reader.readAsText(data));
 
         // Reads the CSV file and Generate HTML
         reader.onload = async () => {
@@ -189,10 +182,6 @@ export default function AddHomeowner() {
                     responses.forEach((response) => console.log(response.value || response.reason));
                 })
                 .catch(console.error);
-
-            // responses
-            // 	.filter(({ status }) => status === 'fulfilled')
-            // 	.forEach(({ value }) => sendUserCredential(value.data.credentials));
         };
 
         function columner(row) {

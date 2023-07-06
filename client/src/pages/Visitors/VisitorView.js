@@ -253,8 +253,6 @@ function VisitorView() {
                         <div className="SectionView__SidePanel" id="ViewResident__QRCode__Container">
                             <QRCodeCard objId={visitor.visitorId} logType={'visitor'} hoaId={process.env.REACT_APP_HOA_ID} />
                         </div>
-
-                        {/* <button onClick={()=>DownloadQRCode("ViewResident__QRCode__Container", "QRCode.html")}>Download</button> */}
                     </div>
                 </section>
             </div>

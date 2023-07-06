@@ -81,7 +81,6 @@ function AddVisitor() {
                 )
                 .then((response) => {
                     console.log(JSON.stringify(response?.data));
-                    // alert("Registered Successfully!");
                     navigate("/visitors");
                 })
             }
@@ -161,11 +160,9 @@ function AddVisitor() {
                                     />
                                 </DemoContainer>
                             </LocalizationProvider>
-                            {/* <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/> */}
-                            {/* <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} /> */}
+                            
                         </div>
                         <div className='FormWrapper__2'>
-                            {/* <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/> */}
 
                             <FormControl required  variant="outlined" fullWidth>
                             <InputLabel  id="home-select">Purpose</InputLabel>

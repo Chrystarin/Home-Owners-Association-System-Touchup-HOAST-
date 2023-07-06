@@ -119,8 +119,6 @@ function VehicleView() {
                                             <h5>{vehicle.model}</h5>
                                         </div>
                                         <div className="GeneralInformation__InfoContainer">
-                                            {/* <h6>Registered Since: </h6> */}
-                                            {/* <h5>{ new Date(vehicle.createdAt).toLocaleString('default', { month: 'long' }) + ' ' + new Date(vehicle.createdAt).getDate() + ', ' + new Date(vehicle.createdAt).getFullYear() }</h5> */}
                                         </div>
                                     </div>
                                     <Button variant="contained" href={`${vehicle.plateNumber}/update`}>
@@ -221,7 +219,6 @@ function VehicleView() {
                             ) : (
                                 <QRCodeCard objId={vehicle.plateNumber} logType={'vehicle'} hoaId={process.env.REACT_APP_HOA_ID} />
                             )}
-                            {/* <QRCodeCard objId={vehicle.plateNumber} logType={'vehicle'} hoaId={process.env.REACT_APP_HOA_ID} /> */}
                         </div>
                     </div>
                 </section>

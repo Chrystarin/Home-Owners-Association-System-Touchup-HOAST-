@@ -115,7 +115,6 @@ export default function RegisterHoa() {
             })
         }
         catch(err){
-            // alert("Check Credentials!");
             console.error(err.message);
         }
     }

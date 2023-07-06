@@ -98,15 +98,6 @@ function ResidentsView() {
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className="SectionView__Sections">
-                            <h5 className='SectionView__Sections__Title'>
-                                Homes
-                            </h5>
-                            <div className='SectionList' id='Homes__Container'>
-                                <Card type="Home" {...HomeOwner}/>
-                                <Card type="Home" {...HomeOwner}/>
-                            </div>
-                        </div> */}
                             <div className="SectionView__Sections">
                                 <h5 className="SectionView__Sections__Title">Vehicles</h5>
                                 <div className="SectionList" id="Vehicles__Container">
@@ -132,39 +123,8 @@ function ResidentsView() {
                                     )}
                                 </div>
                             </div>
-                            {/* <div className="SectionView__Sections">
-                            <h5 className='SectionView__Sections__Title'>
-                                Logs
-                            </h5>
-                            <div id='Logs__Container'>
-                                <TableContainer component={Paper}>
-                                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell component="th" align='center'><h6>Access Type</h6></TableCell>
-                                                <TableCell align="center"><h6>Timestamp</h6></TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                        {rows.map((row) => (
-                                            <TableRow
-                                            key={row.name}
-                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                            >
-                                            <TableCell component="th" scope="row" align='center'>
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell align="center">{row.calories}</TableCell>
-                                            </TableRow>
-                                        ))}
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-                            </div>
-                        </div> */}
                         </div>
                         <div className="SectionView__SidePanel" id="ViewResident__QRCode__Container">
-                            {/* <QRCodeCard/> */}
                             <QRCodeCard objId={resident.user.userId} logType={'user'} />
                         </div>
                     </div>

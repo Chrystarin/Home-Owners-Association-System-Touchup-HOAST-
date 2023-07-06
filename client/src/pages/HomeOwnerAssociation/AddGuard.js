@@ -177,14 +177,6 @@ export default function AddGuard() {
                             <span>Add Guard</span>
                         </h3>
                         <div className="SectionContent">
-                            {/* <div>
-                                <Button variant="text" className={stepper === 1 ? 'active' : ''} onClick={() => setStepper(1)}>
-                                    Add Existing Guard
-                                </Button>
-                                <Button variant="text" className={stepper === 2 ? 'active' : ''} onClick={() => setStepper(2)}>
-                                    Create Guard Account
-                                </Button>
-                            </div> */}
                             {stepper === 1 ? (
                                 <>
                                     <form onSubmit={Submit} className="Form">

@@ -113,37 +113,6 @@ function HomeList() {
     }
 
     function exportHomesList(data) {
-        // Create the CSV content
-        // let csvContent = data
-        //     .map((d) => {
-        //         const crawled = crawler(d);
-        //         const date = new Date(crawled['paidUntil']);
-
-        //         return [
-        //             crawled['address.number'],
-        //             crawled['address.street'],
-        //             crawled['address.phase'],
-        //             `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
-        //             crawled['contactNo'],
-        //             `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
-        //         ].join(',');
-        //     })
-        //     .join('\n');
-        
-        // const date = new Date();
-        // csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-        //              `Header,Homes List\n` +
-        //              '\n' +
-        //              'House No.,Street,Phase,Owner,Contact No,Paid Until\n' +
-        //              csvContent;
-
-        // // Create a download link
-        // const downloadLink = document.createElement('a');
-        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        // downloadLink.download = 'homes_list.csv';
-
-        // // Trigger the download
-        // downloadLink.click();
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Sheet1');
@@ -193,37 +162,6 @@ function HomeList() {
     }
 
     function exportHomeownersList(data) {
-        // Create the CSV content
-        // let csvContent = data
-        //     .map((d) => {
-        //         const crawled = crawler(d);
-        //         const date = new Date(crawled['paidUntil']);
-
-        //         return [
-        //             `${crawled['owner.name.firstName']} ${crawled['owner.name.lastName']}`,
-        //             crawled['address.number'],
-        //             crawled['address.street'],
-        //             crawled['address.phase'],
-        //             crawled['owner.email'],
-        //             `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
-        //         ].join(',');
-        //     })
-        //     .join('\n');
-        
-        // const date = new Date();
-        // csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-        //              `Header,Homeowners List\n` +
-        //              '\n' +
-        //              'Homeowner,House No.,Street,Phase,Email,Paid Until\n' +
-        //              csvContent;
-
-        // // Create a download link
-        // const downloadLink = document.createElement('a');
-        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        // downloadLink.download = 'homeowner_list.csv';
-
-        // // Trigger the download
-        // downloadLink.click();
 
         const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Sheet1');

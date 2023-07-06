@@ -152,20 +152,6 @@ function AddVehicle() {
                                 <img src={URL.createObjectURL(backImage)} alt="" />
                             )}
 
-                            {/* <div className='FormWrapper__2'>
-                            <div className='UploadDocument__Holder'>
-                                    <input className='UploadDocument__Input' type="file" name="" id="upload" required/>
-                                    <label htmlFor='upload' className='UploadDocument__Holder'  style={{width:"300px"}}>
-                                        <div className='UploadDocumentInput__Container'>
-                                            <h6>Upload picture of the vehicle</h6>
-                                            <p>Make sure the plate number is visible</p>
-                                        </div>
-                                    </label>
-                                <br />
-                                <img src="" alt="" />
-                            </div>
-                            <div></div>
-                        </div> */}
                             <div className="Form__Button">
                                 <Button variant="text">Cancel</Button>
                                 <Button variant="contained" type="submit" className="Submit">

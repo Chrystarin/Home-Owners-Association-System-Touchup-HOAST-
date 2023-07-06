@@ -90,14 +90,8 @@ function ViewHome() {
                                     <p>No Residents Available!</p>
                                     :
                                     <>
-                                        {/* {home.residents.length > 0 && home.residents.map((resident) => {
-                                            return (
-                                                <ResidentCard key={resident._id} UserName={resident.user.name.firstName}/>
-                                            );
-                                        })} */}
                                         {home.residents.length > 0 && home.residents.map((resident) => {
                                             return (
-                                                // <p>{JSON.stringify(resident.user.name.firstName)}</p>
                                                 <ResidentCard 
                                                     key={resident._id} 
                                                     username={resident.user.name.firstName + ' ' + resident.user.name.lastName} 
@@ -165,10 +159,6 @@ function ViewHome() {
                                 <h6>Address: </h6>
                                 <h5>{home.address.number} {home.address.phase} {home.address.street}</h5>
                             </div>
-                            {/* <div>
-                                <h6>Register Since: </h6>
-                                <h5>Tue, 07 Feb 20 23 02:37:40 GMT </h5>
-                            </div> */}
                             {(isHomeowner(id))
                                 ? <Button variant='contained' href={`${id}/edit`}>Edit Home</Button>
                                 : ''

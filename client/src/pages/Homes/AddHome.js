@@ -100,7 +100,6 @@ function AddHome() {
                 })
             )
             .then((response) => {
-                // alert("Request Submitted! Wait for admin to approve your request.");
                 navigate("/homes");
             })
         }
@@ -112,7 +111,6 @@ function AddHome() {
                 type:'error',
                 note:"Check your inputs",
             }));
-            // alert(err.message);
         }
     }
 
@@ -133,10 +131,8 @@ function AddHome() {
 
                 <div className='SectionStepper'> 
                     <Button variant='text' className={(stepper === 1)?"active":""}>General Information</Button>
-                    {/* <Button variant='text' className={(stepper === 2)?"active":""}>Join Homeowners Association</Button> */}
                 </div>
                 <div className='SectionContent'>
-                    {/* <Stepper hoas={hoas}/> */}
                     {stepper==1?<>
                         <form onSubmit={Submit}>
                             <div className='Form' id='GeneralInformation'>
@@ -217,38 +213,6 @@ function AddHome() {
                             </div>
                         </form>
                     </>:<></>}
-                    {/* {stepper==2?<>
-                        <form onSubmit={Submit} className='Form' id='GeneralInformation'>
-                            <div>
-                                <SearchInput setData={setData} data={hoas} keys={["name"]} filterValue={filterValue}/>
-                            </div>
-                            <div className='SectionList'>
-                                {(hoas.length === 0 )?
-                                    <p>No HOAs Available!</p>
-                                    :
-                                    <>
-                                        {
-                                            data.length > 0 && data.map((hoa) => {
-                                                return (
-                                                    <div className={hoa._id===selectedHoa?'Card__Horizontal Active': 'Card__Horizontal'}  onClick={()=>{setSelectedHoa(hoa._id); updateForm({ hoaId: hoa.hoaId }) }} key={hoa._id} id={hoa._id}>
-                                                        <img src={VillageIcon} alt="" />
-                                                    <div>
-                                                            <h6>{hoa.name}</h6>
-                                                            <p>{hoa.city}</p>
-                                                        </div>
-                                                    </div> 
-                                                );
-                                            })
-                                        }
-                                    </>
-                                }
-                            </div>
-                            <div className='Form__Button'>
-                            <Button variant='text' onClick={()=> setStepper(1)}>Back</Button>
-                                <Button variant='contained' type='submit' className='Submit' >Submit</Button>
-                            </div>
-                        </form>
-                    </>:<></>} */}
                 </div>
             </section>
             <SnackbarComp open={openSnackBar} setter={setOpenSnackBar}/>

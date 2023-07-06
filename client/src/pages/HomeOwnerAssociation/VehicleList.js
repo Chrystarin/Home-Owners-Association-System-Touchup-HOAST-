@@ -119,23 +119,6 @@ function VehicleList() {
         workbook.xlsx.writeBuffer().then(function (buffer) {
             saveExcelFile(buffer, 'vehicle_list_' + dateToday + '.xlsx');
         }); 
-
-        // const date = new Date();
-        // csvContent =
-        //     // `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-        //     // `Header,Vehicles List\n` +
-        //     // '\n' +
-        //     'Plate Number,Owner ID,Brand,Model,Type,Color\n' + csvContent;
-
-        // console.log(csvContent);
-
-        // // Create a download link
-        // const downloadLink = document.createElement('a');
-        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        // downloadLink.download = 'vehicle_list.csv';
-
-        // // Trigger the download
-        // downloadLink.click();
     }
 
     function saveExcelFile(data, filename) {

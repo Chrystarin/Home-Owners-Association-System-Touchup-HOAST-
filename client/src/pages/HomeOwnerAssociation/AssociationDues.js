@@ -200,22 +200,6 @@ function AssociationDues() {
 								}}
 							>
 								<form onSubmit={Submit} className="Form AddDues">
-									
-									{/* <TextField
-										id="filled-password-input"
-										label="HOmeId"
-										type="text"
-										autoComplete="current-password"
-										variant="filled"
-										disabled
-                                        defaultValue={selectedHome}
-										// onChange={(e) =>
-										// 	updateForm({
-										// 		homeId: e.target
-										// 			.value
-										// 	})
-										// }
-									/> */}
 									<TextField
 										id="filled-password-input"
 										label="amount"
@@ -235,25 +219,6 @@ function AssociationDues() {
 											})
 										}
 									/>
-									{/* <TextField
-										id="filled-password-input"
-										label="paidUntil"
-										type="date"
-										autoComplete="current-password"
-										// defaultValue={"2023-01-01"}
-                                        defaultValue={
-                                            ((new Date(selectedPaidUntil)).getFullYear()) + "-" + String((new Date(selectedPaidUntil)).getMonth() + 1).padStart(2, '0') + "-" + String((new Date(selectedPaidUntil)).getDate()).padStart(2, '0')
-                                        }
-										variant="filled"
-										onChange={(e) =>
-											{
-												updateForm({
-													months: e.target.value
-												})
-												console.log(e.target.value);
-											}
-										}
-									/> */}
                                     <TextField
 										id="filled-password-input"
 										label="Months"

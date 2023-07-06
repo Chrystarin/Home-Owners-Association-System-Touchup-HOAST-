@@ -46,22 +46,6 @@ function Logs() {
     const [anchorElFilter, setAnchorElFilter] = React.useState(null);
     const openFilter = Boolean(anchorElFilter);
 
-    // const crawler = (data, parent) =>
-    // 	Object.entries(data).reduce((data, [key, value]) => {
-    // 		// console.log(data);
-    // 		console.log(parent);
-    // 		if (value instanceof Array) return data;
-
-    // 		key = parent ? `${parent}.${key}` : key;
-
-    // 		if (typeof value === 'object')
-    // 			return {
-    // 				...data,
-    // 				...crawler(value, key)
-    // 			};
-    // 		return { ...data, [key]: value };
-    // 	});
-
     const crawler = (data, parent = '') =>
         Object.entries(data).reduce((result, [key, value]) => {
             const updatedKey = parent ? `${parent}.${key}` : key;

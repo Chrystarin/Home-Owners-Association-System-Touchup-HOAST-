@@ -97,8 +97,6 @@ function CreateQuickPassVehicle() {
                         <form onSubmit={Submit} className="Form">
                             <TextField required fullWidth label="Name" variant="outlined" onChange={(e) => updateForm({ name: e.target.value })} />
                             <div className="FormWrapper__2">
-                                {/* <TextField required id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Arrival Date" variant="filled" onChange={(e)=>updateForm({ arrival: e.target.value })} defaultValue/> */}
-                                {/* <TextField required  id="filled-number" InputLabelProps={{shrink: true}} fullWidth type="date" label="Departure Date" variant="filled" onChange={(e)=>updateForm({ departure: e.target.value })} /> */}
                             </div>
                             <div className="FormWrapper__2">
                                 {/* <TextField required fullWidth  label="Purpose" variant="filled" onChange={(e)=>updateForm({ purpose: e.target.value })}/> */}

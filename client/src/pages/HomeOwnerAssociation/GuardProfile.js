@@ -40,7 +40,6 @@ function GuardProfile() {
         <Navbar/>
         <div className='SectionHolder'>
             <section className='Section'>
-            {/* <h3 className='SectionTitleDashboard'><span><a href="/homes">My Profile</a></span>  > <span>{user.name.firstName + " " + user.name.lastName}</span></h3> */}
                 <div className='SectionContent SectionView' id='ViewResident'>
                     <div className='SectionView__Content' id="ViewResident__Content__Container" >
                         <div className="SectionView__Sections">

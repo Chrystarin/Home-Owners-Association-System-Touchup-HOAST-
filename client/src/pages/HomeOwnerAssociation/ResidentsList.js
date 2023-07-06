@@ -92,33 +92,6 @@ function ResidentsList() {
     }
 
 	function exportResidentsList(data) {
-        // Create the CSV content
-        // let csvContent = data
-        //     .map((d) => {
-        //         const crawled = crawler(d);
-
-        //         return [
-        //             `${crawled['user.name.firstName']} ${crawled['user.name.lastName']}`,
-        //             crawled['home'],
-        //             crawled['title'] || 'Homeowner'
-        //         ].join(',');
-        //     })
-        //     .join('\n');
-        
-        // const date = new Date();
-        // csvContent = `Date,${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}\n` +
-        //              `Header,Residents List\n` +
-        //              '\n' +
-        //              'Resident Name,Home ID,Title\n' +
-        //              csvContent;
-
-        // // Create a download link
-        // const downloadLink = document.createElement('a');
-        // downloadLink.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csvContent);
-        // downloadLink.download = 'residents_list.csv';
-
-        // // Trigger the download
-        // downloadLink.click();
 
 		const workbook = new ExcelJS.Workbook();
         const worksheet = workbook.addWorksheet('Sheet1');

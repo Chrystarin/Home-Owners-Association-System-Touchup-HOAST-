@@ -6,14 +6,6 @@ import axios from '../../utils/axios';
 const ChatBody = ({ messages, selectedUser, selectedName }) => {
     const messageContainerRef = useRef(null);
 
-    // console.log(messages);
-
-    // const handleLeaveChat = () => {
-    //     localStorage.removeItem('userName');
-    //     navigate('/');
-    //     window.location.reload();
-    // };
-
     useEffect(() => {
         scrollToBottom();
     }, [messages]);
@@ -25,56 +17,10 @@ const ChatBody = ({ messages, selectedUser, selectedName }) => {
     };
     scrollToBottom();
 
-    // const fetchGuard = async () => {
-    //     await axios
-    //         .get(`hoas/guards`, {
-    //             params: {
-    //                 hoaId: process.env.REACT_APP_HOA_ID,
-    //                 guardId: selectedUser
-    //             }
-    //         })
-    //         .then((response) => {
-    //             console.log(response.data);
-    //             setGuard(response.data);
-    //         });
-    // };
-
-    // const { isRole } = useAuth();
-    // const [guard, setGuard] = useState();
-
-    // const fetchGuards = async () => {
-    //     await axios
-    //         .get(`hoas/guards`, {
-    //             params: {
-    //                 selectedHoa: process.env.REACT_APP_HOA_ID
-    //             }
-    //         })
-    //         .then((response) => {
-    //             const getUserById = (userId) => {
-    //                 return response.data.find((item) => item.user.userId === userId);
-    //             };
-    //             setGuard(getUserById(selectedUser));
-    //             console.log(getUserById(selectedUser));
-    //         });
-    // };
-
-    // useEffect(() => {
-    //     if (!isRole('guard')) {
-    //         if (selectedUser) fetchGuards();
-    //     }
-    // }, [selectedUser]);
-
     if (!messages) return <div>Loading...</div>;
 
     return (
         <>
-            {/* <header className="chat__mainHeader">
-                <p>Hangout with Colleagues</p>
-                <button className="leaveChat__btn" onClick={handleLeaveChat}>
-                    LEAVE CHAT
-                </button>
-            </header> */}
-
             <div>
                 {messages.length === 0 ? (
                     <div className="message__container message__Empty">
